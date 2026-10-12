@@ -414,10 +414,28 @@ const cp=async(t,ok)=>{
 $("shb").onclick=async()=>{const t=JSON.stringify(S);try{if(navigator.share){await navigator.share({title:"پشتیبان دفتر پرداخت‌ها",text:t});return}}catch(e){if(e&&e.name==="AbortError")return}cp(t,"پشتیبان کپی شد.")};
 $("copy").onclick=()=>cp(S.entries.map(e=>[pdate(e.date),e.cat,e.sub,e.desc,e.payer||"",e.amt,(e.note||"").replace(/\s+/g," ")].join("\t")).join("\n"),"کپی شد؛ در اکسل Paste کن.");
 $("bk").onclick=()=>cp(JSON.stringify(S),"پشتیبان کپی شد؛ جایی (مثلاً Notes) ذخیره کن.");
+function parseBackup(t){
+  t=t.replace(/[\r\n]+/g,"").trim();
+  const tryP=x=>{try{const o=JSON.parse(x);return o&&Array.isArray(o.entries)?o:null}catch(e){return null}};
+  let o=tryP(t);if(o)return{o,fixed:false};
+  let cut=t.length;
+  for(let k=0;k<3000;k++){
+    cut=t.lastIndexOf(",",cut-1);if(cut<1)break;
+    const h=t.slice(0,cut);
+    for(const c of ["}","]}","}]}","}]}}"]){o=tryP(h+c);if(o)return{o,fixed:true}}
+  }
+  return null;
+}
 $("rs").onclick=async()=>{
   const t=await ask("متن پشتیبان را اینجا Paste کن:",true);if(!t)return;
-  try{const o=JSON.parse(t);if(!Array.isArray(o.entries))throw 0;S={entries:o.entries,map:o.map||{},payer:o.payer||"",cheques:o.cheques||[]};S.entries.forEach(e=>{if(!e.sub)e.sub="عمومی"});save();render();$("hint").textContent="بازیابی شد."}
-  catch(e){$("hint").textContent="متن پشتیبان معتبر نیست."}
+  const r=parseBackup(t);
+  if(!r){await ask("متن پشتیبان معتبر نیست یا ناقص است. دوباره از برنامهٔ اصلی پشتیبان بگیر و کامل کپی کن.");return}
+  const o=r.o;
+  o.entries=o.entries.filter(e=>e&&e.date&&e.amt&&e.cat);o.cheques=(o.cheques||[]).filter(c=>c&&c.to&&c.amt&&c.due);
+  if(!await ask((r.fixed?"متن ناقص بود و ترمیم شد. ":"")+"بازیابی "+fa(o.entries.length)+" پرداخت و "+fa(o.cheques.length)+" چک؟ داده‌های فعلی این دستگاه جایگزین می‌شوند."))return;
+  S={entries:o.entries,map:o.map||{},payer:o.payer||"",cheques:o.cheques,view:o.view||S.view,cd:o.cd,fp:o.fp,compact:o.compact!==false};
+  S.entries.forEach(e=>{if(!e.sub)e.sub="عمومی"});save();render();
+  await ask("بازیابی انجام شد: "+fa(o.entries.length)+" پرداخت و "+fa(o.cheques.length)+" چک.");
 };
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SR){$("mic").style.display="none";$("hint").textContent="مرورگر از تشخیص صدا پشتیبانی نمی‌کند؛ تایپ کنید یا از میکروفون کیبورد استفاده کنید."}
