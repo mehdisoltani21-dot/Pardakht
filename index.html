@@ -4,5 +4,679 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>دفتر پرداخت‌ها</title>
-<!-- PLACEHOLDER - will replace -->
-</head><body>test</body></html>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d7a5f">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4f3;
+  --fg: #0f1a17;
+  --mut: #5c6b66;
+  --card: #ffffff;
+  --line: #dce5e2;
+  --ac: #0d7a5f;
+  --ac2: #0a5c48;
+  --acs: #e6f5f0;
+  --red: #c62828;
+  --orange: #e65100;
+  --sh: 0 2px 8px rgba(13, 122, 95, 0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --sh2: 0 8px 24px rgba(13, 122, 95, 0.1), 0 2px 6px rgba(0,0,0,0.05);
+  --radius: 16px;
+  --radius-sm: 12px;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1211;
+    --fg: #e8eeec;
+    --mut: #8a9a94;
+    --card: #171d1b;
+    --line: #2a3330;
+    --ac: #2dd4a8;
+    --ac2: #1a9e7a;
+    --acs: #132822;
+    --red: #f87171;
+    --orange: #fb923c;
+    --sh: 0 2px 12px rgba(0,0,0,0.3);
+    --sh2: 0 8px 28px rgba(0,0,0,0.4);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1211;
+  --fg: #e8eeec;
+  --mut: #8a9a94;
+  --card: #171d1b;
+  --line: #2a3330;
+  --ac: #2dd4a8;
+  --ac2: #1a9e7a;
+  --acs: #132822;
+  --red: #f87171;
+  --orange: #fb923c;
+  --sh: 0 2px 12px rgba(0,0,0,0.3);
+  --sh2: 0 8px 28px rgba(0,0,0,0.4);
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image: radial-gradient(ellipse at top, rgba(13,122,95,0.04), transparent 60%);
+  color: var(--fg);
+  font-family: Vazirmatn, Tahoma, sans-serif;
+  padding: 20px 16px 48px;
+  max-width: 920px;
+  margin-inline: auto;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--ac), var(--ac2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sub {
+  color: var(--mut);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--sh);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card:hover {
+  box-shadow: var(--sh2);
+}
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+input, select, textarea {
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  min-width: 0;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--ac);
+  box-shadow: 0 0 0 3px rgba(13, 122, 95, 0.15);
+  background: var(--card);
+}
+input::placeholder { color: var(--mut); opacity: 0.75; }
+button {
+  font: inherit;
+  font-weight: 600;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 11px 18px;
+  background: linear-gradient(135deg, var(--ac), var(--ac2));
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s, filter 0.15s;
+  box-shadow: 0 2px 8px rgba(13, 122, 95, 0.25);
+}
+button:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 14px rgba(13, 122, 95, 0.35);
+  transform: translateY(-1px);
+}
+button:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) button:not(.g):not(.ic) {
+    color: #06241a;
+  }
+}
+:root[data-theme="dark"] button:not(.g):not(.ic) {
+  color: #06241a;
+}
+button.g {
+  background: transparent;
+  color: var(--fg);
+  border: 1.5px solid var(--line);
+  box-shadow: none;
+}
+button.g:hover {
+  background: var(--acs);
+  border-color: var(--ac);
+  filter: none;
+  box-shadow: none;
+}
+button.sm {
+  padding: 7px 13px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+button.ic {
+  background: transparent;
+  color: var(--fg);
+  border: 1.5px solid transparent;
+  box-shadow: none;
+  padding: 8px 14px;
+  font-weight: 500;
+}
+button.ic:hover {
+  background: var(--acs);
+  filter: none;
+}
+button.del { color: var(--red) !important; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.st {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  box-shadow: var(--sh);
+  transition: transform 0.2s;
+}
+.st:hover { transform: translateY(-2px); }
+.st span {
+  display: block;
+  color: var(--mut);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.st b {
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.st.m {
+  background: linear-gradient(135deg, var(--acs), var(--card));
+  border-color: color-mix(in srgb, var(--ac) 30%, var(--line));
+}
+.st.m b { color: var(--ac); }
+.sec {
+  font-size: 13px;
+  color: var(--mut);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+.scroll {
+  overflow-x: auto;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th {
+  color: var(--mut);
+  font-weight: 600;
+  font-size: 12px;
+  text-align: right;
+  padding: 10px 8px;
+  border-bottom: 2px solid var(--line);
+  white-space: nowrap;
+}
+td {
+  padding: 11px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  vertical-align: middle;
+}
+td.n {
+  direction: ltr;
+  text-align: left;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+td.d {
+  color: var(--mut);
+  white-space: nowrap;
+  font-size: 13px;
+}
+td.a {
+  width: 1%;
+  white-space: nowrap;
+  text-align: left;
+}
+.g1 td {
+  background: var(--acs);
+  cursor: pointer;
+  padding: 12px 10px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.g1:hover td { filter: brightness(0.97); }
+td.n small {
+  font-weight: 400;
+  color: var(--mut);
+  font-size: 11px;
+}
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 5px;
+  margin-bottom: 18px;
+  box-shadow: var(--sh);
+  overflow-x: auto;
+}
+.tabs button {
+  flex: 1;
+  min-width: max-content;
+  background: transparent;
+  color: var(--mut);
+  border: none;
+  box-shadow: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 500;
+  font-size: 13.5px;
+  transition: all 0.2s;
+}
+.tabs button:hover {
+  background: var(--acs);
+  color: var(--ac);
+  filter: none;
+  transform: none;
+}
+.tabs button.on {
+  background: linear-gradient(135deg, var(--ac), var(--ac2));
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(13, 122, 95, 0.3);
+  font-weight: 600;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tabs button.on { color: #06241a; }
+}
+:root[data-theme="dark"] .tabs button.on { color: #06241a; }
+.fm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+.fm .w { grid-column: 1 / -1; }
+.fm div > input,
+.fm div > select { width: 100%; }
+.fl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.fl > * { flex: 1; min-width: 120px; }
+.fl .w { flex: 1 1 100%; }
+.ck {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-top: 10px;
+  background: var(--card);
+  transition: border-color 0.2s, background 0.2s;
+}
+.ck:hover { border-color: color-mix(in srgb, var(--ac) 40%, var(--line)); }
+.ck.od {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 8%, var(--card));
+}
+.ck.sn {
+  border-color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 8%, var(--card));
+}
+.ck.dn { opacity: 0.55; }
+.ckb { flex: 1; min-width: 0; }
+.ckt {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ckt span {
+  direction: ltr;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.cks {
+  color: var(--mut);
+  font-size: 12.5px;
+  margin-top: 3px;
+}
+#alert {
+  display: none;
+  border: 1.5px solid var(--red);
+  background: color-mix(in srgb, var(--red) 10%, var(--card));
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+#alert b {
+  color: var(--red);
+  display: block;
+  margin-bottom: 2px;
+}
+.lb {
+  display: block;
+  font-size: 12px;
+  color: var(--mut);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.jd {
+  display: flex;
+  gap: 6px;
+}
+.jd select {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 4px;
+}
+#fdr .jd { flex: 1; }
+#cw {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  color: var(--ac);
+  min-height: 19px;
+  margin-top: -2px;
+  font-weight: 500;
+}
+#gmenu, #menu, #cmenu {
+  position: fixed;
+  display: none;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--sh2);
+  min-width: 200px;
+  padding: 6px;
+  z-index: 20;
+}
+#gmenu button, #menu button, #cmenu button {
+  display: block;
+  width: 100%;
+  text-align: right;
+  background: transparent;
+  color: var(--fg);
+  padding: 11px 14px;
+  border-radius: 10px;
+  box-shadow: none;
+  font-weight: 500;
+}
+#gmenu button:hover, #menu button:hover, #cmenu button:hover {
+  background: var(--acs);
+  filter: none;
+  transform: none;
+}
+#gmenu button.del, #menu button.del, #cmenu button.del {
+  color: var(--red);
+}
+#dlg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  padding: 20px;
+}
+.dbox {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 22px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--sh2);
+  border: 1px solid var(--line);
+}
+.dbox textarea {
+  width: 100%;
+  margin: 12px 0;
+  resize: vertical;
+  min-height: 90px;
+}
+#bar {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--sh);
+}
+#bar .in { max-width: 920px; margin: auto; }
+#hint {
+  color: var(--mut);
+  font-size: 13px;
+  margin-bottom: 10px;
+  min-height: 18px;
+}
+#mic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 22px;
+  flex: none;
+  box-shadow: 0 3px 12px rgba(13, 122, 95, 0.3);
+}
+#mic.on {
+  background: linear-gradient(135deg, var(--red), #b71c1c);
+  animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+#txt { flex: 1; min-width: 0; }
+.bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.pr {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.pr:last-child { border: 0; }
+.pr b {
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.who {
+  display: block;
+  color: var(--mut);
+  font-size: 12px;
+  margin-top: 3px;
+}
+.empty {
+  color: var(--mut);
+  text-align: center;
+  padding: 36px 16px;
+  font-size: 14.5px;
+}
+details {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+details summary {
+  cursor: pointer;
+  color: var(--ac);
+  font-weight: 600;
+  font-size: 13.5px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::before {
+  content: "▸";
+  transition: transform 0.2s;
+}
+details[open] summary::before { transform: rotate(90deg); }
+.w { width: 100%; }
+@media (max-width: 520px) {
+  .stats { grid-template-columns: 1fr; }
+  .fm { grid-template-columns: 1fr; }
+  body { padding: 14px 12px 40px; }
+  h1 { font-size: 20px; }
+}
+body.cp table{font-size:12px}
+body.cp td{padding:5px 6px}
+body.cp th{padding:6px 6px;font-size:11px}
+body.cp .g1 td{padding:8px}
+body.cp .g2 td{padding:5px 8px}
+body.cp td.n small{display:none}
+body.cp .who{font-size:11px;margin-top:0}
+body.cp .ic{padding:0 8px;font-size:18px}
+body.cp .st{padding:10px 12px}
+body.cp .card{padding:14px}
+.g2 td {
+  background: color-mix(in srgb, var(--acs) 60%, var(--card));
+  cursor: pointer;
+  padding: 9px 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+#fdr { display: none; grid-column: 1 / -1; gap: 8px; }
+#fsum { font-size: 13px; color: var(--mut); }
+#fw {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  color: var(--ac);
+  min-height: 19px;
+  margin-top: -2px;
+  font-weight: 500;
+}
+.fm button { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+<div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start;margin-bottom:4px">
+  <div>
+    <h1>دفتر پرداخت‌ها</h1>
+    <div class="sub">ثبت صوتی · تاریخ و شاخه خودکار</div>
+  </div>
+  <button class="ic" id="gm" aria-label="گزینه‌ها" style="font-size:20px;padding:6px 10px">⋮</button>
+</div>
+<div id="gmenu"><button id="cpb">جدول: حالت معمولی</button><button id="copy">کپی برای اکسل</button><button id="shb">ارسال پشتیبان (اشتراک‌گذاری)</button><button id="bk">پشتیبان (کپی)</button><button id="rs">بازیابی پشتیبان</button><button id="clr" class="del">پاک کردن همه</button></div>
+
+<div class="tabs"><button class="ic" id="t1">ثبت پرداخت</button><button class="ic" id="t2">مشاهده و فیلتر</button><button class="ic" id="t3">چک‌ها</button></div>
+<div id="alert"></div>
+<div id="pg2"><div class="stats">
+  <div class="st"><span>امروز</span><b id="sT">۰</b></div>
+  <div class="st"><span>این ماه</span><b id="sM">۰</b></div>
+  <div class="st m"><span>جمع کل (تومان)</span><b id="sA">۰</b></div>
+</div>
+
+<div class="card">
+  <div class="sec">فیلتر</div>
+  <div class="fl">
+    <select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="week">۷ روز اخیر</option><option value="month">این ماه</option><option value="custom">بازهٔ دلخواه</option></select>
+    <select id="fpay"></select>
+    <select id="fcat"></select>
+    <select id="fsub"></select>
+    <div id="fdr"><div class="jd" id="f1"></div><div class="jd" id="f2"></div></div>
+    <input id="fq" class="w" placeholder="جستجو در شرح و توضیحات">
+  </div>
+  <div class="row" style="justify-content:space-between"><span id="fsum"></span><button class="g sm" id="frs">پاک کردن فیلترها</button></div>
+</div>
+<div class="card">
+  <div class="row" style="justify-content:space-between"><div class="sec">پرداخت‌ها</div><span class="row"><button class="g sm" id="vT">جدول</button><button class="g sm" id="vG">درختی</button></span></div>
+  <div class="scroll"><table><thead id="th"></thead><tbody id="rows"></tbody></table></div>
+  <div id="empty" class="empty" style="display:none">هنوز پرداختی ثبت نشده است.</div>
+</div>
+
+<div class="card"><div class="sec">جمع به تفکیک پرداخت‌کننده</div><div id="pay"></div></div></div>
+<div id="pg3" style="display:none">
+<div class="card">
+  <div class="sec">ثبت چک جدید</div>
+  <div class="fm" style="margin-top:8px">
+    <input id="ct" class="w" placeholder="پرداخت به (نام گیرنده چک)" autocomplete="off">
+    <input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک (تومان)" autocomplete="off">
+    <div id="cw"></div>
+    <div><label class="lb">تاریخ وصول</label><div class="jd" id="cd"></div></div>
+    <div><label class="lb">چک توسط (صادرکننده)</label><select id="cb"><option>سلطانی</option><option>اکبری</option></select></div>
+    <input id="cn" class="w" placeholder="توضیحات یا شماره چک (اختیاری)" autocomplete="off">
+    <button id="cadd">ثبت چک</button>
+    <button id="ccan" class="g" style="display:none">لغو ویرایش</button>
+  </div>
+  <div id="chint" class="cks"></div>
+</div>
+<div class="card">
+  <div class="sec">چک‌ها</div>
+  <div class="fl"><select id="cflt"><option value="pending">در انتظار وصول</option><option value="all">همه</option><option value="done">وصول‌شده</option></select>
+  <select id="cdays"><option value="1">هشدار: ۱ روز قبل</option><option value="2">هشدار: ۲ روز قبل</option><option value="3">هشدار: ۳ روز قبل</option><option value="5">هشدار: ۵ روز قبل</option><option value="7">هشدار: ۷ روز قبل</option><option value="10">هشدار: ۱۰ روز قبل</option></select></div>
+  <div id="cstat" class="cks"></div>
+  <div id="clist"></div>
+  <button class="g sm" id="cnf" style="margin-top:10px">فعال‌سازی اعلان موقع باز شدن برنامه</button>
+</div>
+</div>
+
+
+
+<div id="dlg"><div class="dbox"><div id="dm"></div><textarea id="dtx" rows="5"></textarea><div class="row"><button id="dok">تأیید</button><button class="g" id="dno">لغو</button></div></div></div>
+<div id="cmenu"><button id="cDone">✓ وصول شد</button><button id="cIcs">📅 یادآور در تقویم گوشی</button><button id="cEd">✎ ویرایش</button><button id="cDel" class="del">🗑 حذف</button></div>
+<div id="menu"><button id="mEdit">✎ ویرایش</button><button id="mDel" class="del">🗑 حذف</button></div>
+
+<div id="bar"><div class="in">
+  <div id="hint">شاخه و زیرشاخه را بنویس یا از پیشنهادها انتخاب کن</div>
+  <div class="fm">
+    <input id="fc" list="dlc" placeholder="شاخه (مثلاً دستمزد)" autocomplete="off">
+    <input id="fs" list="dls" placeholder="زیرشاخه (مثلاً گچکار)" autocomplete="off">
+    <input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)" autocomplete="off">
+    <select id="fp"><option>سلطانی</option><option>اکبری</option></select>
+    <div id="fw"></div>
+    <input id="fn" class="w" placeholder="توضیحات (اختیاری)" autocomplete="off">
+    <button id="fadd">ثبت</button>
+  </div>
+  <datalist id="dlc"></datalist><datalist id="dls"></datalist><datalist id="dlp"><option value="سلطانی"><option value="اکبری"></datalist>
+  <details id="qk"><summary>ثبت سریع با صدا یا متن</summary>
+  <div class="bar">
+    <button id="mic" title="ضبط صدا">🎤</button>
+    <input id="txt" placeholder="پرداخت را بگو یا تایپ کن">
+    <button id="add">ثبت</button>
+  </div></details>
+  <div id="rec"></div>
+</div></div>
+
+<script>
+/* JS will be incomplete - need full original JS */
+alert('JS missing - incomplete push');
+</script>
+</body>
+</html>
