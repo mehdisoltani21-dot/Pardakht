@@ -1,1 +1,107 @@
-SEE_FILE
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دفتر پرداخت‌ها</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d7a5f">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start;margin-bottom:4px">
+  <div>
+    <h1>دفتر پرداخت‌ها</h1>
+    <div class="sub">ثبت صوتی · تاریخ و شاخه خودکار</div>
+  </div>
+  <button class="ic" id="gm" aria-label="گزینه‌ها" style="font-size:20px;padding:6px 10px">⋮</button>
+</div>
+<div id="gmenu"><button id="cpb">جدول: حالت معمولی</button><button id="copy">کپی برای اکسل</button><button id="shb">ارسال پشتیبان (اشتراک‌گذاری)</button><button id="bk">پشتیبان (کپی)</button><button id="rs">بازیابی پشتیبان</button><button id="clr" class="del">پاک کردن همه</button></div>
+
+<div class="tabs"><button class="ic" id="t1">ثبت پرداخت</button><button class="ic" id="t2">مشاهده و فیلتر</button><button class="ic" id="t3">چک‌ها</button></div>
+<div id="alert"></div>
+<div id="pg2"><div class="stats">
+  <div class="st"><span>امروز</span><b id="sT">۰</b></div>
+  <div class="st"><span>این ماه</span><b id="sM">۰</b></div>
+  <div class="st m"><span>جمع کل (تومان)</span><b id="sA">۰</b></div>
+</div>
+
+<div class="card">
+  <div class="sec">فیلتر</div>
+  <div class="fl">
+    <select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="week">۷ روز اخیر</option><option value="month">این ماه</option><option value="custom">بازهٔ دلخواه</option></select>
+    <select id="fpay"></select>
+    <select id="fcat"></select>
+    <select id="fsub"></select>
+    <div id="fdr"><div class="jd" id="f1"></div><div class="jd" id="f2"></div></div>
+    <input id="fq" class="w" placeholder="جستجو در شرح و توضیحات">
+  </div>
+  <div class="row" style="justify-content:space-between"><span id="fsum"></span><button class="g sm" id="frs">پاک کردن فیلترها</button></div>
+</div>
+<div class="card">
+  <div class="row" style="justify-content:space-between"><div class="sec">پرداخت‌ها</div><span class="row"><button class="g sm" id="vT">جدول</button><button class="g sm" id="vG">درختی</button></span></div>
+  <div class="scroll"><table><thead id="th"></thead><tbody id="rows"></tbody></table></div>
+  <div id="empty" class="empty" style="display:none">هنوز پرداختی ثبت نشده است.</div>
+</div>
+
+<div class="card"><div class="sec">جمع به تفکیک پرداخت‌کننده</div><div id="pay"></div></div></div>
+<div id="pg3" style="display:none">
+<div class="card">
+  <div class="sec">ثبت چک جدید</div>
+  <div class="fm" style="margin-top:8px">
+    <input id="ct" class="w" placeholder="پرداخت به (نام گیرنده چک)" autocomplete="off">
+    <input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک (تومان)" autocomplete="off">
+    <div id="cw"></div>
+    <div><label class="lb">تاریخ وصول</label><div class="jd" id="cd"></div></div>
+    <div><label class="lb">چک توسط (صادرکننده)</label><select id="cb"><option>سلطانی</option><option>اکبری</option></select></div>
+    <input id="cn" class="w" placeholder="توضیحات یا شماره چک (اختیاری)" autocomplete="off">
+    <button id="cadd">ثبت چک</button>
+    <button id="ccan" class="g" style="display:none">لغو ویرایش</button>
+  </div>
+  <div id="chint" class="cks"></div>
+</div>
+<div class="card">
+  <div class="sec">چک‌ها</div>
+  <div class="fl"><select id="cflt"><option value="pending">در انتظار وصول</option><option value="all">همه</option><option value="done">وصول‌شده</option></select>
+  <select id="cdays"><option value="1">هشدار: ۱ روز قبل</option><option value="2">هشدار: ۲ روز قبل</option><option value="3">هشدار: ۳ روز قبل</option><option value="5">هشدار: ۵ روز قبل</option><option value="7">هشدار: ۷ روز قبل</option><option value="10">هشدار: ۱۰ روز قبل</option></select></div>
+  <div id="cstat" class="cks"></div>
+  <div id="clist"></div>
+  <button class="g sm" id="cnf" style="margin-top:10px">فعال‌سازی اعلان موقع باز شدن برنامه</button>
+</div>
+</div>
+
+
+
+<div id="dlg"><div class="dbox"><div id="dm"></div><textarea id="dtx" rows="5"></textarea><div class="row"><button id="dok">تأیید</button><button class="g" id="dno">لغو</button></div></div></div>
+<div id="cmenu"><button id="cDone">✓ وصول شد</button><button id="cIcs">📅 یادآور در تقویم گوشی</button><button id="cEd">✎ ویرایش</button><button id="cDel" class="del">🗑 حذف</button></div>
+<div id="menu"><button id="mEdit">✎ ویرایش</button><button id="mDel" class="del">🗑 حذف</button></div>
+
+<div id="bar"><div class="in">
+  <div id="hint">شاخه و زیرشاخه را بنویس یا از پیشنهادها انتخاب کن</div>
+  <div class="fm">
+    <input id="fc" list="dlc" placeholder="شاخه (مثلاً دستمزد)" autocomplete="off">
+    <input id="fs" list="dls" placeholder="زیرشاخه (مثلاً گچکار)" autocomplete="off">
+    <input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)" autocomplete="off">
+    <select id="fp"><option>سلطانی</option><option>اکبری</option></select>
+    <div id="fw"></div>
+    <input id="fn" class="w" placeholder="توضیحات (اختیاری)" autocomplete="off">
+    <button id="fadd">ثبت</button>
+  </div>
+  <datalist id="dlc"></datalist><datalist id="dls"></datalist><datalist id="dlp"><option value="سلطانی"><option value="اکبری"></datalist>
+  <details id="qk"><summary>ثبت سریع با صدا یا متن</summary>
+  <div class="bar">
+    <button id="mic" title="ضبط صدا">🎤</button>
+    <input id="txt" placeholder="پرداخت را بگو یا تایپ کن">
+    <button id="add">ثبت</button>
+  </div></details>
+  <div id="rec"></div>
+</div></div>
+
+
+
+<script src="app.js"></script>
+</body>
+</html>
