@@ -2,97 +2,196 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>دفتر پرداخت‌ها</title>
-<meta name="theme-color" content="#1f7a5c">
+<meta name="theme-color" content="#0f766e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef5f2;--fg:#1a2e28;--mut:#6b7f77;--card:#fff;--line:#d5e3dc;--ac:#1f7a5c;--ac2:#2a9b74;--acs:#e6f4ee;--red:#c62828;--warn:#e67e22;--sh:0 2px 8px rgba(31,122,92,.1)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;padding:0 0 28px;max-width:480px;margin-inline:auto;line-height:1.5;min-height:100vh}
-.header{background:linear-gradient(135deg,#1f7a5c,#2a9b74);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px rgba(31,122,92,.25)}
-.header h1{font-size:17px;margin:0;font-weight:700}
+:root{
+  --bg:#f0fdfa;--bg2:#ccfbf1;--fg:#134e4a;--mut:#5b7a74;
+  --card:#ffffff;--line:#99f6e4;--ac:#0f766e;--ac2:#14b8a6;
+  --acs:#ccfbf1;--red:#e11d48;--warn:#ea580c;
+  --sh:0 4px 20px rgba(15,118,110,.08);--r:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;overflow-x:hidden}
+body{
+  background:linear-gradient(180deg,#f0fdfa 0%,#e6fffa 40%,#f0fdfa 100%);
+  color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;
+  min-height:100vh;line-height:1.55;
+  padding-bottom:max(20px,env(safe-area-inset-bottom));
+}
+.shell{max-width:430px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden}
+.header{
+  background:linear-gradient(135deg,#0f766e 0%,#14b8a6 100%);
+  color:#fff;padding:14px 16px calc(14px + env(safe-area-inset-top,0px));
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 4px 24px rgba(15,118,110,.3);
+}
+.header h1{font-size:17px;margin:0;font-weight:700;letter-spacing:-.2px}
 .header .sub{font-size:11px;opacity:.85;margin-top:2px}
-.header button{background:rgba(255,255,255,.15);border:0;color:#fff;width:36px;height:36px;border-radius:10px;font-size:18px;cursor:pointer}
-.pad{padding:14px}
-.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--line)}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-input,select,textarea,button{font:inherit;border-radius:10px;padding:11px 12px;border:1px solid var(--line);background:#fff;color:var(--fg)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(31,122,92,.12)}
-button.primary{background:var(--ac);color:#fff;border:0;font-weight:600;cursor:pointer;width:100%;padding:12px;border-radius:12px}
-button.g{background:#fff;color:var(--fg);border:1px solid var(--line);cursor:pointer}
-button.sm{padding:6px 10px;font-size:12px;border-radius:8px}
+.icon-btn{
+  width:40px;height:40px;border-radius:12px;border:0;cursor:pointer;
+  background:rgba(255,255,255,.18);color:#fff;font-size:18px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.badge{font-size:10px;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:999px;margin-right:6px;font-weight:600}
+.menu-wrap{position:relative}
+#gmenu{
+  position:absolute;top:calc(100% + 8px);left:0;
+  background:#fff;border-radius:16px;min-width:200px;
+  box-shadow:0 12px 40px rgba(15,118,110,.18),0 0 0 1px rgba(15,118,110,.06);
+  padding:6px;z-index:100;display:none;
+}
+#gmenu.open{display:block}
+#gmenu button{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:right;
+  background:transparent;color:var(--fg);padding:12px 14px;border:0;
+  border-radius:12px;cursor:pointer;font:inherit;font-size:14px;font-weight:500;
+}
+#gmenu button:active{background:var(--acs)}
+#gmenu .danger{color:var(--red)}
+.pad{padding:14px 16px;overflow-x:hidden}
+.card{
+  background:var(--card);border-radius:var(--r);padding:16px;
+  margin-bottom:14px;box-shadow:var(--sh);
+  border:1px solid rgba(153,246,228,.5);overflow:hidden;
+}
+.sec{font-size:12px;color:var(--mut);font-weight:600;margin-bottom:12px;letter-spacing:.3px}
+.back{
+  background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;
+  cursor:pointer;padding:4px 0 14px;font-size:14px;
+}
+.fm{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fm .w{grid-column:1/-1}
+input,select,textarea{
+  font:inherit;border-radius:14px;padding:13px 14px;
+  border:1.5px solid #d1fae5;background:#f8fffc;color:var(--fg);
+  width:100%;min-width:0;font-size:14px;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;border-color:var(--ac2);background:#fff;
+  box-shadow:0 0 0 3px rgba(20,184,166,.15);
+}
+button.primary{
+  background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:0;
+  font-weight:700;cursor:pointer;width:100%;padding:14px;border-radius:14px;
+  font-size:15px;box-shadow:0 6px 20px rgba(15,118,110,.25);
+}
+button.primary:active{filter:brightness(.95)}
+button.g{background:#fff;color:var(--fg);border:1.5px solid #d1fae5;cursor:pointer;border-radius:12px}
+button.sm{padding:7px 12px;font-size:12px;font-weight:600}
 button.del{color:var(--red)!important}
-.fm{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fm .w{grid-column:1/-1}
-.sec{font-size:13px;color:var(--mut);font-weight:600;margin-bottom:8px}
-.back{background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;cursor:pointer;padding:0 0 12px}
-#gmenu{position:fixed;display:none;top:60px;left:12px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.12);min-width:200px;padding:4px;z-index:20}
-#gmenu button{display:block;width:100%;text-align:right;background:transparent;color:var(--fg);padding:11px 14px;border:0;border-radius:8px;cursor:pointer;font:inherit}
-#gmenu button:hover{background:var(--acs)}
-#dlg,#login{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
-#login{display:flex;background:linear-gradient(160deg,#1f7a5c,#2a9b74)}
-.dbox{background:#fff;border-radius:16px;padding:20px;width:100%;max-width:360px;box-shadow:var(--sh)}
-#dtx,#lpw{width:100%;margin:10px 0;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px}
-.badge{font-size:10px;background:rgba(255,255,255,.25);padding:2px 8px;border-radius:8px;margin-right:6px}
-.hide-guest .admin-only{display:none!important}
-.menu{display:flex;flex-direction:column;gap:12px;padding:16px 14px}
-.mbtn{display:flex;align-items:center;gap:14px;padding:16px 18px;border:0;border-radius:16px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;color:#fff;text-align:right;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.menu{display:flex;flex-direction:column;gap:12px;padding:8px 16px 20px}
+.mbtn{
+  display:flex;align-items:center;gap:14px;padding:18px 18px;
+  border:0;border-radius:20px;cursor:pointer;font:inherit;font-weight:700;
+  font-size:15px;color:#fff;text-align:right;width:100%;
+  box-shadow:0 8px 24px rgba(0,0,0,.12);position:relative;overflow:hidden;
+}
+.mbtn::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,rgba(255,255,255,.15),transparent 50%);
+  pointer-events:none;
+}
 .mbtn:active{transform:scale(.98)}
-.mbtn .ico{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.mbtn.b1{background:linear-gradient(135deg,#e74c3c,#c0392b)}
-.mbtn.b2{background:linear-gradient(135deg,#3498db,#2980b9)}
-.mbtn.b3{background:linear-gradient(135deg,#1abc9c,#16a085)}
-.mbtn.b4{background:linear-gradient(135deg,#5dade2,#3498db)}
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.st{background:var(--card);border-radius:12px;padding:12px 8px;text-align:center;box-shadow:var(--sh);border:1px solid var(--line)}
-.st span{display:block;color:var(--mut);font-size:11px;margin-bottom:2px}
-.st b{font-size:13px;font-weight:700;word-break:break-all}
-.st.m{background:var(--acs);border-color:rgba(31,122,92,.2)}.st.m b{color:var(--ac)}
-.list{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--line)}
-.item{padding:12px 14px;border-bottom:1px solid var(--line);background:#fff}
+.mbtn .ico{
+  width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.mbtn.b1{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+.mbtn.b2{background:linear-gradient(135deg,#0e7490,#06b6d4)}
+.mbtn.b3{background:linear-gradient(135deg,#047857,#10b981)}
+.mbtn.b4{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.st{
+  background:var(--card);border-radius:16px;padding:14px 8px;text-align:center;
+  box-shadow:var(--sh);border:1px solid rgba(153,246,228,.4);
+}
+.st span{display:block;color:var(--mut);font-size:10px;margin-bottom:4px;font-weight:600}
+.st b{font-size:13px;font-weight:700;word-break:break-all;color:var(--fg)}
+.st.m{background:linear-gradient(135deg,#ccfbf1,#99f6e4);border-color:transparent}
+.st.m b{color:#0f766e}
+.list{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid rgba(153,246,228,.4)}
+.item{padding:14px;border-bottom:1px solid #f0fdfa;background:#fff}
 .item:last-child{border-bottom:0}
 .item .title{font-weight:600;font-size:14px}
-.item .meta{color:var(--mut);font-size:12px}
-.item .amt{font-weight:700;direction:ltr;font-size:14px}
-.item .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.empty{color:var(--mut);text-align:center;padding:32px 16px;font-size:14px}
-.empty button{margin-top:12px;max-width:220px;margin-inline:auto;display:block}
-.ck{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--sh)}
-.ck.od{border-color:#e57373;background:#fff5f5}
-.cks{color:var(--mut);font-size:12px;margin-top:2px}
-.fl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.warn{background:#fff8f0;border:1px solid #f5cba7;border-radius:14px;padding:12px 14px;margin:0 14px 12px;color:#9a4d0f;font-size:13px;display:none;cursor:pointer}
+.item .meta{color:var(--mut);font-size:12px;margin-top:2px}
+.item .amt{font-weight:700;direction:ltr;font-size:15px;color:#0f766e}
+.item .acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.empty{color:var(--mut);text-align:center;padding:40px 20px;font-size:14px}
+.empty button{margin-top:14px;max-width:200px;margin-inline:auto;display:block}
+.date-sep{background:transparent;color:var(--mut);font-size:12px;font-weight:700;padding:10px 4px 6px}
+.ck{
+  background:var(--card);border:1px solid rgba(153,246,228,.4);border-radius:16px;
+  padding:14px;margin-bottom:10px;box-shadow:var(--sh);
+}
+.ck.od{border-color:#fecdd3;background:#fff1f2}
+.cks{color:var(--mut);font-size:12px;margin-top:4px}
+.fl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.fl input,.fl select{min-width:0}
+.warn{
+  background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;
+  border-radius:16px;padding:14px 16px;margin:12px 16px 4px;color:#9a3412;
+  font-size:13px;display:none;cursor:pointer;box-shadow:var(--sh);
+}
 .warn b{color:var(--warn)}
-.date-sep{background:var(--bg);color:var(--mut);font-size:12px;font-weight:600;padding:8px 14px}
+#login{
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  z-index:200;padding:24px;
+  background:linear-gradient(160deg,#0f766e 0%,#134e4a 50%,#0f766e 100%);
+}
+.dbox{
+  background:#fff;border-radius:24px;padding:28px 22px;width:100%;max-width:340px;
+  box-shadow:0 24px 60px rgba(0,0,0,.2);
+}
+#dlg{
+  position:fixed;inset:0;background:rgba(15,60,55,.45);display:none;
+  align-items:center;justify-content:center;z-index:200;padding:20px;
+  backdrop-filter:blur(4px);
+}
+#dtx,#lpw{
+  width:100%;margin:12px 0;font:inherit;color:var(--fg);background:#f0fdfa;
+  border:1.5px solid #99f6e4;border-radius:14px;padding:14px;
+}
+.hide-guest .admin-only{display:none!important}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 </style>
 </head>
 <body>
+<div class="shell">
 <div id="login">
   <div class="dbox">
-    <div style="text-align:center;margin-bottom:8px">
-      <div style="font-size:28px;margin-bottom:6px">🔐</div>
-      <div style="font-weight:700;font-size:18px;color:var(--ac)">ورود به دفتر پرداخت‌ها</div>
-      <div style="font-size:12px;color:var(--mut);margin-top:4px">رمز میهمان یا مدیر</div>
+    <div style="text-align:center;margin-bottom:12px">
+      <div style="width:64px;height:64px;margin:0 auto 12px;border-radius:20px;background:linear-gradient(135deg,#0f766e,#14b8a6);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 8px 24px rgba(15,118,110,.3)">💰</div>
+      <div style="font-weight:700;font-size:20px;color:var(--ac)">دفتر پرداخت‌ها</div>
+      <div style="font-size:13px;color:var(--mut);margin-top:6px">رمز میهمان یا مدیر را وارد کنید</div>
     </div>
     <input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password">
-    <div id="lerr" style="color:var(--red);font-size:13px;min-height:18px;margin-bottom:6px"></div>
+    <div id="lerr" style="color:var(--red);font-size:13px;min-height:18px;margin-bottom:4px"></div>
     <button class="primary" id="lgo">ورود</button>
   </div>
 </div>
 
 <div id="app" style="display:none">
 <div class="header">
-  <div><h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1><div class="sub" id="hdrSub">منوی اصلی</div></div>
-  <button id="gm" aria-label="منو">⋮</button>
-</div>
-<div id="gmenu">
-  <button id="bk">📥 پشتیبان (کپی)</button>
-  <button id="csv">📊 خروجی CSV</button>
-  <button id="rs" class="admin-only">📤 بازیابی پشتیبان</button>
-  <button id="clr" class="del admin-only">پاک کردن همه</button>
-  <button id="logout">خروج</button>
+  <div class="menu-wrap">
+    <button class="icon-btn" id="gm" aria-label="منو">⋮</button>
+    <div id="gmenu">
+      <button id="bk">📥 پشتیبان (کپی)</button>
+      <button id="csv">📊 خروجی CSV</button>
+      <button id="rs" class="admin-only">📤 بازیابی پشتیبان</button>
+      <button id="clr" class="danger admin-only">🗑 پاک کردن همه</button>
+      <button id="logout">🚪 خروج</button>
+    </div>
+  </div>
+  <div style="text-align:left">
+    <h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1>
+    <div class="sub" id="hdrSub">منوی اصلی</div>
+  </div>
 </div>
 
 <div id="pgHome">
@@ -117,7 +216,7 @@ button.del{color:var(--red)!important}
       <input id="fd" type="date" class="w">
       <input id="fn" class="w" placeholder="توضیحات (اختیاری)">
       <button class="primary w" id="fadd">ثبت پرداخت</button>
-      <button class="g w" id="fcancel" style="display:none">لغو ویرایش</button>
+      <button class="g w" id="fcancel" style="display:none;padding:12px">لغو ویرایش</button>
     </div>
   </div>
 </div>
@@ -130,10 +229,10 @@ button.del{color:var(--red)!important}
       <input id="ct" class="w" placeholder="گیرنده چک">
       <input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک">
       <input id="cd" type="date" class="w">
-      <select id="cb"><option>سلطانی</option><option>اکبری</option></select>
+      <select id="cb" class="w"><option>سلطانی</option><option>اکبری</option></select>
       <input id="cn" class="w" placeholder="توضیحات">
       <button class="primary w" id="cadd">ثبت چک</button>
-      <button class="g w" id="ccancel" style="display:none">لغو ویرایش</button>
+      <button class="g w" id="ccancel" style="display:none;padding:12px">لغو ویرایش</button>
     </div>
   </div>
 </div>
@@ -145,11 +244,11 @@ button.del{color:var(--red)!important}
     <div class="st"><span>اکبری</span><b id="sAkb">۰</b></div>
     <div class="st m"><span>جمع کل</span><b id="sAll">۰</b></div>
   </div>
-  <div class="card" style="padding:10px">
+  <div class="card" style="padding:12px">
     <div class="fl" style="margin:0">
       <select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="month">این ماه</option></select>
       <select id="fpay"><option value="">همه</option><option>سلطانی</option><option>اکبری</option></select>
-      <input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو در پرداخت‌ها...">
+      <input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو...">
     </div>
   </div>
   <div class="list" id="list"></div>
@@ -164,8 +263,8 @@ button.del{color:var(--red)!important}
     <div class="st m"><span>جمع در انتظار</span><b id="cAll">۰</b></div>
   </div>
   <div class="fl">
-    <select id="cflt"><option value="pending">در انتظار وصول</option><option value="all">همه</option><option value="done">وصول‌شده</option></select>
-    <input id="cq" placeholder="جستجو در چک‌ها...">
+    <select id="cflt"><option value="pending">در انتظار</option><option value="all">همه</option><option value="done">وصول‌شده</option></select>
+    <input id="cq" placeholder="جستجو...">
   </div>
   <div id="clist"></div>
   <div id="cempty" class="empty" style="display:none">چکی نیست.<br><button class="primary" id="emptyCk">ثبت اولین چک</button></div>
@@ -173,10 +272,11 @@ button.del{color:var(--red)!important}
 </div>
 
 <div id="dlg"><div class="dbox">
-  <div style="font-weight:600">بازیابی پشتیبان</div>
-  <textarea id="dtx" placeholder="JSON پشتیبان را اینجا بچسبان" style="min-height:100px;width:100%"></textarea>
-  <div class="row"><button class="primary" id="dok" style="flex:1">تأیید</button><button class="g" id="dno" style="flex:1">لغو</button></div>
+  <div style="font-weight:700;font-size:16px">بازیابی پشتیبان</div>
+  <textarea id="dtx" placeholder="JSON پشتیبان را اینجا بچسبان" style="min-height:110px;width:100%;resize:vertical"></textarea>
+  <div class="row"><button class="primary" id="dok" style="flex:1">تأیید</button><button class="g" id="dno" style="flex:1;padding:12px">لغو</button></div>
 </div></div>
+</div>
 
 <script>
 const KEY="pardakht-v1",ROLE_KEY="pardakht-role",PASS_GUEST="M1406",PASS_ADMIN="M136810";
@@ -193,31 +293,19 @@ const isAdmin=()=>role==="admin";
 const pages=["pgHome","pgPay","pgCk","pgPayList","pgCkList"];
 
 function enterApp(r,persist){
-  role=r;
-  if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}
+  role=r;if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}
   $("login").style.display="none";$("app").style.display="block";
   $("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";
-  document.body.classList.toggle("hide-guest",r!=="admin");
-  show("pgHome");
+  document.body.classList.toggle("hide-guest",r!=="admin");show("pgHome");
 }
 function logout(){
   role=null;try{localStorage.removeItem(ROLE_KEY)}catch(e){}
   $("app").style.display="none";$("login").style.display="flex";$("lpw").value="";$("lerr").textContent="";
+  $("gmenu").classList.remove("open");
 }
-(function(){
-  try{
-    const r=localStorage.getItem(ROLE_KEY);
-    if(r==="admin"||r==="guest"){enterApp(r,false);return}
-  }catch(e){}
-  $("login").style.display="flex";
-})();
+(function(){try{const r=localStorage.getItem(ROLE_KEY);if(r==="admin"||r==="guest"){enterApp(r,false);return}}catch(e){}$("login").style.display="flex"})();
 
-$("lgo").onclick=()=>{
-  const p=$("lpw").value.trim();
-  if(p===PASS_ADMIN)enterApp("admin");
-  else if(p===PASS_GUEST)enterApp("guest");
-  else{$("lerr").textContent="رمز نادرست است";$("lpw").value=""}
-};
+$("lgo").onclick=()=>{const p=$("lpw").value.trim();if(p===PASS_ADMIN)enterApp("admin");else if(p===PASS_GUEST)enterApp("guest");else{$("lerr").textContent="رمز نادرست است";$("lpw").value=""}};
 $("lpw").onkeydown=e=>{if(e.key==="Enter")$("lgo").click()};
 $("logout").onclick=logout;
 
@@ -225,9 +313,8 @@ function show(id){
   pages.forEach(p=>$(p).style.display=p===id?"":"none");
   const titles={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"};
   $("hdrSub").textContent=titles[id]||"";
-  if(id==="pgHome")updateWarn();
-  if(id==="pgPayList")render();
-  if(id==="pgCkList")renderC();
+  $("gmenu").classList.remove("open");
+  if(id==="pgHome")updateWarn();if(id==="pgPayList")render();if(id==="pgCkList")renderC();
 }
 $("goPay").onclick=()=>{resetPayForm();show("pgPay")};
 $("goCk").onclick=()=>{resetCkForm();show("pgCk")};
@@ -236,8 +323,10 @@ $("goCkList").onclick=()=>show("pgCkList");
 document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>show("pgHome"));
 $("emptyPay").onclick=()=>{resetPayForm();show("pgPay")};
 $("emptyCk").onclick=()=>{resetCkForm();show("pgCk")};
-$("gm").onclick=e=>{e.stopPropagation();$("gmenu").style.display=$("gmenu").style.display==="block"?"none":"block"};
-document.onclick=()=>{$("gmenu").style.display="none"};
+
+$("gm").onclick=e=>{e.stopPropagation();$("gmenu").classList.toggle("open")};
+document.onclick=()=>$("gmenu").classList.remove("open");
+$("gmenu").onclick=e=>e.stopPropagation();
 
 function updateWarn(){
   const t=today();
@@ -245,10 +334,9 @@ function updateWarn(){
   const near=S.cheques.filter(c=>!c.done&&c.due&&c.due>=t&&c.due<=iso(new Date(Date.now()+7*864e5)));
   const w=$("ckWarn");
   if(!late.length&&!near.length){w.style.display="none";return}
-  w.style.display="block";
-  let msg="";
-  if(late.length){const sum=late.reduce((s,c)=>s+(+c.amt||0),0);msg+=`⚠ ${late.length} چک سررسید گذشته — جمع <b>${fa(sum)}</b> تومان`;}
-  if(near.length){const sum=near.reduce((s,c)=>s+(+c.amt||0),0);if(msg)msg+="<br>";msg+=`📅 ${near.length} چک تا ۷ روز آینده — جمع <b>${fa(sum)}</b> تومان`;}
+  w.style.display="block";let msg="";
+  if(late.length){const sum=late.reduce((s,c)=>s+(+c.amt||0),0);msg+=`⚠ ${late.length} چک سررسید گذشته — جمع <b>${fa(sum)}</b> تومان`}
+  if(near.length){const sum=near.reduce((s,c)=>s+(+c.amt||0),0);if(msg)msg+="<br>";msg+=`📅 ${near.length} چک تا ۷ روز آینده — جمع <b>${fa(sum)}</b> تومان`}
   w.innerHTML=msg;w.onclick=()=>show("pgCkList");
 }
 
@@ -279,7 +367,7 @@ function render(){
     if(e.date!==lastDate){lastDate=e.date;const sep=document.createElement("div");sep.className="date-sep";sep.textContent=pdate(e.date);list.appendChild(sep)}
     const d=document.createElement("div");d.className="item";
     const acts=isAdmin()?`<div class="acts"><button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button></div>`:"";
-    d.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start"><div><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div><div class="meta">${e.payer||""}${e.note?" · "+e.note:""}</div></div><div style="text-align:left"><div class="amt">${fa(e.amt)}</div></div></div>${acts}`;
+    d.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start;gap:10px"><div style="min-width:0;flex:1"><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div><div class="meta">${e.payer||""}${e.note?" · "+e.note:""}</div></div><div class="amt">${fa(e.amt)}</div></div>${acts}`;
     if(isAdmin()){
       d.querySelector('[data-a="ed"]').onclick=ev=>{ev.stopPropagation();editPay=e.id;$("fc").value=e.cat||"";$("fs").value=e.sub||"";$("fa").value=e.amt;$("fp").value=e.payer||"سلطانی";$("fn").value=e.note||"";$("fd").value=e.date||today();$("fadd").textContent="ذخیره تغییرات";$("formTitle").textContent="ویرایش پرداخت";$("fcancel").style.display="block";show("pgPay")};
       d.querySelector('[data-a="del"]').onclick=ev=>{ev.stopPropagation();if(confirm("حذف این پرداخت؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}};
@@ -313,7 +401,7 @@ function renderC(){
   a.forEach(c=>{
     const d=document.createElement("div");const late=c.due&&c.due<t&&!c.done;d.className="ck"+(late?" od":"");
     const adminBtns=isAdmin()?`<button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button>`:"";
-    d.innerHTML=`<div class="row" style="justify-content:space-between"><b>${c.to||""}</b><span style="font-weight:700;direction:ltr">${fa(c.amt)}</span></div><div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":late?" · سررسید گذشته":""}${c.note?" · "+c.note:""}</div><div class="row" style="margin-top:8px"><button class="g sm" data-a="done">${c.done?"برگشت از وصول":"وصول شد"}</button>${adminBtns}</div>`;
+    d.innerHTML=`<div class="row" style="justify-content:space-between;gap:8px"><b style="min-width:0">${c.to||""}</b><span class="amt">${fa(c.amt)}</span></div><div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":late?" · سررسید گذشته":""}${c.note?" · "+c.note:""}</div><div class="row" style="margin-top:10px"><button class="g sm" data-a="done">${c.done?"برگشت از وصول":"وصول شد"}</button>${adminBtns}</div>`;
     d.querySelector('[data-a="done"]').onclick=()=>{c.done=!c.done;save();renderC();updateWarn()};
     if(isAdmin()){d.querySelector('[data-a="ed"]').onclick=()=>{editCk=c.id;$("ct").value=c.to||"";$("ca").value=c.amt;$("cd").value=c.due||"";$("cb").value=c.by||"سلطانی";$("cn").value=c.note||"";$("cadd").textContent="ذخیره تغییرات";$("cformTitle").textContent="ویرایش چک";$("ccancel").style.display="block";show("pgCk")};d.querySelector('[data-a="del"]').onclick=()=>{if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC();updateWarn()}}}
     box.appendChild(d);
