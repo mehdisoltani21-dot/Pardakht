@@ -1,5 +1,5 @@
-const CACHE = "pardakht-v6";
-const ASSETS = ["./","index.html","manifest.json","icon-192.png","icon-512.png"];
+const CACHE = "pardakht-v7";
+const ASSETS = ["./","./index.html","manifest.json","icon.svg","icon-192.png","icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(()=>{})).then(()=>self.skipWaiting()));
 });
@@ -13,6 +13,6 @@ self.addEventListener("fetch", e => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(e.request, copy)).catch(()=>{});
       return res;
-    }).catch(() => caches.match("index.html")))
+    }).catch(() => caches.match("./index.html")))
   );
 });
