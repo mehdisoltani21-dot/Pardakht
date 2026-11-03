@@ -7,140 +7,82 @@
 <meta name="theme-color" content="#1f7a5c">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#eef5f2;
-  --fg:#1a2e28;
-  --mut:#6b7f77;
-  --card:#ffffff;
-  --line:#d5e3dc;
-  --ac:#1f7a5c;
-  --ac2:#2a9b74;
-  --acs:#e6f4ee;
-  --red:#c62828;
-  --sh:0 1px 4px rgba(31,122,92,.1);
-}
+:root{--bg:#eef5f2;--fg:#1a2e28;--mut:#6b7f77;--card:#fff;--line:#d5e3dc;--ac:#1f7a5c;--ac2:#2a9b74;--acs:#e6f4ee;--red:#c62828;--sh:0 1px 4px rgba(31,122,92,.1)}
 *{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--fg);
-  font-family:Vazirmatn,Tahoma,sans-serif;
-  padding:0 0 90px;max-width:480px;margin-inline:auto;line-height:1.5;
-  min-height:100vh;
-}
-.header{
-  background:linear-gradient(135deg,#1f7a5c,#2a9b74);
-  color:#fff;padding:14px 16px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:5;
-  box-shadow:0 2px 10px rgba(31,122,92,.25);
-}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;padding:0 0 90px;max-width:480px;margin-inline:auto;line-height:1.5;min-height:100vh}
+.header{background:linear-gradient(135deg,#1f7a5c,#2a9b74);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px rgba(31,122,92,.25)}
 .header h1{font-size:18px;margin:0;font-weight:700}
 .header .sub{font-size:11px;opacity:.85;margin-top:2px}
-.header button{
-  background:rgba(255,255,255,.15);border:0;color:#fff;
-  width:36px;height:36px;border-radius:10px;font-size:18px;cursor:pointer;
-}
-.tabs{
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;
-  background:var(--card);border-bottom:1px solid var(--line);
-  position:sticky;top:56px;z-index:4;
-}
-.tabs button{
-  background:transparent;border:0;border-bottom:3px solid transparent;
-  color:var(--mut);font:inherit;font-weight:500;padding:12px 4px;cursor:pointer;
-}
+.header button{background:rgba(255,255,255,.15);border:0;color:#fff;width:36px;height:36px;border-radius:10px;font-size:18px;cursor:pointer}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:56px;z-index:4}
+.tabs button{background:transparent;border:0;border-bottom:3px solid transparent;color:var(--mut);font:inherit;font-weight:500;padding:12px 4px;cursor:pointer}
 .tabs button.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:600}
 .pad{padding:12px 14px}
-.card{
-  background:var(--card);border-radius:14px;padding:14px;
-  margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--line);
-}
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--line)}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.st{
-  background:var(--card);border-radius:12px;padding:12px 10px;
-  text-align:center;box-shadow:var(--sh);border:1px solid var(--line);
-}
+.st{background:var(--card);border-radius:12px;padding:12px 10px;text-align:center;box-shadow:var(--sh);border:1px solid var(--line)}
 .st span{display:block;color:var(--mut);font-size:11px;margin-bottom:2px}
-.st b{font-size:14px;font-weight:700;color:var(--fg)}
-.st.m{background:var(--acs);border-color:rgba(31,122,92,.2)}
-.st.m b{color:var(--ac)}
+.st b{font-size:14px;font-weight:700}
+.st.m{background:var(--acs);border-color:rgba(31,122,92,.2)}.st.m b{color:var(--ac)}
 .sec{font-size:13px;color:var(--mut);font-weight:600;margin-bottom:8px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-input,select,textarea,button{
-  font:inherit;border-radius:10px;padding:11px 12px;
-  border:1px solid var(--line);background:#fff;color:var(--fg);
-}
-input:focus,select:focus,textarea:focus{
-  outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(31,122,92,.12);
-}
-button.primary{
-  background:var(--ac);color:#fff;border:0;font-weight:600;cursor:pointer;
-  width:100%;padding:12px;border-radius:12px;
-}
-button.primary:active{background:var(--ac2)}
+input,select,textarea,button{font:inherit;border-radius:10px;padding:11px 12px;border:1px solid var(--line);background:#fff;color:var(--fg)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(31,122,92,.12)}
+button.primary{background:var(--ac);color:#fff;border:0;font-weight:600;cursor:pointer;width:100%;padding:12px;border-radius:12px}
 button.g{background:#fff;color:var(--fg);border:1px solid var(--line);cursor:pointer}
 button.sm{padding:6px 10px;font-size:12px;border-radius:8px}
 button.del{color:var(--red)!important}
-.fm{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.fm .w{grid-column:1/-1}
+.fm{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fm .w{grid-column:1/-1}
 .fl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
 .list{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--sh);border:1px solid var(--line)}
-.item{
-  display:grid;grid-template-columns:1fr auto;gap:4px 12px;
-  padding:12px 14px;border-bottom:1px solid var(--line);align-items:center;
-  background:#fff;
-}
+.item{padding:12px 14px;border-bottom:1px solid var(--line);background:#fff}
 .item:last-child{border-bottom:0}
 .item .title{font-weight:600;font-size:14px}
 .item .meta{color:var(--mut);font-size:12px}
-.item .amt{font-weight:700;direction:ltr;text-align:left;color:var(--fg);font-size:14px}
-.item .check{color:var(--ac);font-size:16px}
-.item .date{color:var(--mut);font-size:11px;text-align:left}
+.item .amt{font-weight:700;direction:ltr;font-size:14px}
+.item .date{color:var(--mut);font-size:11px}
+.item .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .empty{color:var(--mut);text-align:center;padding:28px 12px;font-size:14px}
-#gmenu{
-  position:fixed;display:none;top:60px;left:12px;background:#fff;
-  border:1px solid var(--line);border-radius:12px;
-  box-shadow:0 8px 28px rgba(0,0,0,.12);min-width:180px;padding:4px;z-index:20;
-}
-#gmenu button{
-  display:block;width:100%;text-align:right;background:transparent;
-  color:var(--fg);padding:11px 14px;border:0;border-radius:8px;cursor:pointer;font:inherit;
-}
+#gmenu{position:fixed;display:none;top:60px;left:12px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.12);min-width:180px;padding:4px;z-index:20}
+#gmenu button{display:block;width:100%;text-align:right;background:transparent;color:var(--fg);padding:11px 14px;border:0;border-radius:8px;cursor:pointer;font:inherit}
 #gmenu button:hover{background:var(--acs)}
-#dlg{
-  position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;
-  align-items:center;justify-content:center;z-index:30;padding:20px;
-}
-.dbox{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:400px;box-shadow:var(--sh)}
-#dtx{
-  width:100%;min-height:100px;margin:10px 0;font:inherit;color:var(--fg);
-  background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;
-}
-.ck{
-  background:#fff;border:1px solid var(--line);border-radius:12px;
-  padding:12px 14px;margin-bottom:8px;box-shadow:var(--sh);
-}
+#dlg,#login{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
+#login{display:flex;background:linear-gradient(160deg,#1f7a5c,#2a9b74)}
+.dbox{background:#fff;border-radius:16px;padding:20px;width:100%;max-width:360px;box-shadow:var(--sh)}
+#dtx,#lpw{width:100%;margin:10px 0;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px}
+.ck{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--sh)}
 .ck.od{border-color:#e57373;background:#fff5f5}
 .cks{color:var(--mut);font-size:12px;margin-top:2px}
-.fab{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  background:var(--ac);color:#fff;border:0;border-radius:28px;
-  padding:14px 28px;font:inherit;font-weight:700;font-size:15px;
-  box-shadow:0 4px 16px rgba(31,122,92,.4);cursor:pointer;z-index:6;
-  display:none;white-space:nowrap;
-}
+.fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ac);color:#fff;border:0;border-radius:28px;padding:14px 28px;font:inherit;font-weight:700;font-size:15px;box-shadow:0 4px 16px rgba(31,122,92,.4);cursor:pointer;z-index:6;display:none;white-space:nowrap}
 .fab.show{display:block}
-.fab span{margin-left:6px;font-size:18px}
+.badge{font-size:10px;background:rgba(255,255,255,.25);padding:2px 8px;border-radius:8px;margin-right:6px}
+.hide-guest .admin-only{display:none!important}
 </style>
 </head>
 <body>
+<div id="login">
+  <div class="dbox">
+    <div style="text-align:center;margin-bottom:8px">
+      <div style="font-size:28px;margin-bottom:6px">🔐</div>
+      <div style="font-weight:700;font-size:18px;color:var(--ac)">ورود به دفتر پرداخت‌ها</div>
+      <div style="font-size:12px;color:var(--mut);margin-top:4px">رمز میهمان یا مدیر را وارد کنید</div>
+    </div>
+    <input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password">
+    <div id="lerr" style="color:var(--red);font-size:13px;min-height:18px;margin-bottom:6px"></div>
+    <button class="primary" id="lgo">ورود</button>
+  </div>
+</div>
+
+<div id="app" style="display:none">
 <div class="header">
-  <div><h1>دفتر پرداخت‌ها</h1><div class="sub">پشتیبان · فیلتر · چک</div></div>
+  <div><h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1><div class="sub">پشتیبان · فیلتر · چک</div></div>
   <button id="gm" aria-label="منو">⋮</button>
 </div>
 <div id="gmenu">
   <button id="bk">پشتیبان (کپی)</button>
-  <button id="rs">بازیابی پشتیبان</button>
-  <button id="clr" class="del">پاک کردن همه</button>
+  <button id="rs" class="admin-only">بازیابی پشتیبان</button>
+  <button id="clr" class="del admin-only">پاک کردن همه</button>
+  <button id="logout">خروج</button>
 </div>
 <div class="tabs">
   <button class="on" id="t1">ثبت</button>
@@ -150,7 +92,7 @@ button.del{color:var(--red)!important}
 
 <div id="pg1" class="pad">
   <div class="card">
-    <div class="sec">ثبت پرداخت جدید</div>
+    <div class="sec" id="formTitle">ثبت پرداخت جدید</div>
     <div class="fm">
       <input id="fc" placeholder="شاخه">
       <input id="fs" placeholder="زیرشاخه">
@@ -158,6 +100,7 @@ button.del{color:var(--red)!important}
       <select id="fp"><option>سلطانی</option><option>اکبری</option></select>
       <input id="fn" class="w" placeholder="توضیحات (اختیاری)">
       <button class="primary w" id="fadd">ثبت پرداخت</button>
+      <button class="g w" id="fcancel" style="display:none">لغو ویرایش</button>
     </div>
   </div>
 </div>
@@ -181,7 +124,7 @@ button.del{color:var(--red)!important}
 
 <div id="pg3" class="pad" style="display:none">
   <div class="card">
-    <div class="sec">ثبت چک</div>
+    <div class="sec" id="cformTitle">ثبت چک</div>
     <div class="fm">
       <input id="ct" class="w" placeholder="گیرنده چک">
       <input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک">
@@ -189,6 +132,7 @@ button.del{color:var(--red)!important}
       <select id="cb"><option>سلطانی</option><option>اکبری</option></select>
       <input id="cn" class="w" placeholder="توضیحات">
       <button class="primary w" id="cadd">ثبت چک</button>
+      <button class="g w" id="ccancel" style="display:none">لغو ویرایش</button>
     </div>
   </div>
   <div class="sec" style="margin-top:8px">لیست چک‌ها</div>
@@ -201,16 +145,21 @@ button.del{color:var(--red)!important}
 </div>
 
 <button class="fab" id="fab"><span>＋</span> پرداخت جدید</button>
+</div>
 
 <div id="dlg"><div class="dbox">
   <div id="dm" style="font-weight:600">بازیابی پشتیبان</div>
-  <textarea id="dtx" placeholder="JSON پشتیبان را اینجا بچسبان"></textarea>
+  <textarea id="dtx" placeholder="JSON پشتیبان را اینجا بچسبان" style="min-height:100px;width:100%"></textarea>
   <div class="row"><button class="primary" id="dok" style="flex:1">تأیید</button><button class="g" id="dno" style="flex:1">لغو</button></div>
 </div></div>
 
 <script>
 const KEY="pardakht-v1";
+const PASS_GUEST="M1406";
+const PASS_ADMIN="M136810";
+let role=null;
 let S={entries:[],map:{},cheques:[]};
+let editPay=null, editCk=null;
 try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
 S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
@@ -219,6 +168,25 @@ const fa=n=>Number(n||0).toLocaleString("fa-IR");
 const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const today=()=>iso(new Date());
 const pdate=d=>{try{return new Date(d+"T12:00:00").toLocaleDateString("fa-IR-u-ca-persian")}catch(e){return d||""}};
+const isAdmin=()=>role==="admin";
+
+function enterApp(r){
+  role=r;
+  $("login").style.display="none";
+  $("app").style.display="block";
+  $("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";
+  document.body.classList.toggle("hide-guest", r!=="admin");
+  show(2);
+}
+$("lgo").onclick=()=>{
+  const p=$("lpw").value.trim();
+  if(p===PASS_ADMIN)enterApp("admin");
+  else if(p===PASS_GUEST)enterApp("guest");
+  else{$("lerr").textContent="رمز نادرست است";$("lpw").value=""}
+};
+$("lpw").onkeydown=e=>{if(e.key==="Enter")$("lgo").click()};
+$("logout").onclick=()=>{role=null;$("app").style.display="none";$("login").style.display="flex";$("lpw").value="";$("lerr").textContent=""};
+
 function show(p){
   ["pg1","pg2","pg3"].forEach((id,i)=>{$(id).style.display=p===i+1?"":"none"});
   ["t1","t2","t3"].forEach((id,i)=>$(id).className=p===i+1?"on":"");
@@ -226,9 +194,10 @@ function show(p){
   if(p===2)render();if(p===3)renderC();
 }
 $("t1").onclick=()=>show(1);$("t2").onclick=()=>show(2);$("t3").onclick=()=>show(3);
-$("fab").onclick=()=>show(1);
+$("fab").onclick=()=>{resetPayForm();show(1)};
 $("gm").onclick=e=>{e.stopPropagation();$("gmenu").style.display=$("gmenu").style.display==="block"?"none":"block"};
 document.onclick=()=>{$("gmenu").style.display="none"};
+
 function filtered(){
   let a=S.entries.slice();
   const fr=$("fr").value,fp=$("fpay").value,q=($("fq").value||"").trim();
@@ -238,6 +207,10 @@ function filtered(){
   if(fp)a=a.filter(e=>e.payer===fp);
   if(q)a=a.filter(e=>JSON.stringify(e).includes(q));
   return a;
+}
+function resetPayForm(){
+  editPay=null;$("fc").value="";$("fs").value="";$("fa").value="";$("fn").value="";
+  $("fadd").textContent="ثبت پرداخت";$("formTitle").textContent="ثبت پرداخت جدید";$("fcancel").style.display="none";
 }
 function render(){
   const all=S.entries;const t=today();let sT=0,sM=0,sA=0;const ym=t.slice(0,7);
@@ -249,21 +222,47 @@ function render(){
   $("empty").style.display="none";list.style.display="block";
   rows.forEach(e=>{
     const d=document.createElement("div");d.className="item";
-    d.innerHTML=`<div><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div>
+    const acts=isAdmin()?`<div class="acts">
+      <button class="g sm" data-a="ed">ویرایش</button>
+      <button class="g sm del" data-a="del">حذف</button>
+    </div>`:"";
+    d.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div>
       <div class="meta">${e.payer||""}${e.note?" · "+e.note:""}</div></div>
       <div style="text-align:left"><div class="amt">${fa(e.amt)}</div>
-      <div class="date">${pdate(e.date)} <span class="check">✓</span></div></div>`;
-    d.onclick=()=>{if(confirm("حذف این پرداخت؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}};
+      <div class="date">${pdate(e.date)}</div></div></div>${acts}`;
+    if(isAdmin()){
+      d.querySelector('[data-a="ed"]').onclick=ev=>{ev.stopPropagation();
+        editPay=e.id;$("fc").value=e.cat||"";$("fs").value=e.sub||"";
+        $("fa").value=e.amt;$("fp").value=e.payer||"سلطانی";$("fn").value=e.note||"";
+        $("fadd").textContent="ذخیره تغییرات";$("formTitle").textContent="ویرایش پرداخت";
+        $("fcancel").style.display="block";show(1);
+      };
+      d.querySelector('[data-a="del"]').onclick=ev=>{ev.stopPropagation();
+        if(confirm("حذف این پرداخت؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}
+      };
+    }
     list.appendChild(d);
   });
 }
 $("fr").onchange=$("fpay").onchange=$("fq").oninput=()=>render();
+$("fcancel").onclick=()=>resetPayForm();
 $("fadd").onclick=()=>{
   const amt=parseFloat(String($("fa").value).replace(/[^\d.]/g,""));
   if(!amt){alert("مبلغ را وارد کنید");return}
-  S.entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:today(),cat:$("fc").value.trim()||"عمومی",sub:$("fs").value.trim()||"عمومی",desc:"",amt,payer:$("fp").value,note:$("fn").value.trim()});
-  $("fa").value="";$("fn").value="";save();show(2);
+  if(editPay){
+    const e=S.entries.find(x=>x.id===editPay);
+    if(e){e.cat=$("fc").value.trim()||"عمومی";e.sub=$("fs").value.trim()||"عمومی";e.amt=amt;e.payer=$("fp").value;e.note=$("fn").value.trim()}
+  }else{
+    S.entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:today(),cat:$("fc").value.trim()||"عمومی",sub:$("fs").value.trim()||"عمومی",desc:"",amt,payer:$("fp").value,note:$("fn").value.trim()});
+  }
+  resetPayForm();save();show(2);
 };
+
+function resetCkForm(){
+  editCk=null;$("ct").value="";$("ca").value="";$("cd").value="";$("cn").value="";
+  $("cadd").textContent="ثبت چک";$("cformTitle").textContent="ثبت چک";$("ccancel").style.display="none";
+}
 function renderC(){
   const f=$("cflt").value;
   let a=S.cheques.slice();
@@ -277,29 +276,48 @@ function renderC(){
     const d=document.createElement("div");
     const late=c.due&&c.due<t&&!c.done;
     d.className="ck"+(late?" od":"");
+    const adminBtns=isAdmin()?`<button class="g sm" data-a="ed">ویرایش</button>
+      <button class="g sm del" data-a="del">حذف</button>`:"";
     d.innerHTML=`<div class="row" style="justify-content:space-between"><b>${c.to||""}</b><span style="font-weight:700;direction:ltr">${fa(c.amt)}</span></div>
-    <div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":""}</div>
+    <div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":""}${c.note?" · "+c.note:""}</div>
     <div class="row" style="margin-top:8px">
-      <button class="g sm" data-a="done">${c.done?"برگشت":"وصول شد"}</button>
-      <button class="g sm del" data-a="del">حذف</button>
+      <button class="g sm" data-a="done">${c.done?"برگشت از وصول":"وصول شد"}</button>
+      ${adminBtns}
     </div>`;
     d.querySelector('[data-a="done"]').onclick=()=>{c.done=!c.done;save();renderC()};
-    d.querySelector('[data-a="del"]').onclick=()=>{if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC()}};
+    if(isAdmin()){
+      d.querySelector('[data-a="ed"]').onclick=()=>{
+        editCk=c.id;$("ct").value=c.to||"";$("ca").value=c.amt;$("cd").value=c.due||"";
+        $("cb").value=c.by||"سلطانی";$("cn").value=c.note||"";
+        $("cadd").textContent="ذخیره تغییرات";$("cformTitle").textContent="ویرایش چک";
+        $("ccancel").style.display="block";window.scrollTo(0,0);
+      };
+      d.querySelector('[data-a="del"]').onclick=()=>{
+        if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC()}
+      };
+    }
     box.appendChild(d);
   });
 }
 $("cflt").onchange=()=>renderC();
+$("ccancel").onclick=()=>resetCkForm();
 $("cadd").onclick=()=>{
   const to=$("ct").value.trim(),amt=parseFloat(String($("ca").value).replace(/[^\d.]/g,"")),due=$("cd").value;
   if(!to||!amt||!due){alert("گیرنده، مبلغ و تاریخ را وارد کنید");return}
-  S.cheques.push({id:Date.now()+Math.random(),to,amt,due,by:$("cb").value,note:$("cn").value.trim(),done:false});
-  $("ct").value="";$("ca").value="";$("cn").value="";save();renderC();
+  if(editCk){
+    const c=S.cheques.find(x=>x.id===editCk);
+    if(c){c.to=to;c.amt=amt;c.due=due;c.by=$("cb").value;c.note=$("cn").value.trim()}
+  }else{
+    S.cheques.push({id:Date.now()+Math.random(),to,amt,due,by:$("cb").value,note:$("cn").value.trim(),done:false});
+  }
+  resetCkForm();save();renderC();
 };
+
 $("bk").onclick=async()=>{
   const t=JSON.stringify(S);
   try{await navigator.clipboard.writeText(t);alert("پشتیبان کپی شد")}catch(e){prompt("کپی:",t)}
 };
-$("rs").onclick=()=>{$("dlg").style.display="flex";$("dtx").value=""};
+$("rs").onclick=()=>{if(!isAdmin())return;$("dlg").style.display="flex";$("dtx").value=""};
 $("dno").onclick=()=>{$("dlg").style.display="none"};
 $("dok").onclick=()=>{
   try{
@@ -310,8 +328,7 @@ $("dok").onclick=()=>{
     alert("بازیابی شد: "+S.entries.length+" پرداخت، "+(S.cheques||[]).length+" چک");
   }catch(e){alert("JSON نامعتبر")}
 };
-$("clr").onclick=()=>{if(confirm("همه پاک شود؟")){S={entries:[],map:{},cheques:[]};save();render();renderC()}};
-show(2);
+$("clr").onclick=()=>{if(!isAdmin())return;if(confirm("همه پاک شود؟")){S={entries:[],map:{},cheques:[]};save();render();renderC()}};
 </script>
 </body>
 </html>
