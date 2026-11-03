@@ -5,66 +5,112 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>دفتر پرداخت‌ها</title>
 <meta name="theme-color" content="#1a1d1c">
-<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#1a1d1c;--fg:#e8ecea;--mut:#8b9691;--card:#232826;--line:#2f3532;--ac:#3dba94;--acs:#1e332c;--red:#e57373}
+:root{--bg:#1a1d1c;--fg:#e8ecea;--mut:#8b9691;--card:#232826;--line:#2f3532;--ac:#3dba94;--acs:#1e332c;--red:#e57373;--sh:0 2px 10px rgba(0,0,0,.35)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;padding:16px;max-width:920px;margin-inline:auto}
-h1{font-size:20px;color:var(--ac);margin:0 0 4px}
-.sub{color:var(--mut);font-size:12px;margin-bottom:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;padding:16px;max-width:920px;margin-inline:auto;line-height:1.5}
+h1{font-size:20px;color:var(--ac);margin:0 0 2px}
+.sub{color:var(--mut);font-size:12px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:var(--sh)}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-input,select,button{font:inherit;border-radius:10px;padding:10px 12px;border:1px solid var(--line);background:#151817;color:var(--fg)}
+input,select,textarea,button{font:inherit;border-radius:10px;padding:10px 12px;border:1px solid var(--line);background:#151817;color:var(--fg)}
 button{background:var(--ac);color:#0b1f18;border:0;font-weight:600;cursor:pointer}
 button.g{background:transparent;color:var(--fg);border:1px solid var(--line)}
+button.sm{padding:6px 10px;font-size:13px}
+button.del{color:var(--red)!important}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
 .st{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
-.st span{display:block;color:var(--mut);font-size:12px}
-.st b{font-size:15px}
+.st span{display:block;color:var(--mut);font-size:12px}.st b{font-size:15px}
 .st.m{background:var(--acs)}.st.m b{color:var(--ac)}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:12px}
+.tabs button{background:transparent;color:var(--mut);font-weight:500;padding:10px 4px}
+.tabs button.on{background:var(--ac);color:#0b1f18;font-weight:600}
+.fm{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fm .w{grid-column:1/-1}
+.fl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
 table{width:100%;border-collapse:collapse;font-size:13px}
 td,th{padding:8px;border-bottom:1px solid var(--line);text-align:right}
 td.n{direction:ltr;text-align:left;font-weight:700}
-.fm{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.fm .w{grid-column:1/-1}
-.banner{background:var(--acs);border:1px solid var(--ac);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px;color:var(--ac)}
-.empty{color:var(--mut);text-align:center;padding:20px}
+.sec{font-size:13px;color:var(--mut);font-weight:600;margin-bottom:6px}
+#gmenu{position:fixed;display:none;top:50px;left:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.4);min-width:180px;padding:4px;z-index:9}
+#gmenu button{display:block;width:100%;text-align:right;background:transparent;color:var(--fg);padding:10px 12px;border-radius:8px}
 #dlg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
 .dbox{background:var(--card);border-radius:14px;padding:18px;width:100%;max-width:400px;border:1px solid var(--line)}
-#dtx{width:100%;min-height:120px;margin:10px 0;font:inherit;color:var(--fg);background:#151817;border:1px solid var(--line);border-radius:10px;padding:8px}
+#dtx{width:100%;min-height:100px;margin:10px 0;font:inherit;color:var(--fg);background:#151817;border:1px solid var(--line);border-radius:10px;padding:8px}
+.ck{border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;background:var(--card)}
+.ck.od{border-color:var(--red);background:rgba(229,115,115,.1)}
+.cks{color:var(--mut);font-size:12px}
+.empty{color:var(--mut);text-align:center;padding:18px}
+.ic{background:transparent;color:var(--mut);font-size:20px;border:0;padding:4px 10px}
 </style>
 </head>
 <body>
-<h1>دفتر پرداخت‌ها</h1>
-<div class="sub">داده روی همین دستگاه · کلید pardakht-v1</div>
-<div class="banner">از منوی پایین می‌توانی پشتیبان را بازیابی کنی. داده پاک نمی‌شود.</div>
+<div class="row" style="justify-content:space-between"><div><h1>دفتر پرداخت‌ها</h1><div class="sub">تم تاریک · پشتیبان و بازیابی <span id="syncBadge" style="font-size:11px">● محلی</span></div></div>
+<button class="ic" id="gm">⋮</button></div>
+<div id="gmenu">
+<button id="bk">پشتیبان (کپی)</button>
+<button id="rs">بازیابی پشتیبان</button>
+<button id="clr" class="del">پاک کردن همه</button>
+</div>
+<div class="tabs">
+<button class="on" id="t1">ثبت پرداخت</button>
+<button id="t2">مشاهده و فیلتر</button>
+<button id="t3">چک‌ها</button>
+</div>
+<div id="pg1">
+<div class="card">
+<div class="sec">ثبت پرداخت</div>
+<div class="fm">
+<input id="fc" placeholder="شاخه">
+<input id="fs" placeholder="زیرشاخه">
+<input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)">
+<select id="fp"><option>سلطانی</option><option>اکبری</option></select>
+<input id="fn" class="w" placeholder="توضیحات (اختیاری)">
+<button id="fadd" class="w">ثبت</button>
+</div>
+</div>
+</div>
+<div id="pg2" style="display:none">
 <div class="stats">
-  <div class="st"><span>امروز</span><b id="sT">۰</b></div>
-  <div class="st"><span>این ماه</span><b id="sM">۰</b></div>
-  <div class="st m"><span>جمع کل</span><b id="sA">۰</b></div>
+<div class="st"><span>امروز</span><b id="sT">۰</b></div>
+<div class="st"><span>این ماه</span><b id="sM">۰</b></div>
+<div class="st m"><span>جمع کل</span><b id="sA">۰</b></div>
 </div>
 <div class="card">
-  <div class="fm">
-    <input id="fc" placeholder="شاخه">
-    <input id="fs" placeholder="زیرشاخه">
-    <input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)">
-    <select id="fp"><option>سلطانی</option><option>اکبری</option></select>
-    <input id="fn" class="w" placeholder="توضیحات (اختیاری)">
-    <button id="fadd" class="w">ثبت</button>
-  </div>
+<div class="sec">فیلتر</div>
+<div class="fl">
+<select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="month">این ماه</option></select>
+<select id="fpay"><option value="">همه پرداخت‌کننده‌ها</option><option>سلطانی</option><option>اکبری</option></select>
+<input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو">
+</div>
+<button class="g sm" id="frs">پاک کردن فیلترها</button>
 </div>
 <div class="card">
-  <div class="row" style="justify-content:space-between;margin-bottom:8px"><b>پرداخت‌ها</b>
-    <span class="row">
-      <button class="g" id="bk">کپی پشتیبان</button>
-      <button class="g" id="rs">بازیابی پشتیبان</button>
-    </span>
-  </div>
-  <div id="list"></div>
-  <div id="empty" class="empty">هنوز پرداختی نیست.</div>
+<div class="sec">پرداخت‌ها</div>
+<div id="list"></div>
+<div id="empty" class="empty">پرداختی نیست.</div>
 </div>
-<div id="dlg"><div class="dbox"><div id="dm">پشتیبان را اینجا بچسبان</div><textarea id="dtx"></textarea><div class="row"><button id="dok">تأیید</button><button class="g" id="dno">لغو</button></div></div></div>
+</div>
+<div id="pg3" style="display:none">
+<div class="card">
+<div class="sec">ثبت چک</div>
+<div class="fm">
+<input id="ct" class="w" placeholder="گیرنده چک">
+<input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک">
+<input id="cd" type="date" class="w">
+<select id="cb"><option>سلطانی</option><option>اکبری</option></select>
+<input id="cn" class="w" placeholder="توضیحات">
+<button id="cadd" class="w">ثبت چک</button>
+</div>
+</div>
+<div class="card">
+<div class="sec">چک‌ها</div>
+<select id="cflt"><option value="pending">در انتظار</option><option value="all">همه</option><option value="done">وصول‌شده</option></select>
+<div id="clist"></div>
+</div>
+</div>
+<div id="dlg"><div class="dbox"><div id="dm">پشتیبان را بچسبان</div><textarea id="dtx"></textarea><div class="row"><button id="dok">تأیید</button><button class="g" id="dno">لغو</button></div></div></div>
 <script>
 const KEY="pardakht-v1";
 let S={entries:[],map:{},cheques:[]};
@@ -72,49 +118,100 @@ try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
 S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=id=>document.getElementById(id);
-const fa=n=>Number(n).toLocaleString("fa-IR");
+const fa=n=>Number(n||0).toLocaleString("fa-IR");
 const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const today=()=>iso(new Date());
-const pdate=d=>new Date(d+"T12:00:00").toLocaleDateString("fa-IR-u-ca-persian");
+const pdate=d=>{try{return new Date(d+"T12:00:00").toLocaleDateString("fa-IR-u-ca-persian")}catch(e){return d}};
+function show(p){
+  ["pg1","pg2","pg3"].forEach((id,i)=>{$(id).style.display=p===i+1?"":"none"});
+  ["t1","t2","t3"].forEach((id,i)=>$(id).className=p===i+1?"on":"");
+  if(p===2)render();if(p===3)renderC();
+}
+$("t1").onclick=()=>show(1);$("t2").onclick=()=>show(2);$("t3").onclick=()=>show(3);
+$("gm").onclick=e=>{e.stopPropagation();$("gmenu").style.display=$("gmenu").style.display==="block"?"none":"block"};
+document.onclick=()=>{$("gmenu").style.display="none"};
+function filtered(){
+  let a=S.entries.slice();
+  const fr=$("fr").value,fp=$("fpay").value,q=($("fq").value||"").trim();
+  const t=today(),ym=t.slice(0,7);
+  if(fr==="today")a=a.filter(e=>e.date===t);
+  if(fr==="month")a=a.filter(e=>(e.date||"").slice(0,7)===ym);
+  if(fp)a=a.filter(e=>e.payer===fp);
+  if(q)a=a.filter(e=>JSON.stringify(e).includes(q));
+  return a;
+}
 function render(){
-  const t=today();let sT=0,sM=0,sA=0;const ym=t.slice(0,7);
-  S.entries.forEach(e=>{sA+=(+e.amt||0);if(e.date===t)sT+=(+e.amt||0);if((e.date||"").slice(0,7)===ym)sM+=(+e.amt||0)});
+  const all=S.entries;const t=today();let sT=0,sM=0,sA=0;const ym=t.slice(0,7);
+  all.forEach(e=>{const a=+e.amt||0;sA+=a;if(e.date===t)sT+=a;if((e.date||"").slice(0,7)===ym)sM+=a});
   $("sT").textContent=fa(sT);$("sM").textContent=fa(sM);$("sA").textContent=fa(sA);
   const list=$("list");list.innerHTML="";
-  if(!S.entries.length){$("empty").style.display="block";return}
+  const rows=filtered().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  if(!rows.length){$("empty").style.display="block";return}
   $("empty").style.display="none";
   const tb=document.createElement("table");
   tb.innerHTML="<thead><tr><th>تاریخ</th><th>شاخه</th><th>مبلغ</th><th></th></tr></thead>";
   const body=document.createElement("tbody");
-  S.entries.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")).forEach(e=>{
+  rows.forEach(e=>{
     const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${pdate(e.date)}</td><td>${e.cat||""} / ${e.sub||""}</td><td class="n">${fa(e.amt)}</td><td><button class="g">حذف</button></td>`;
-    tr.querySelector("button").onclick=()=>{if(confirm("حذف شود؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}};
+    tr.innerHTML=`<td>${pdate(e.date)}</td><td>${e.cat||""}/${e.sub||""}<br><span class="cks">${e.payer||""}</span></td><td class="n">${fa(e.amt)}</td><td><button class="g sm">حذف</button></td>`;
+    tr.querySelector("button").onclick=()=>{if(confirm("حذف؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}};
     body.appendChild(tr);
   });
   tb.appendChild(body);list.appendChild(tb);
 }
+$("fr").onchange=$("fpay").onchange=$("fq").oninput=()=>render();
+$("frs").onclick=()=>{$("fr").value="all";$("fpay").value="";$("fq").value="";render()};
 $("fadd").onclick=()=>{
   const amt=parseFloat(String($("fa").value).replace(/[^\d.]/g,""));
   if(!amt){alert("مبلغ را وارد کنید");return}
   S.entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:today(),cat:$("fc").value.trim()||"عمومی",sub:$("fs").value.trim()||"عمومی",desc:"",amt,payer:$("fp").value,note:$("fn").value.trim()});
-  $("fa").value="";$("fn").value="";save();render();
+  $("fa").value="";$("fn").value="";save();show(2);
+};
+function renderC(){
+  const f=$("cflt").value;
+  let a=S.cheques.slice();
+  if(f==="pending")a=a.filter(c=>!c.done);
+  if(f==="done")a=a.filter(c=>c.done);
+  a.sort((x,y)=>(x.due||"").localeCompare(y.due||""));
+  const box=$("clist");box.innerHTML="";
+  if(!a.length){box.innerHTML='<div class="empty">چکی نیست</div>';return}
+  const t=today();
+  a.forEach(c=>{
+    const d=document.createElement("div");
+    const late=c.due&&c.due<t&&!c.done;
+    d.className="ck"+(late?" od":"");
+    d.innerHTML=`<div class="row" style="justify-content:space-between"><b>${c.to||""}</b><span class="n">${fa(c.amt)}</span></div>
+    <div class="cks">${pdate(c.due)} · ${c.by||""} ${c.done?" · وصول‌شده":""}</div>
+    <div class="row" style="margin-top:6px"><button class="g sm" data-a="done">${c.done?"برگشت":"وصول شد"}</button><button class="g sm del" data-a="del">حذف</button></div>`;
+    d.querySelector('[data-a="done"]').onclick=()=>{c.done=!c.done;save();renderC()};
+    d.querySelector('[data-a="del"]').onclick=()=>{if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC()}};
+    box.appendChild(d);
+  });
+}
+$("cflt").onchange=()=>renderC();
+$("cadd").onclick=()=>{
+  const to=$("ct").value.trim(),amt=parseFloat(String($("ca").value).replace(/[^\d.]/g,"")),due=$("cd").value;
+  if(!to||!amt||!due){alert("گیرنده، مبلغ و تاریخ را وارد کنید");return}
+  S.cheques.push({id:Date.now()+Math.random(),to,amt,due,by:$("cb").value,note:$("cn").value.trim(),done:false});
+  $("ct").value="";$("ca").value="";$("cn").value="";save();renderC();
 };
 $("bk").onclick=async()=>{
   const t=JSON.stringify(S);
-  try{await navigator.clipboard.writeText(t);alert("پشتیبان کپی شد")}catch(e){prompt("کپی کنید:",t)}
+  try{await navigator.clipboard.writeText(t);alert("پشتیبان کپی شد")}catch(e){prompt("کپی:",t)}
 };
 $("rs").onclick=()=>{$("dlg").style.display="flex";$("dtx").value=""};
 $("dno").onclick=()=>{$("dlg").style.display="none"};
 $("dok").onclick=()=>{
   try{
     const o=JSON.parse($("dtx").value);
-    if(!o||!Array.isArray(o.entries)){alert("فرمت پشتیبان نادرست است");return}
+    if(!o||!Array.isArray(o.entries)){alert("فرمت نادرست");return}
     S=o;S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};
-    save();render();$("dlg").style.display="none";alert("بازیابی شد: "+S.entries.length+" پرداخت");
-  }catch(e){alert("JSON نامعتبر است")}
+    save();render();renderC();$("dlg").style.display="none";
+    alert("بازیابی شد: "+S.entries.length+" پرداخت، "+S.cheques.length+" چک");
+  }catch(e){alert("JSON نامعتبر")}
 };
-render();
+$("clr").onclick=()=>{if(confirm("همه پاک شود؟")){S={entries:[],map:{},cheques:[]};save();render();renderC()}};
+show(1);
 </script>
 </body>
 </html>
