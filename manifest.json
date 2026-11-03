@@ -1,13 +1,17 @@
 {
   "name": "دفتر پرداخت‌ها",
   "short_name": "پرداخت‌ها",
+  "description": "دفتر ثبت پرداخت‌ها و چک‌ها",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#eef5f2",
-  "theme_color": "#1f7a5c",
+  "orientation": "portrait",
+  "background_color": "#0d1f1c",
+  "theme_color": "#0a4f4a",
   "lang": "fa",
   "dir": "rtl",
   "icons": [
-    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
   ]
 }
