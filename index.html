@@ -27,7 +27,7 @@ body{
 .header{
   background:linear-gradient(135deg,#0f766e 0%,#14b8a6 100%);
   color:#fff;padding:14px 16px calc(14px + env(safe-area-inset-top,0px));
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
   position:sticky;top:0;z-index:50;
   box-shadow:0 4px 24px rgba(15,118,110,.3);
 }
@@ -39,10 +39,10 @@ body{
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .badge{font-size:10px;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:999px;margin-right:6px;font-weight:600}
-.menu-wrap{position:relative}
+.menu-wrap{position:relative;flex-shrink:0}
 #gmenu{
-  position:absolute;top:calc(100% + 8px);left:0;
-  background:#fff;border-radius:16px;min-width:200px;
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:#fff;border-radius:16px;min-width:210px;
   box-shadow:0 12px 40px rgba(15,118,110,.18),0 0 0 1px rgba(15,118,110,.06);
   padding:6px;z-index:100;display:none;
 }
@@ -71,6 +71,13 @@ input,select,textarea{
   font:inherit;border-radius:14px;padding:13px 14px;
   border:1.5px solid #d1fae5;background:#f8fffc;color:var(--fg);
   width:100%;min-width:0;font-size:14px;
+  text-overflow:ellipsis;
+}
+select{
+  padding-left:28px;padding-right:12px;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%230f766e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:left 12px center;
 }
 input:focus,select:focus,textarea:focus{
   outline:none;border-color:var(--ac2);background:#fff;
@@ -178,6 +185,10 @@ button.del{color:var(--red)!important}
 
 <div id="app" style="display:none">
 <div class="header">
+  <div style="text-align:right;min-width:0;flex:1">
+    <h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1>
+    <div class="sub" id="hdrSub">منوی اصلی</div>
+  </div>
   <div class="menu-wrap">
     <button class="icon-btn" id="gm" aria-label="منو">⋮</button>
     <div id="gmenu">
@@ -187,10 +198,6 @@ button.del{color:var(--red)!important}
       <button id="clr" class="danger admin-only">🗑 پاک کردن همه</button>
       <button id="logout">🚪 خروج</button>
     </div>
-  </div>
-  <div style="text-align:left">
-    <h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1>
-    <div class="sub" id="hdrSub">منوی اصلی</div>
   </div>
 </div>
 
