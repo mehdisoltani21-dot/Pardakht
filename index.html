@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>دفتر پرداخت‌ها</title>
 <meta name="theme-color" content="#1f7a5c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef5f2;--fg:#1a2e28;--mut:#6b7f77;--card:#fff;--line:#d5e3dc;--ac:#1f7a5c;--ac2:#2a9b74;--acs:#e6f4ee;--red:#c62828;--sh:0 2px 8px rgba(31,122,92,.1)}
+:root{--bg:#eef5f2;--fg:#1a2e28;--mut:#6b7f77;--card:#fff;--line:#d5e3dc;--ac:#1f7a5c;--ac2:#2a9b74;--acs:#e6f4ee;--red:#c62828;--warn:#e67e22;--sh:0 2px 8px rgba(31,122,92,.1)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;padding:0 0 24px;max-width:480px;margin-inline:auto;line-height:1.5;min-height:100vh}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;padding:0 0 28px;max-width:480px;margin-inline:auto;line-height:1.5;min-height:100vh}
 .header{background:linear-gradient(135deg,#1f7a5c,#2a9b74);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px rgba(31,122,92,.25)}
 .header h1{font-size:17px;margin:0;font-weight:700}
 .header .sub{font-size:11px;opacity:.85;margin-top:2px}
@@ -25,8 +27,8 @@ button.sm{padding:6px 10px;font-size:12px;border-radius:8px}
 button.del{color:var(--red)!important}
 .fm{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fm .w{grid-column:1/-1}
 .sec{font-size:13px;color:var(--mut);font-weight:600;margin-bottom:8px}
-.back{background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;cursor:pointer;padding:0 0 10px;display:inline-flex;align-items:center;gap:4px}
-#gmenu{position:fixed;display:none;top:60px;left:12px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.12);min-width:190px;padding:4px;z-index:20}
+.back{background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;cursor:pointer;padding:0 0 12px}
+#gmenu{position:fixed;display:none;top:60px;left:12px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.12);min-width:200px;padding:4px;z-index:20}
 #gmenu button{display:block;width:100%;text-align:right;background:transparent;color:var(--fg);padding:11px 14px;border:0;border-radius:8px;cursor:pointer;font:inherit}
 #gmenu button:hover{background:var(--acs)}
 #dlg,#login{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
@@ -36,7 +38,7 @@ button.del{color:var(--red)!important}
 .badge{font-size:10px;background:rgba(255,255,255,.25);padding:2px 8px;border-radius:8px;margin-right:6px}
 .hide-guest .admin-only{display:none!important}
 .menu{display:flex;flex-direction:column;gap:12px;padding:16px 14px}
-.mbtn{display:flex;align-items:center;gap:14px;padding:16px 18px;border:0;border-radius:16px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;color:#fff;text-align:right;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:transform .1s}
+.mbtn{display:flex;align-items:center;gap:14px;padding:16px 18px;border:0;border-radius:16px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;color:#fff;text-align:right;box-shadow:0 4px 14px rgba(0,0,0,.12)}
 .mbtn:active{transform:scale(.98)}
 .mbtn .ico{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .mbtn.b1{background:linear-gradient(135deg,#e74c3c,#c0392b)}
@@ -54,14 +56,16 @@ button.del{color:var(--red)!important}
 .item .title{font-weight:600;font-size:14px}
 .item .meta{color:var(--mut);font-size:12px}
 .item .amt{font-weight:700;direction:ltr;font-size:14px}
-.item .date{color:var(--mut);font-size:11px}
 .item .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.empty{color:var(--mut);text-align:center;padding:28px 12px;font-size:14px}
+.empty{color:var(--mut);text-align:center;padding:32px 16px;font-size:14px}
+.empty button{margin-top:12px;max-width:220px;margin-inline:auto;display:block}
 .ck{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--sh)}
 .ck.od{border-color:#e57373;background:#fff5f5}
 .cks{color:var(--mut);font-size:12px;margin-top:2px}
 .fl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.back{background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;cursor:pointer;padding:0 0 10px}
+.warn{background:#fff8f0;border:1px solid #f5cba7;border-radius:14px;padding:12px 14px;margin:0 14px 12px;color:#9a4d0f;font-size:13px;display:none;cursor:pointer}
+.warn b{color:var(--warn)}
+.date-sep{background:var(--bg);color:var(--mut);font-size:12px;font-weight:600;padding:8px 14px}
 </style>
 </head>
 <body>
@@ -85,16 +89,20 @@ button.del{color:var(--red)!important}
 </div>
 <div id="gmenu">
   <button id="bk">📥 پشتیبان (کپی)</button>
+  <button id="csv">📊 خروجی CSV</button>
   <button id="rs" class="admin-only">📤 بازیابی پشتیبان</button>
   <button id="clr" class="del admin-only">پاک کردن همه</button>
   <button id="logout">خروج</button>
 </div>
 
-<div id="pgHome" class="menu">
-  <button class="mbtn b1" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button>
-  <button class="mbtn b2" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button>
-  <button class="mbtn b3" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button>
-  <button class="mbtn b4" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button>
+<div id="pgHome">
+  <div class="warn" id="ckWarn"></div>
+  <div class="menu">
+    <button class="mbtn b1" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button>
+    <button class="mbtn b2" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button>
+    <button class="mbtn b3" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button>
+    <button class="mbtn b4" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button>
+  </div>
 </div>
 
 <div id="pgPay" class="pad" style="display:none">
@@ -106,6 +114,7 @@ button.del{color:var(--red)!important}
       <input id="fs" placeholder="زیرشاخه">
       <input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)">
       <select id="fp"><option>سلطانی</option><option>اکبری</option></select>
+      <input id="fd" type="date" class="w">
       <input id="fn" class="w" placeholder="توضیحات (اختیاری)">
       <button class="primary w" id="fadd">ثبت پرداخت</button>
       <button class="g w" id="fcancel" style="display:none">لغو ویرایش</button>
@@ -140,11 +149,11 @@ button.del{color:var(--red)!important}
     <div class="fl" style="margin:0">
       <select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="month">این ماه</option></select>
       <select id="fpay"><option value="">همه</option><option>سلطانی</option><option>اکبری</option></select>
-      <input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو...">
+      <input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو در پرداخت‌ها...">
     </div>
   </div>
   <div class="list" id="list"></div>
-  <div id="empty" class="empty">پرداختی ثبت نشده.</div>
+  <div id="empty" class="empty">پرداختی ثبت نشده.<br><button class="primary" id="emptyPay">ثبت اولین پرداخت</button></div>
 </div>
 
 <div id="pgCkList" class="pad" style="display:none">
@@ -154,12 +163,12 @@ button.del{color:var(--red)!important}
     <div class="st"><span>چک اکبری</span><b id="cAkb">۰</b></div>
     <div class="st m"><span>جمع در انتظار</span><b id="cAll">۰</b></div>
   </div>
-  <select id="cflt" style="width:100%;margin-bottom:10px">
-    <option value="pending">در انتظار وصول</option>
-    <option value="all">همه</option>
-    <option value="done">وصول‌شده</option>
-  </select>
+  <div class="fl">
+    <select id="cflt"><option value="pending">در انتظار وصول</option><option value="all">همه</option><option value="done">وصول‌شده</option></select>
+    <input id="cq" placeholder="جستجو در چک‌ها...">
+  </div>
   <div id="clist"></div>
+  <div id="cempty" class="empty" style="display:none">چکی نیست.<br><button class="primary" id="emptyCk">ثبت اولین چک</button></div>
 </div>
 </div>
 
@@ -170,7 +179,7 @@ button.del{color:var(--red)!important}
 </div></div>
 
 <script>
-const KEY="pardakht-v1",PASS_GUEST="M1406",PASS_ADMIN="M136810";
+const KEY="pardakht-v1",ROLE_KEY="pardakht-role",PASS_GUEST="M1406",PASS_ADMIN="M136810";
 let role=null,S={entries:[],map:{},cheques:[]},editPay=null,editCk=null;
 try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
 S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};
@@ -183,12 +192,26 @@ const pdate=d=>{try{return new Date(d+"T12:00:00").toLocaleDateString("fa-IR-u-c
 const isAdmin=()=>role==="admin";
 const pages=["pgHome","pgPay","pgCk","pgPayList","pgCkList"];
 
-function enterApp(r){
-  role=r;$("login").style.display="none";$("app").style.display="block";
+function enterApp(r,persist){
+  role=r;
+  if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}
+  $("login").style.display="none";$("app").style.display="block";
   $("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";
   document.body.classList.toggle("hide-guest",r!=="admin");
   show("pgHome");
 }
+function logout(){
+  role=null;try{localStorage.removeItem(ROLE_KEY)}catch(e){}
+  $("app").style.display="none";$("login").style.display="flex";$("lpw").value="";$("lerr").textContent="";
+}
+(function(){
+  try{
+    const r=localStorage.getItem(ROLE_KEY);
+    if(r==="admin"||r==="guest"){enterApp(r,false);return}
+  }catch(e){}
+  $("login").style.display="flex";
+})();
+
 $("lgo").onclick=()=>{
   const p=$("lpw").value.trim();
   if(p===PASS_ADMIN)enterApp("admin");
@@ -196,12 +219,13 @@ $("lgo").onclick=()=>{
   else{$("lerr").textContent="رمز نادرست است";$("lpw").value=""}
 };
 $("lpw").onkeydown=e=>{if(e.key==="Enter")$("lgo").click()};
-$("logout").onclick=()=>{role=null;$("app").style.display="none";$("login").style.display="flex";$("lpw").value="";$("lerr").textContent=""};
+$("logout").onclick=logout;
 
 function show(id){
   pages.forEach(p=>$(p).style.display=p===id?"":"none");
   const titles={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"};
   $("hdrSub").textContent=titles[id]||"";
+  if(id==="pgHome")updateWarn();
   if(id==="pgPayList")render();
   if(id==="pgCkList")renderC();
 }
@@ -210,9 +234,23 @@ $("goCk").onclick=()=>{resetCkForm();show("pgCk")};
 $("goPayList").onclick=()=>show("pgPayList");
 $("goCkList").onclick=()=>show("pgCkList");
 document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>show("pgHome"));
-
+$("emptyPay").onclick=()=>{resetPayForm();show("pgPay")};
+$("emptyCk").onclick=()=>{resetCkForm();show("pgCk")};
 $("gm").onclick=e=>{e.stopPropagation();$("gmenu").style.display=$("gmenu").style.display==="block"?"none":"block"};
 document.onclick=()=>{$("gmenu").style.display="none"};
+
+function updateWarn(){
+  const t=today();
+  const late=S.cheques.filter(c=>!c.done&&c.due&&c.due<t);
+  const near=S.cheques.filter(c=>!c.done&&c.due&&c.due>=t&&c.due<=iso(new Date(Date.now()+7*864e5)));
+  const w=$("ckWarn");
+  if(!late.length&&!near.length){w.style.display="none";return}
+  w.style.display="block";
+  let msg="";
+  if(late.length){const sum=late.reduce((s,c)=>s+(+c.amt||0),0);msg+=`⚠ ${late.length} چک سررسید گذشته — جمع <b>${fa(sum)}</b> تومان`;}
+  if(near.length){const sum=near.reduce((s,c)=>s+(+c.amt||0),0);if(msg)msg+="<br>";msg+=`📅 ${near.length} چک تا ۷ روز آینده — جمع <b>${fa(sum)}</b> تومان`;}
+  w.innerHTML=msg;w.onclick=()=>show("pgCkList");
+}
 
 function filtered(){
   let a=S.entries.slice();
@@ -225,7 +263,7 @@ function filtered(){
   return a;
 }
 function resetPayForm(){
-  editPay=null;$("fc").value="";$("fs").value="";$("fa").value="";$("fn").value="";
+  editPay=null;$("fc").value="";$("fs").value="";$("fa").value="";$("fn").value="";$("fd").value=today();
   $("fadd").textContent="ثبت پرداخت";$("formTitle").textContent="ثبت پرداخت جدید";$("fcancel").style.display="none";
 }
 function render(){
@@ -236,12 +274,14 @@ function render(){
   const rows=filtered().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
   if(!rows.length){$("empty").style.display="block";list.style.display="none";return}
   $("empty").style.display="none";list.style.display="block";
+  let lastDate="";
   rows.forEach(e=>{
+    if(e.date!==lastDate){lastDate=e.date;const sep=document.createElement("div");sep.className="date-sep";sep.textContent=pdate(e.date);list.appendChild(sep)}
     const d=document.createElement("div");d.className="item";
     const acts=isAdmin()?`<div class="acts"><button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button></div>`:"";
-    d.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start"><div><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div><div class="meta">${e.payer||""}${e.note?" · "+e.note:""}</div></div><div style="text-align:left"><div class="amt">${fa(e.amt)}</div><div class="date">${pdate(e.date)}</div></div></div>${acts}`;
+    d.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start"><div><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div><div class="meta">${e.payer||""}${e.note?" · "+e.note:""}</div></div><div style="text-align:left"><div class="amt">${fa(e.amt)}</div></div></div>${acts}`;
     if(isAdmin()){
-      d.querySelector('[data-a="ed"]').onclick=ev=>{ev.stopPropagation();editPay=e.id;$("fc").value=e.cat||"";$("fs").value=e.sub||"";$("fa").value=e.amt;$("fp").value=e.payer||"سلطانی";$("fn").value=e.note||"";$("fadd").textContent="ذخیره تغییرات";$("formTitle").textContent="ویرایش پرداخت";$("fcancel").style.display="block";show("pgPay")};
+      d.querySelector('[data-a="ed"]').onclick=ev=>{ev.stopPropagation();editPay=e.id;$("fc").value=e.cat||"";$("fs").value=e.sub||"";$("fa").value=e.amt;$("fp").value=e.payer||"سلطانی";$("fn").value=e.note||"";$("fd").value=e.date||today();$("fadd").textContent="ذخیره تغییرات";$("formTitle").textContent="ویرایش پرداخت";$("fcancel").style.display="block";show("pgPay")};
       d.querySelector('[data-a="del"]').onclick=ev=>{ev.stopPropagation();if(confirm("حذف این پرداخت؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}};
     }
     list.appendChild(d);
@@ -252,8 +292,9 @@ $("fcancel").onclick=()=>resetPayForm();
 $("fadd").onclick=()=>{
   const amt=parseFloat(String($("fa").value).replace(/[^\d.]/g,""));
   if(!amt){alert("مبلغ را وارد کنید");return}
-  if(editPay){const e=S.entries.find(x=>x.id===editPay);if(e){e.cat=$("fc").value.trim()||"عمومی";e.sub=$("fs").value.trim()||"عمومی";e.amt=amt;e.payer=$("fp").value;e.note=$("fn").value.trim()}}
-  else{S.entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:today(),cat:$("fc").value.trim()||"عمومی",sub:$("fs").value.trim()||"عمومی",desc:"",amt,payer:$("fp").value,note:$("fn").value.trim()})}
+  const dt=$("fd").value||today();
+  if(editPay){const e=S.entries.find(x=>x.id===editPay);if(e){e.cat=$("fc").value.trim()||"عمومی";e.sub=$("fs").value.trim()||"عمومی";e.amt=amt;e.payer=$("fp").value;e.note=$("fn").value.trim();e.date=dt}}
+  else{S.entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:dt,cat:$("fc").value.trim()||"عمومی",sub:$("fs").value.trim()||"عمومی",desc:"",amt,payer:$("fp").value,note:$("fn").value.trim()})}
   resetPayForm();save();show("pgPayList");
 };
 
@@ -262,22 +303,23 @@ function renderC(){
   let sol=0,akb=0,all=0;
   S.cheques.filter(c=>!c.done).forEach(c=>{const a=+c.amt||0;all+=a;if(c.by==="سلطانی")sol+=a;else if(c.by==="اکبری")akb+=a});
   $("cSol").textContent=fa(sol);$("cAkb").textContent=fa(akb);$("cAll").textContent=fa(all);
-  const f=$("cflt").value;let a=S.cheques.slice();
+  const f=$("cflt").value,q=($("cq").value||"").trim();
+  let a=S.cheques.slice();
   if(f==="pending")a=a.filter(c=>!c.done);if(f==="done")a=a.filter(c=>c.done);
+  if(q)a=a.filter(c=>JSON.stringify(c).includes(q));
   a.sort((x,y)=>(x.due||"").localeCompare(y.due||""));
-  const box=$("clist");box.innerHTML="";
-  if(!a.length){box.innerHTML='<div class="empty">چکی نیست</div>';return}
+  const box=$("clist");box.innerHTML="";$("cempty").style.display=a.length?"none":"block";if(!a.length)return;
   const t=today();
   a.forEach(c=>{
     const d=document.createElement("div");const late=c.due&&c.due<t&&!c.done;d.className="ck"+(late?" od":"");
     const adminBtns=isAdmin()?`<button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button>`:"";
-    d.innerHTML=`<div class="row" style="justify-content:space-between"><b>${c.to||""}</b><span style="font-weight:700;direction:ltr">${fa(c.amt)}</span></div><div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":""}${c.note?" · "+c.note:""}</div><div class="row" style="margin-top:8px"><button class="g sm" data-a="done">${c.done?"برگشت از وصول":"وصول شد"}</button>${adminBtns}</div>`;
-    d.querySelector('[data-a="done"]').onclick=()=>{c.done=!c.done;save();renderC()};
-    if(isAdmin()){d.querySelector('[data-a="ed"]').onclick=()=>{editCk=c.id;$("ct").value=c.to||"";$("ca").value=c.amt;$("cd").value=c.due||"";$("cb").value=c.by||"سلطانی";$("cn").value=c.note||"";$("cadd").textContent="ذخیره تغییرات";$("cformTitle").textContent="ویرایش چک";$("ccancel").style.display="block";show("pgCk")};d.querySelector('[data-a="del"]').onclick=()=>{if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC()}}}
+    d.innerHTML=`<div class="row" style="justify-content:space-between"><b>${c.to||""}</b><span style="font-weight:700;direction:ltr">${fa(c.amt)}</span></div><div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":late?" · سررسید گذشته":""}${c.note?" · "+c.note:""}</div><div class="row" style="margin-top:8px"><button class="g sm" data-a="done">${c.done?"برگشت از وصول":"وصول شد"}</button>${adminBtns}</div>`;
+    d.querySelector('[data-a="done"]').onclick=()=>{c.done=!c.done;save();renderC();updateWarn()};
+    if(isAdmin()){d.querySelector('[data-a="ed"]').onclick=()=>{editCk=c.id;$("ct").value=c.to||"";$("ca").value=c.amt;$("cd").value=c.due||"";$("cb").value=c.by||"سلطانی";$("cn").value=c.note||"";$("cadd").textContent="ذخیره تغییرات";$("cformTitle").textContent="ویرایش چک";$("ccancel").style.display="block";show("pgCk")};d.querySelector('[data-a="del"]').onclick=()=>{if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC();updateWarn()}}}
     box.appendChild(d);
   });
 }
-$("cflt").onchange=()=>renderC();
+$("cflt").onchange=$("cq").oninput=()=>renderC();
 $("ccancel").onclick=()=>resetCkForm();
 $("cadd").onclick=()=>{
   const to=$("ct").value.trim(),amt=parseFloat(String($("ca").value).replace(/[^\d.]/g,"")),due=$("cd").value;
@@ -288,10 +330,11 @@ $("cadd").onclick=()=>{
 };
 
 $("bk").onclick=async()=>{const t=JSON.stringify(S);try{await navigator.clipboard.writeText(t);alert("پشتیبان کپی شد")}catch(e){prompt("کپی:",t)}};
+$("csv").onclick=()=>{let lines=["type,date,cat,sub,payer,amount,note,to,due,by,done"];S.entries.forEach(e=>lines.push(["pay",e.date,e.cat,e.sub,e.payer,e.amt,JSON.stringify(e.note||""),"","","",""].join(",")));S.cheques.forEach(c=>lines.push(["cheque","","","","",c.amt,JSON.stringify(c.note||""),c.to,c.due,c.by,c.done].join(",")));const blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="pardakht-"+today()+".csv";a.click()};
 $("rs").onclick=()=>{if(!isAdmin())return;$("dlg").style.display="flex";$("dtx").value=""};
 $("dno").onclick=()=>{$("dlg").style.display="none"};
-$("dok").onclick=()=>{try{const o=JSON.parse($("dtx").value);if(!o||!Array.isArray(o.entries)){alert("فرمت نادرست");return}S=o;S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};save();render();renderC();$("dlg").style.display="none";alert("بازیابی شد: "+S.entries.length+" پرداخت، "+(S.cheques||[]).length+" چک")}catch(e){alert("JSON نامعتبر")}};
-$("clr").onclick=()=>{if(!isAdmin())return;if(confirm("همه پاک شود؟")){S={entries:[],map:{},cheques:[]};save();render();renderC()}};
+$("dok").onclick=()=>{try{const o=JSON.parse($("dtx").value);if(!o||!Array.isArray(o.entries)){alert("فرمت نادرست");return}S=o;S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};save();render();renderC();updateWarn();$("dlg").style.display="none";alert("بازیابی شد: "+S.entries.length+" پرداخت، "+(S.cheques||[]).length+" چک")}catch(e){alert("JSON نامعتبر")}};
+$("clr").onclick=()=>{if(!isAdmin())return;if(confirm("همه پاک شود؟")){S={entries:[],map:{},cheques:[]};save();render();renderC();updateWarn()}};
 </script>
 </body>
 </html>
