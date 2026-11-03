@@ -5,125 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>دفتر پرداخت‌ها</title>
 <meta name="theme-color" content="#0f766e">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f0fdfa;--bg2:#ccfbf1;--fg:#134e4a;--mut:#5b7a74;
-  --card:#ffffff;--line:#99f6e4;--ac:#0f766e;--ac2:#14b8a6;
-  --acs:#ccfbf1;--red:#e11d48;--warn:#ea580c;
-  --sh:0 4px 20px rgba(15,118,110,.08);--r:18px;
-}
+:root{--fg:#134e4a;--mut:#5b7a74;--card:#fff;--ac:#0f766e;--ac2:#14b8a6;--acs:#ccfbf1;--red:#e11d48;--warn:#ea580c;--sh:0 4px 20px rgba(15,118,110,.08);--r:18px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;overflow-x:hidden}
-body{
-  background:linear-gradient(180deg,#f0fdfa 0%,#e6fffa 40%,#f0fdfa 100%);
-  color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;
-  min-height:100vh;line-height:1.55;
-  padding-bottom:max(20px,env(safe-area-inset-bottom));
-}
-.shell{max-width:430px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden}
-.header{
-  background:linear-gradient(135deg,#0f766e 0%,#14b8a6 100%);
-  color:#fff;padding:14px 16px calc(14px + env(safe-area-inset-top,0px));
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  position:sticky;top:0;z-index:50;
-  box-shadow:0 4px 24px rgba(15,118,110,.3);
-}
-.header h1{font-size:17px;margin:0;font-weight:700;letter-spacing:-.2px}
+html,body{margin:0;padding:0}
+body{background:linear-gradient(180deg,#f0fdfa 0%,#e6fffa 40%,#f0fdfa 100%);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;min-height:100vh;line-height:1.55;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+.shell{max-width:430px;margin:0 auto;min-height:100vh;position:relative}
+.header{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 4px 24px rgba(15,118,110,.3);overflow:visible}
+.header h1{font-size:17px;margin:0;font-weight:700}
 .header .sub{font-size:11px;opacity:.85;margin-top:2px}
-.icon-btn{
-  width:40px;height:40px;border-radius:12px;border:0;cursor:pointer;
-  background:rgba(255,255,255,.18);color:#fff;font-size:18px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:0;cursor:pointer;background:rgba(255,255,255,.18);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .badge{font-size:10px;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:999px;margin-right:6px;font-weight:600}
 .menu-wrap{position:relative;flex-shrink:0}
-#gmenu{
-  position:absolute;top:calc(100% + 8px);right:0;
-  background:#fff;border-radius:16px;min-width:210px;
-  box-shadow:0 12px 40px rgba(15,118,110,.18),0 0 0 1px rgba(15,118,110,.06);
-  padding:6px;z-index:100;display:none;
-}
+#gmenu{position:absolute;top:calc(100% + 8px);left:0;background:#fff;border-radius:16px;min-width:220px;width:max-content;box-shadow:0 12px 40px rgba(15,118,110,.18),0 0 0 1px rgba(15,118,110,.06);padding:6px;z-index:100;display:none;white-space:nowrap}
 #gmenu.open{display:block}
-#gmenu button{
-  display:flex;align-items:center;gap:10px;width:100%;text-align:right;
-  background:transparent;color:var(--fg);padding:12px 14px;border:0;
-  border-radius:12px;cursor:pointer;font:inherit;font-size:14px;font-weight:500;
-}
+#gmenu button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:transparent;color:var(--fg);padding:12px 14px;border:0;border-radius:12px;cursor:pointer;font:inherit;font-size:14px;font-weight:500;white-space:nowrap}
 #gmenu button:active{background:var(--acs)}
 #gmenu .danger{color:var(--red)}
-.pad{padding:14px 16px;overflow-x:hidden}
-.card{
-  background:var(--card);border-radius:var(--r);padding:16px;
-  margin-bottom:14px;box-shadow:var(--sh);
-  border:1px solid rgba(153,246,228,.5);overflow:hidden;
-}
-.sec{font-size:12px;color:var(--mut);font-weight:600;margin-bottom:12px;letter-spacing:.3px}
-.back{
-  background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;
-  cursor:pointer;padding:4px 0 14px;font-size:14px;
-}
-.fm{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fm .w{grid-column:1/-1}
-input,select,textarea{
-  font:inherit;border-radius:14px;padding:13px 14px;
-  border:1.5px solid #d1fae5;background:#f8fffc;color:var(--fg);
-  width:100%;min-width:0;font-size:14px;
-  text-overflow:ellipsis;
-}
-select{
-  padding-left:28px;padding-right:12px;
-  appearance:none;-webkit-appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%230f766e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:left 12px center;
-}
-input:focus,select:focus,textarea:focus{
-  outline:none;border-color:var(--ac2);background:#fff;
-  box-shadow:0 0 0 3px rgba(20,184,166,.15);
-}
-button.primary{
-  background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:0;
-  font-weight:700;cursor:pointer;width:100%;padding:14px;border-radius:14px;
-  font-size:15px;box-shadow:0 6px 20px rgba(15,118,110,.25);
-}
-button.primary:active{filter:brightness(.95)}
+.pad{padding:14px 16px}
+.card{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid rgba(153,246,228,.5);overflow:hidden}
+.sec{font-size:12px;color:var(--mut);font-weight:600;margin-bottom:12px}
+.back{background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;cursor:pointer;padding:4px 0 14px;font-size:14px}
+.fm{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fm .w{grid-column:1/-1}
+input,select,textarea{font:inherit;border-radius:14px;padding:13px 14px;border:1.5px solid #d1fae5;background:#f8fffc;color:var(--fg);width:100%;min-width:0;font-size:14px}
+select{padding-left:28px;padding-right:12px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%230f766e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac2);background:#fff;box-shadow:0 0 0 3px rgba(20,184,166,.15)}
+button.primary{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:0;font-weight:700;cursor:pointer;width:100%;padding:14px;border-radius:14px;font-size:15px;box-shadow:0 6px 20px rgba(15,118,110,.25)}
 button.g{background:#fff;color:var(--fg);border:1.5px solid #d1fae5;cursor:pointer;border-radius:12px}
 button.sm{padding:7px 12px;font-size:12px;font-weight:600}
 button.del{color:var(--red)!important}
 .menu{display:flex;flex-direction:column;gap:12px;padding:8px 16px 20px}
-.mbtn{
-  display:flex;align-items:center;gap:14px;padding:18px 18px;
-  border:0;border-radius:20px;cursor:pointer;font:inherit;font-weight:700;
-  font-size:15px;color:#fff;text-align:right;width:100%;
-  box-shadow:0 8px 24px rgba(0,0,0,.12);position:relative;overflow:hidden;
-}
-.mbtn::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(120deg,rgba(255,255,255,.15),transparent 50%);
-  pointer-events:none;
-}
+.mbtn{display:flex;align-items:center;gap:14px;padding:18px;border:0;border-radius:20px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;color:#fff;text-align:right;width:100%;box-shadow:0 8px 24px rgba(0,0,0,.12);position:relative;overflow:hidden}
+.mbtn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.15),transparent 50%);pointer-events:none}
 .mbtn:active{transform:scale(.98)}
-.mbtn .ico{
-  width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.22);
-  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
-}
+.mbtn .ico{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .mbtn.b1{background:linear-gradient(135deg,#0f766e,#14b8a6)}
 .mbtn.b2{background:linear-gradient(135deg,#0e7490,#06b6d4)}
 .mbtn.b3{background:linear-gradient(135deg,#047857,#10b981)}
 .mbtn.b4{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-.st{
-  background:var(--card);border-radius:16px;padding:14px 8px;text-align:center;
-  box-shadow:var(--sh);border:1px solid rgba(153,246,228,.4);
-}
+.st{background:var(--card);border-radius:16px;padding:14px 8px;text-align:center;box-shadow:var(--sh);border:1px solid rgba(153,246,228,.4)}
 .st span{display:block;color:var(--mut);font-size:10px;margin-bottom:4px;font-weight:600}
-.st b{font-size:13px;font-weight:700;word-break:break-all;color:var(--fg)}
-.st.m{background:linear-gradient(135deg,#ccfbf1,#99f6e4);border-color:transparent}
-.st.m b{color:#0f766e}
+.st b{font-size:13px;font-weight:700;word-break:break-all}
+.st.m{background:linear-gradient(135deg,#ccfbf1,#99f6e4);border-color:transparent}.st.m b{color:#0f766e}
 .list{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid rgba(153,246,228,.4)}
-.item{padding:14px;border-bottom:1px solid #f0fdfa;background:#fff}
+.item{padding:14px;border-bottom:1px solid #f0fdfa}
 .item:last-child{border-bottom:0}
 .item .title{font-weight:600;font-size:14px}
 .item .meta{color:var(--mut);font-size:12px;margin-top:2px}
@@ -131,160 +58,35 @@ button.del{color:var(--red)!important}
 .item .acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .empty{color:var(--mut);text-align:center;padding:40px 20px;font-size:14px}
 .empty button{margin-top:14px;max-width:200px;margin-inline:auto;display:block}
-.date-sep{background:transparent;color:var(--mut);font-size:12px;font-weight:700;padding:10px 4px 6px}
-.ck{
-  background:var(--card);border:1px solid rgba(153,246,228,.4);border-radius:16px;
-  padding:14px;margin-bottom:10px;box-shadow:var(--sh);
-}
+.date-sep{color:var(--mut);font-size:12px;font-weight:700;padding:10px 4px 6px}
+.ck{background:var(--card);border:1px solid rgba(153,246,228,.4);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:var(--sh)}
 .ck.od{border-color:#fecdd3;background:#fff1f2}
 .cks{color:var(--mut);font-size:12px;margin-top:4px}
 .fl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .fl input,.fl select{min-width:0}
-.warn{
-  background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;
-  border-radius:16px;padding:14px 16px;margin:12px 16px 4px;color:#9a3412;
-  font-size:13px;display:none;cursor:pointer;box-shadow:var(--sh);
-}
+.warn{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:16px;padding:14px 16px;margin:12px 16px 4px;color:#9a3412;font-size:13px;display:none;cursor:pointer;box-shadow:var(--sh)}
 .warn b{color:var(--warn)}
-#login{
-  position:fixed;inset:0;display:none;align-items:center;justify-content:center;
-  z-index:200;padding:24px;
-  background:linear-gradient(160deg,#0f766e 0%,#134e4a 50%,#0f766e 100%);
-}
-.dbox{
-  background:#fff;border-radius:24px;padding:28px 22px;width:100%;max-width:340px;
-  box-shadow:0 24px 60px rgba(0,0,0,.2);
-}
-#dlg{
-  position:fixed;inset:0;background:rgba(15,60,55,.45);display:none;
-  align-items:center;justify-content:center;z-index:200;padding:20px;
-  backdrop-filter:blur(4px);
-}
-#dtx,#lpw{
-  width:100%;margin:12px 0;font:inherit;color:var(--fg);background:#f0fdfa;
-  border:1.5px solid #99f6e4;border-radius:14px;padding:14px;
-}
+#login{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:24px;background:linear-gradient(160deg,#0f766e,#134e4a,#0f766e)}
+.dbox{background:#fff;border-radius:24px;padding:28px 22px;width:100%;max-width:340px;box-shadow:0 24px 60px rgba(0,0,0,.2)}
+#dlg{position:fixed;inset:0;background:rgba(15,60,55,.45);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;backdrop-filter:blur(4px)}
+#dtx,#lpw{width:100%;margin:12px 0;font:inherit;color:var(--fg);background:#f0fdfa;border:1.5px solid #99f6e4;border-radius:14px;padding:14px}
 .hide-guest .admin-only{display:none!important}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 </style>
 </head>
 <body>
 <div class="shell">
-<div id="login">
-  <div class="dbox">
-    <div style="text-align:center;margin-bottom:12px">
-      <div style="width:64px;height:64px;margin:0 auto 12px;border-radius:20px;background:linear-gradient(135deg,#0f766e,#14b8a6);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 8px 24px rgba(15,118,110,.3)">💰</div>
-      <div style="font-weight:700;font-size:20px;color:var(--ac)">دفتر پرداخت‌ها</div>
-      <div style="font-size:13px;color:var(--mut);margin-top:6px">رمز میهمان یا مدیر را وارد کنید</div>
-    </div>
-    <input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password">
-    <div id="lerr" style="color:var(--red);font-size:13px;min-height:18px;margin-bottom:4px"></div>
-    <button class="primary" id="lgo">ورود</button>
-  </div>
-</div>
-
+<div id="login"><div class="dbox"><div style="text-align:center;margin-bottom:12px"><div style="width:64px;height:64px;margin:0 auto 12px;border-radius:20px;background:linear-gradient(135deg,#0f766e,#14b8a6);display:flex;align-items:center;justify-content:center;font-size:28px">💰</div><div style="font-weight:700;font-size:20px;color:var(--ac)">دفتر پرداخت‌ها</div><div style="font-size:13px;color:var(--mut);margin-top:6px">رمز میهمان یا مدیر</div></div><input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password"><div id="lerr" style="color:var(--red);font-size:13px;min-height:18px"></div><button class="primary" id="lgo">ورود</button></div></div>
 <div id="app" style="display:none">
-<div class="header">
-  <div style="text-align:right;min-width:0;flex:1">
-    <h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1>
-    <div class="sub" id="hdrSub">منوی اصلی</div>
-  </div>
-  <div class="menu-wrap">
-    <button class="icon-btn" id="gm" aria-label="منو">⋮</button>
-    <div id="gmenu">
-      <button id="bk">📥 پشتیبان (کپی)</button>
-      <button id="csv">📊 خروجی CSV</button>
-      <button id="rs" class="admin-only">📤 بازیابی پشتیبان</button>
-      <button id="clr" class="danger admin-only">🗑 پاک کردن همه</button>
-      <button id="logout">🚪 خروج</button>
-    </div>
-  </div>
+<div class="header"><div style="text-align:right;min-width:0;flex:1"><h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1><div class="sub" id="hdrSub">منوی اصلی</div></div><div class="menu-wrap"><button class="icon-btn" id="gm">⋮</button><div id="gmenu"><button id="bk">📥 پشتیبان (کپی)</button><button id="csv">📊 خروجی CSV</button><button id="rs" class="admin-only">📤 بازیابی پشتیبان</button><button id="clr" class="danger admin-only">🗑 پاک کردن همه</button><button id="logout">🚪 خروج</button></div></div></div>
+<div id="pgHome"><div class="warn" id="ckWarn"></div><div class="menu"><button class="mbtn b1" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button><button class="mbtn b2" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button><button class="mbtn b3" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button><button class="mbtn b4" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button></div></div>
+<div id="pgPay" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="card"><div class="sec" id="formTitle">ثبت پرداخت جدید</div><div class="fm"><input id="fc" placeholder="شاخه"><input id="fs" placeholder="زیرشاخه"><input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)"><select id="fp"><option>سلطانی</option><option>اکبری</option></select><input id="fd" type="date" class="w"><input id="fn" class="w" placeholder="توضیحات"><button class="primary w" id="fadd">ثبت پرداخت</button><button class="g w" id="fcancel" style="display:none;padding:12px">لغو ویرایش</button></div></div></div>
+<div id="pgCk" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="card"><div class="sec" id="cformTitle">ثبت چک جدید</div><div class="fm"><input id="ct" class="w" placeholder="گیرنده چک"><input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک"><input id="cd" type="date" class="w"><select id="cb" class="w"><option>سلطانی</option><option>اکبری</option></select><input id="cn" class="w" placeholder="توضیحات"><button class="primary w" id="cadd">ثبت چک</button><button class="g w" id="ccancel" style="display:none;padding:12px">لغو ویرایش</button></div></div></div>
+<div id="pgPayList" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="stats"><div class="st"><span>سلطانی</span><b id="sSol">۰</b></div><div class="st"><span>اکبری</span><b id="sAkb">۰</b></div><div class="st m"><span>جمع کل</span><b id="sAll">۰</b></div></div><div class="card" style="padding:12px"><div class="fl" style="margin:0"><select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="month">این ماه</option></select><select id="fpay"><option value="">همه</option><option>سلطانی</option><option>اکبری</option></select><input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو..."></div></div><div class="list" id="list"></div><div id="empty" class="empty">پرداختی ثبت نشده.<br><button class="primary" id="emptyPay">ثبت اولین پرداخت</button></div></div>
+<div id="pgCkList" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="stats"><div class="st"><span>چک سلطانی</span><b id="cSol">۰</b></div><div class="st"><span>چک اکبری</span><b id="cAkb">۰</b></div><div class="st m"><span>جمع در انتظار</span><b id="cAll">۰</b></div></div><div class="fl"><select id="cflt"><option value="pending">در انتظار</option><option value="all">همه</option><option value="done">وصول‌شده</option></select><input id="cq" placeholder="جستجو..."></div><div id="clist"></div><div id="cempty" class="empty" style="display:none">چکی نیست.<br><button class="primary" id="emptyCk">ثبت اولین چک</button></div></div>
 </div>
-
-<div id="pgHome">
-  <div class="warn" id="ckWarn"></div>
-  <div class="menu">
-    <button class="mbtn b1" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button>
-    <button class="mbtn b2" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button>
-    <button class="mbtn b3" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button>
-    <button class="mbtn b4" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button>
-  </div>
+<div id="dlg"><div class="dbox"><div style="font-weight:700;font-size:16px">بازیابی پشتیبان</div><textarea id="dtx" placeholder="JSON پشتیبان" style="min-height:110px;width:100%;resize:vertical"></textarea><div class="row"><button class="primary" id="dok" style="flex:1">تأیید</button><button class="g" id="dno" style="flex:1;padding:12px">لغو</button></div></div></div>
 </div>
-
-<div id="pgPay" class="pad" style="display:none">
-  <button class="back" data-back>→ بازگشت</button>
-  <div class="card">
-    <div class="sec" id="formTitle">ثبت پرداخت جدید</div>
-    <div class="fm">
-      <input id="fc" placeholder="شاخه">
-      <input id="fs" placeholder="زیرشاخه">
-      <input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)">
-      <select id="fp"><option>سلطانی</option><option>اکبری</option></select>
-      <input id="fd" type="date" class="w">
-      <input id="fn" class="w" placeholder="توضیحات (اختیاری)">
-      <button class="primary w" id="fadd">ثبت پرداخت</button>
-      <button class="g w" id="fcancel" style="display:none;padding:12px">لغو ویرایش</button>
-    </div>
-  </div>
-</div>
-
-<div id="pgCk" class="pad" style="display:none">
-  <button class="back" data-back>→ بازگشت</button>
-  <div class="card">
-    <div class="sec" id="cformTitle">ثبت چک جدید</div>
-    <div class="fm">
-      <input id="ct" class="w" placeholder="گیرنده چک">
-      <input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک">
-      <input id="cd" type="date" class="w">
-      <select id="cb" class="w"><option>سلطانی</option><option>اکبری</option></select>
-      <input id="cn" class="w" placeholder="توضیحات">
-      <button class="primary w" id="cadd">ثبت چک</button>
-      <button class="g w" id="ccancel" style="display:none;padding:12px">لغو ویرایش</button>
-    </div>
-  </div>
-</div>
-
-<div id="pgPayList" class="pad" style="display:none">
-  <button class="back" data-back>→ بازگشت</button>
-  <div class="stats">
-    <div class="st"><span>سلطانی</span><b id="sSol">۰</b></div>
-    <div class="st"><span>اکبری</span><b id="sAkb">۰</b></div>
-    <div class="st m"><span>جمع کل</span><b id="sAll">۰</b></div>
-  </div>
-  <div class="card" style="padding:12px">
-    <div class="fl" style="margin:0">
-      <select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="month">این ماه</option></select>
-      <select id="fpay"><option value="">همه</option><option>سلطانی</option><option>اکبری</option></select>
-      <input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو...">
-    </div>
-  </div>
-  <div class="list" id="list"></div>
-  <div id="empty" class="empty">پرداختی ثبت نشده.<br><button class="primary" id="emptyPay">ثبت اولین پرداخت</button></div>
-</div>
-
-<div id="pgCkList" class="pad" style="display:none">
-  <button class="back" data-back>→ بازگشت</button>
-  <div class="stats">
-    <div class="st"><span>چک سلطانی</span><b id="cSol">۰</b></div>
-    <div class="st"><span>چک اکبری</span><b id="cAkb">۰</b></div>
-    <div class="st m"><span>جمع در انتظار</span><b id="cAll">۰</b></div>
-  </div>
-  <div class="fl">
-    <select id="cflt"><option value="pending">در انتظار</option><option value="all">همه</option><option value="done">وصول‌شده</option></select>
-    <input id="cq" placeholder="جستجو...">
-  </div>
-  <div id="clist"></div>
-  <div id="cempty" class="empty" style="display:none">چکی نیست.<br><button class="primary" id="emptyCk">ثبت اولین چک</button></div>
-</div>
-</div>
-
-<div id="dlg"><div class="dbox">
-  <div style="font-weight:700;font-size:16px">بازیابی پشتیبان</div>
-  <textarea id="dtx" placeholder="JSON پشتیبان را اینجا بچسبان" style="min-height:110px;width:100%;resize:vertical"></textarea>
-  <div class="row"><button class="primary" id="dok" style="flex:1">تأیید</button><button class="g" id="dno" style="flex:1;padding:12px">لغو</button></div>
-</div></div>
-</div>
-
 <script>
 const KEY="pardakht-v1",ROLE_KEY="pardakht-role",PASS_GUEST="M1406",PASS_ADMIN="M136810";
 let role=null,S={entries:[],map:{},cheques:[]},editPay=null,editCk=null;
@@ -298,137 +100,30 @@ const today=()=>iso(new Date());
 const pdate=d=>{try{return new Date(d+"T12:00:00").toLocaleDateString("fa-IR-u-ca-persian")}catch(e){return d||""}};
 const isAdmin=()=>role==="admin";
 const pages=["pgHome","pgPay","pgCk","pgPayList","pgCkList"];
-
-function enterApp(r,persist){
-  role=r;if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}
-  $("login").style.display="none";$("app").style.display="block";
-  $("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";
-  document.body.classList.toggle("hide-guest",r!=="admin");show("pgHome");
-}
-function logout(){
-  role=null;try{localStorage.removeItem(ROLE_KEY)}catch(e){}
-  $("app").style.display="none";$("login").style.display="flex";$("lpw").value="";$("lerr").textContent="";
-  $("gmenu").classList.remove("open");
-}
+function enterApp(r,persist){role=r;if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}$("login").style.display="none";$("app").style.display="block";$("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";document.body.classList.toggle("hide-guest",r!=="admin");show("pgHome")}
+function logout(){role=null;try{localStorage.removeItem(ROLE_KEY)}catch(e){}$("app").style.display="none";$("login").style.display="flex";$("lpw").value="";$("lerr").textContent="";$("gmenu").classList.remove("open")}
 (function(){try{const r=localStorage.getItem(ROLE_KEY);if(r==="admin"||r==="guest"){enterApp(r,false);return}}catch(e){}$("login").style.display="flex"})();
-
-$("lgo").onclick=()=>{const p=$("lpw").value.trim();if(p===PASS_ADMIN)enterApp("admin");else if(p===PASS_GUEST)enterApp("guest");else{$("lerr").textContent="رمز نادرست است";$("lpw").value=""}};
-$("lpw").onkeydown=e=>{if(e.key==="Enter")$("lgo").click()};
-$("logout").onclick=logout;
-
-function show(id){
-  pages.forEach(p=>$(p).style.display=p===id?"":"none");
-  const titles={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"};
-  $("hdrSub").textContent=titles[id]||"";
-  $("gmenu").classList.remove("open");
-  if(id==="pgHome")updateWarn();if(id==="pgPayList")render();if(id==="pgCkList")renderC();
-}
-$("goPay").onclick=()=>{resetPayForm();show("pgPay")};
-$("goCk").onclick=()=>{resetCkForm();show("pgCk")};
-$("goPayList").onclick=()=>show("pgPayList");
-$("goCkList").onclick=()=>show("pgCkList");
+$("lgo").onclick=()=>{const p=$("lpw").value.trim();if(p===PASS_ADMIN)enterApp("admin");else if(p===PASS_GUEST)enterApp("guest");else{$("lerr").textContent="رمز نادرست";$("lpw").value=""}};
+$("lpw").onkeydown=e=>{if(e.key==="Enter")$("lgo").click()};$("logout").onclick=logout;
+function show(id){pages.forEach(p=>$(p).style.display=p===id?"":"none");const titles={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"};$("hdrSub").textContent=titles[id]||"";$("gmenu").classList.remove("open");if(id==="pgHome")updateWarn();if(id==="pgPayList")render();if(id==="pgCkList")renderC()}
+$("goPay").onclick=()=>{resetPayForm();show("pgPay")};$("goCk").onclick=()=>{resetCkForm();show("pgCk")};$("goPayList").onclick=()=>show("pgPayList");$("goCkList").onclick=()=>show("pgCkList");
 document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>show("pgHome"));
-$("emptyPay").onclick=()=>{resetPayForm();show("pgPay")};
-$("emptyCk").onclick=()=>{resetCkForm();show("pgCk")};
-
-$("gm").onclick=e=>{e.stopPropagation();$("gmenu").classList.toggle("open")};
-document.onclick=()=>$("gmenu").classList.remove("open");
-$("gmenu").onclick=e=>e.stopPropagation();
-
-function updateWarn(){
-  const t=today();
-  const late=S.cheques.filter(c=>!c.done&&c.due&&c.due<t);
-  const near=S.cheques.filter(c=>!c.done&&c.due&&c.due>=t&&c.due<=iso(new Date(Date.now()+7*864e5)));
-  const w=$("ckWarn");
-  if(!late.length&&!near.length){w.style.display="none";return}
-  w.style.display="block";let msg="";
-  if(late.length){const sum=late.reduce((s,c)=>s+(+c.amt||0),0);msg+=`⚠ ${late.length} چک سررسید گذشته — جمع <b>${fa(sum)}</b> تومان`}
-  if(near.length){const sum=near.reduce((s,c)=>s+(+c.amt||0),0);if(msg)msg+="<br>";msg+=`📅 ${near.length} چک تا ۷ روز آینده — جمع <b>${fa(sum)}</b> تومان`}
-  w.innerHTML=msg;w.onclick=()=>show("pgCkList");
-}
-
-function filtered(){
-  let a=S.entries.slice();
-  const fr=$("fr").value,fp=$("fpay").value,q=($("fq").value||"").trim();
-  const t=today(),ym=t.slice(0,7);
-  if(fr==="today")a=a.filter(e=>e.date===t);
-  if(fr==="month")a=a.filter(e=>(e.date||"").slice(0,7)===ym);
-  if(fp)a=a.filter(e=>e.payer===fp);
-  if(q)a=a.filter(e=>JSON.stringify(e).includes(q));
-  return a;
-}
-function resetPayForm(){
-  editPay=null;$("fc").value="";$("fs").value="";$("fa").value="";$("fn").value="";$("fd").value=today();
-  $("fadd").textContent="ثبت پرداخت";$("formTitle").textContent="ثبت پرداخت جدید";$("fcancel").style.display="none";
-}
-function render(){
-  let sol=0,akb=0,all=0;
-  S.entries.forEach(e=>{const a=+e.amt||0;all+=a;if(e.payer==="سلطانی")sol+=a;else if(e.payer==="اکبری")akb+=a});
-  $("sSol").textContent=fa(sol);$("sAkb").textContent=fa(akb);$("sAll").textContent=fa(all);
-  const list=$("list");list.innerHTML="";
-  const rows=filtered().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-  if(!rows.length){$("empty").style.display="block";list.style.display="none";return}
-  $("empty").style.display="none";list.style.display="block";
-  let lastDate="";
-  rows.forEach(e=>{
-    if(e.date!==lastDate){lastDate=e.date;const sep=document.createElement("div");sep.className="date-sep";sep.textContent=pdate(e.date);list.appendChild(sep)}
-    const d=document.createElement("div");d.className="item";
-    const acts=isAdmin()?`<div class="acts"><button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button></div>`:"";
-    d.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start;gap:10px"><div style="min-width:0;flex:1"><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div><div class="meta">${e.payer||""}${e.note?" · "+e.note:""}</div></div><div class="amt">${fa(e.amt)}</div></div>${acts}`;
-    if(isAdmin()){
-      d.querySelector('[data-a="ed"]').onclick=ev=>{ev.stopPropagation();editPay=e.id;$("fc").value=e.cat||"";$("fs").value=e.sub||"";$("fa").value=e.amt;$("fp").value=e.payer||"سلطانی";$("fn").value=e.note||"";$("fd").value=e.date||today();$("fadd").textContent="ذخیره تغییرات";$("formTitle").textContent="ویرایش پرداخت";$("fcancel").style.display="block";show("pgPay")};
-      d.querySelector('[data-a="del"]').onclick=ev=>{ev.stopPropagation();if(confirm("حذف این پرداخت؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}};
-    }
-    list.appendChild(d);
-  });
-}
-$("fr").onchange=$("fpay").onchange=$("fq").oninput=()=>render();
-$("fcancel").onclick=()=>resetPayForm();
-$("fadd").onclick=()=>{
-  const amt=parseFloat(String($("fa").value).replace(/[^\d.]/g,""));
-  if(!amt){alert("مبلغ را وارد کنید");return}
-  const dt=$("fd").value||today();
-  if(editPay){const e=S.entries.find(x=>x.id===editPay);if(e){e.cat=$("fc").value.trim()||"عمومی";e.sub=$("fs").value.trim()||"عمومی";e.amt=amt;e.payer=$("fp").value;e.note=$("fn").value.trim();e.date=dt}}
-  else{S.entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:dt,cat:$("fc").value.trim()||"عمومی",sub:$("fs").value.trim()||"عمومی",desc:"",amt,payer:$("fp").value,note:$("fn").value.trim()})}
-  resetPayForm();save();show("pgPayList");
-};
-
+$("emptyPay").onclick=()=>{resetPayForm();show("pgPay")};$("emptyCk").onclick=()=>{resetCkForm();show("pgCk")};
+$("gm").onclick=e=>{e.stopPropagation();$("gmenu").classList.toggle("open")};document.onclick=()=>$("gmenu").classList.remove("open");$("gmenu").onclick=e=>e.stopPropagation();
+function updateWarn(){const t=today();const late=S.cheques.filter(c=>!c.done&&c.due&&c.due<t);const near=S.cheques.filter(c=>!c.done&&c.due&&c.due>=t&&c.due<=iso(new Date(Date.now()+7*864e5)));const w=$("ckWarn");if(!late.length&&!near.length){w.style.display="none";return}w.style.display="block";let msg="";if(late.length){const sum=late.reduce((s,c)=>s+(+c.amt||0),0);msg+=`⚠ ${late.length} چک سررسید گذشته — جمع <b>${fa(sum)}</b> تومان`}if(near.length){const sum=near.reduce((s,c)=>s+(+c.amt||0),0);if(msg)msg+="<br>";msg+=`📅 ${near.length} چک تا ۷ روز آینده — جمع <b>${fa(sum)}</b> تومان`}w.innerHTML=msg;w.onclick=()=>show("pgCkList")}
+function filtered(){let a=S.entries.slice();const fr=$("fr").value,fp=$("fpay").value,q=($("fq").value||"").trim();const t=today(),ym=t.slice(0,7);if(fr==="today")a=a.filter(e=>e.date===t);if(fr==="month")a=a.filter(e=>(e.date||"").slice(0,7)===ym);if(fp)a=a.filter(e=>e.payer===fp);if(q)a=a.filter(e=>JSON.stringify(e).includes(q));return a}
+function resetPayForm(){editPay=null;$("fc").value="";$("fs").value="";$("fa").value="";$("fn").value="";$("fd").value=today();$("fadd").textContent="ثبت پرداخت";$("formTitle").textContent="ثبت پرداخت جدید";$("fcancel").style.display="none"}
+function render(){let sol=0,akb=0,all=0;S.entries.forEach(e=>{const a=+e.amt||0;all+=a;if(e.payer==="سلطانی")sol+=a;else if(e.payer==="اکبری")akb+=a});$("sSol").textContent=fa(sol);$("sAkb").textContent=fa(akb);$("sAll").textContent=fa(all);const list=$("list");list.innerHTML="";const rows=filtered().sort((a,b)=>(b.date||"").localeCompare(a.date||""));if(!rows.length){$("empty").style.display="block";list.style.display="none";return}$("empty").style.display="none";list.style.display="block";let lastDate="";rows.forEach(e=>{if(e.date!==lastDate){lastDate=e.date;const sep=document.createElement("div");sep.className="date-sep";sep.textContent=pdate(e.date);list.appendChild(sep)}const d=document.createElement("div");d.className="item";const acts=isAdmin()?`<div class="acts"><button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button></div>`:"";d.innerHTML=`<div class="row" style="justify-content:space-between;align-items:flex-start;gap:10px"><div style="min-width:0;flex:1"><div class="title">${e.cat||""}${e.sub?" · "+e.sub:""}</div><div class="meta">${e.payer||""}${e.note?" · "+e.note:""}</div></div><div class="amt">${fa(e.amt)}</div></div>${acts}`;if(isAdmin()){d.querySelector('[data-a="ed"]').onclick=ev=>{ev.stopPropagation();editPay=e.id;$("fc").value=e.cat||"";$("fs").value=e.sub||"";$("fa").value=e.amt;$("fp").value=e.payer||"سلطانی";$("fn").value=e.note||"";$("fd").value=e.date||today();$("fadd").textContent="ذخیره تغییرات";$("formTitle").textContent="ویرایش پرداخت";$("fcancel").style.display="block";show("pgPay")};d.querySelector('[data-a="del"]').onclick=ev=>{ev.stopPropagation();if(confirm("حذف؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();render()}}}list.appendChild(d)})}
+$("fr").onchange=$("fpay").onchange=$("fq").oninput=()=>render();$("fcancel").onclick=()=>resetPayForm();
+$("fadd").onclick=()=>{const amt=parseFloat(String($("fa").value).replace(/[^\d.]/g,""));if(!amt){alert("مبلغ را وارد کنید");return}const dt=$("fd").value||today();if(editPay){const e=S.entries.find(x=>x.id===editPay);if(e){e.cat=$("fc").value.trim()||"عمومی";e.sub=$("fs").value.trim()||"عمومی";e.amt=amt;e.payer=$("fp").value;e.note=$("fn").value.trim();e.date=dt}}else{S.entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:dt,cat:$("fc").value.trim()||"عمومی",sub:$("fs").value.trim()||"عمومی",desc:"",amt,payer:$("fp").value,note:$("fn").value.trim()})}resetPayForm();save();show("pgPayList")};
 function resetCkForm(){editCk=null;$("ct").value="";$("ca").value="";$("cd").value="";$("cn").value="";$("cadd").textContent="ثبت چک";$("cformTitle").textContent="ثبت چک جدید";$("ccancel").style.display="none"}
-function renderC(){
-  let sol=0,akb=0,all=0;
-  S.cheques.filter(c=>!c.done).forEach(c=>{const a=+c.amt||0;all+=a;if(c.by==="سلطانی")sol+=a;else if(c.by==="اکبری")akb+=a});
-  $("cSol").textContent=fa(sol);$("cAkb").textContent=fa(akb);$("cAll").textContent=fa(all);
-  const f=$("cflt").value,q=($("cq").value||"").trim();
-  let a=S.cheques.slice();
-  if(f==="pending")a=a.filter(c=>!c.done);if(f==="done")a=a.filter(c=>c.done);
-  if(q)a=a.filter(c=>JSON.stringify(c).includes(q));
-  a.sort((x,y)=>(x.due||"").localeCompare(y.due||""));
-  const box=$("clist");box.innerHTML="";$("cempty").style.display=a.length?"none":"block";if(!a.length)return;
-  const t=today();
-  a.forEach(c=>{
-    const d=document.createElement("div");const late=c.due&&c.due<t&&!c.done;d.className="ck"+(late?" od":"");
-    const adminBtns=isAdmin()?`<button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button>`:"";
-    d.innerHTML=`<div class="row" style="justify-content:space-between;gap:8px"><b style="min-width:0">${c.to||""}</b><span class="amt">${fa(c.amt)}</span></div><div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":late?" · سررسید گذشته":""}${c.note?" · "+c.note:""}</div><div class="row" style="margin-top:10px"><button class="g sm" data-a="done">${c.done?"برگشت از وصول":"وصول شد"}</button>${adminBtns}</div>`;
-    d.querySelector('[data-a="done"]').onclick=()=>{c.done=!c.done;save();renderC();updateWarn()};
-    if(isAdmin()){d.querySelector('[data-a="ed"]').onclick=()=>{editCk=c.id;$("ct").value=c.to||"";$("ca").value=c.amt;$("cd").value=c.due||"";$("cb").value=c.by||"سلطانی";$("cn").value=c.note||"";$("cadd").textContent="ذخیره تغییرات";$("cformTitle").textContent="ویرایش چک";$("ccancel").style.display="block";show("pgCk")};d.querySelector('[data-a="del"]').onclick=()=>{if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC();updateWarn()}}}
-    box.appendChild(d);
-  });
-}
-$("cflt").onchange=$("cq").oninput=()=>renderC();
-$("ccancel").onclick=()=>resetCkForm();
-$("cadd").onclick=()=>{
-  const to=$("ct").value.trim(),amt=parseFloat(String($("ca").value).replace(/[^\d.]/g,"")),due=$("cd").value;
-  if(!to||!amt||!due){alert("گیرنده، مبلغ و تاریخ را وارد کنید");return}
-  if(editCk){const c=S.cheques.find(x=>x.id===editCk);if(c){c.to=to;c.amt=amt;c.due=due;c.by=$("cb").value;c.note=$("cn").value.trim()}}
-  else{S.cheques.push({id:Date.now()+Math.random(),to,amt,due,by:$("cb").value,note:$("cn").value.trim(),done:false})}
-  resetCkForm();save();show("pgCkList");
-};
-
+function renderC(){let sol=0,akb=0,all=0;S.cheques.filter(c=>!c.done).forEach(c=>{const a=+c.amt||0;all+=a;if(c.by==="سلطانی")sol+=a;else if(c.by==="اکبری")akb+=a});$("cSol").textContent=fa(sol);$("cAkb").textContent=fa(akb);$("cAll").textContent=fa(all);const f=$("cflt").value,q=($("cq").value||"").trim();let a=S.cheques.slice();if(f==="pending")a=a.filter(c=>!c.done);if(f==="done")a=a.filter(c=>c.done);if(q)a=a.filter(c=>JSON.stringify(c).includes(q));a.sort((x,y)=>(x.due||"").localeCompare(y.due||""));const box=$("clist");box.innerHTML="";$("cempty").style.display=a.length?"none":"block";if(!a.length)return;const t=today();a.forEach(c=>{const d=document.createElement("div");const late=c.due&&c.due<t&&!c.done;d.className="ck"+(late?" od":"");const adminBtns=isAdmin()?`<button class="g sm" data-a="ed">ویرایش</button><button class="g sm del" data-a="del">حذف</button>`:"";d.innerHTML=`<div class="row" style="justify-content:space-between;gap:8px"><b style="min-width:0">${c.to||""}</b><span class="amt">${fa(c.amt)}</span></div><div class="cks">${pdate(c.due)} · ${c.by||""}${c.done?" · وصول‌شده":late?" · سررسید گذشته":""}${c.note?" · "+c.note:""}</div><div class="row" style="margin-top:10px"><button class="g sm" data-a="done">${c.done?"برگشت از وصول":"وصول شد"}</button>${adminBtns}</div>`;d.querySelector('[data-a="done"]').onclick=()=>{c.done=!c.done;save();renderC();updateWarn()};if(isAdmin()){d.querySelector('[data-a="ed"]').onclick=()=>{editCk=c.id;$("ct").value=c.to||"";$("ca").value=c.amt;$("cd").value=c.due||"";$("cb").value=c.by||"سلطانی";$("cn").value=c.note||"";$("cadd").textContent="ذخیره تغییرات";$("cformTitle").textContent="ویرایش چک";$("ccancel").style.display="block";show("pgCk")};d.querySelector('[data-a="del"]').onclick=()=>{if(confirm("حذف چک؟")){S.cheques=S.cheques.filter(x=>x.id!==c.id);save();renderC();updateWarn()}}}box.appendChild(d)})}
+$("cflt").onchange=$("cq").oninput=()=>renderC();$("ccancel").onclick=()=>resetCkForm();
+$("cadd").onclick=()=>{const to=$("ct").value.trim(),amt=parseFloat(String($("ca").value).replace(/[^\d.]/g,"")),due=$("cd").value;if(!to||!amt||!due){alert("گیرنده، مبلغ و تاریخ را وارد کنید");return}if(editCk){const c=S.cheques.find(x=>x.id===editCk);if(c){c.to=to;c.amt=amt;c.due=due;c.by=$("cb").value;c.note=$("cn").value.trim()}}else{S.cheques.push({id:Date.now()+Math.random(),to,amt,due,by:$("cb").value,note:$("cn").value.trim(),done:false})}resetCkForm();save();show("pgCkList")};
 $("bk").onclick=async()=>{const t=JSON.stringify(S);try{await navigator.clipboard.writeText(t);alert("پشتیبان کپی شد")}catch(e){prompt("کپی:",t)}};
 $("csv").onclick=()=>{let lines=["type,date,cat,sub,payer,amount,note,to,due,by,done"];S.entries.forEach(e=>lines.push(["pay",e.date,e.cat,e.sub,e.payer,e.amt,JSON.stringify(e.note||""),"","","",""].join(",")));S.cheques.forEach(c=>lines.push(["cheque","","","","",c.amt,JSON.stringify(c.note||""),c.to,c.due,c.by,c.done].join(",")));const blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="pardakht-"+today()+".csv";a.click()};
-$("rs").onclick=()=>{if(!isAdmin())return;$("dlg").style.display="flex";$("dtx").value=""};
-$("dno").onclick=()=>{$("dlg").style.display="none"};
-$("dok").onclick=()=>{try{const o=JSON.parse($("dtx").value);if(!o||!Array.isArray(o.entries)){alert("فرمت نادرست");return}S=o;S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};save();render();renderC();updateWarn();$("dlg").style.display="none";alert("بازیابی شد: "+S.entries.length+" پرداخت، "+(S.cheques||[]).length+" چک")}catch(e){alert("JSON نامعتبر")}};
+$("rs").onclick=()=>{if(!isAdmin())return;$("dlg").style.display="flex";$("dtx").value=""};$("dno").onclick=()=>{$("dlg").style.display="none"};
+$("dok").onclick=()=>{try{const o=JSON.parse($("dtx").value);if(!o||!Array.isArray(o.entries)){alert("فرمت نادرست");return}S=o;S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};save();render();renderC();updateWarn();$("dlg").style.display="none";alert("بازیابی شد")}catch(e){alert("JSON نامعتبر")}};
 $("clr").onclick=()=>{if(!isAdmin())return;if(confirm("همه پاک شود؟")){S={entries:[],map:{},cheques:[]};save();render();renderC();updateWarn()}};
 </script>
 </body>
