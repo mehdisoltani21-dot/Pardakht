@@ -70,7 +70,36 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 </head>
 <body>
 <div class="shell">
-<div id="login"><div class="dbox"><div style="text-align:center;margin-bottom:12px"><img src="icon.svg" alt="" width="72" height="72" style="margin:0 auto 12px;border-radius:18px;display:block;box-shadow:0 8px 24px rgba(232,163,23,.4);background:#e8a317"><div style="font-weight:700;font-size:20px;color:var(--ac)">دفتر پرداخت‌ها</div><div style="font-size:13px;color:var(--mut);margin-top:6px">رمز میهمان یا مدیر</div></div><input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password"><div id="lerr" style="color:var(--red);font-size:13px;min-height:18px"></div><button class="primary" id="lgo">ورود</button></div></div>
+<div id="login"><div class="dbox"><div style="text-align:center;margin-bottom:12px"><img src="icon.svg" alt="" width="72" height="72" style="margin:0 auto 12px;border-radius:18px;display:block;box-shadow:0 8px 24px rgba(232,163,23,.4);background:#e8a317"><div style="font-weight:700;font-size:20px;color:var(--ac)">دفتر پرداخت‌ها</div><div style="font-size:13px;color:var(--mut);margin-top:6px">رمز میهمان یا مدیر</div></div><input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password"><div id="lerr" style="color:var(--red);font-size:13px;min-height:18px"></div><button class="primary" id="lgo" type="button">ورود</button></div></div>
+<script>
+(function(){
+  var G="M1406", A="M136810", RK="pardakht-role";
+  function go(role){
+    try{localStorage.setItem(RK,role)}catch(e){}
+    var login=document.getElementById("login"), app=document.getElementById("app");
+    if(login)login.style.display="none";
+    if(app)app.style.display="block";
+    var b=document.getElementById("roleBadge"); if(b)b.textContent=role==="admin"?"مدیر":"میهمان";
+    document.body.classList.toggle("hide-guest", role!=="admin");
+  }
+  function tryLogin(){
+    var inp=document.getElementById("lpw"), err=document.getElementById("lerr");
+    var p=inp?inp.value:"";
+    if(p===A){ if(typeof window.enterApp==="function")window.enterApp("admin"); else go("admin"); }
+    else if(p===G){ if(typeof window.enterApp==="function")window.enterApp("guest"); else go("guest"); }
+    else if(err)err.textContent="رمز اشتباه";
+  }
+  window.__doLogin=tryLogin;
+  var btn=document.getElementById("lgo");
+  if(btn){btn.onclick=tryLogin; btn.addEventListener("click", tryLogin);}
+  var inp=document.getElementById("lpw");
+  if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")tryLogin();});
+  try{
+    var r=localStorage.getItem(RK);
+    if(r==="admin"||r==="guest")go(r);
+  }catch(e){}
+})();
+</script>
 <div id="app" style="display:none">
 <div class="header"><div style="text-align:right;min-width:0;flex:1"><h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1><div class="sub" id="hdrSub">منوی اصلی</div><div id="syncBadge">● …</div></div><div class="menu-wrap"><button class="icon-btn" id="gm">⋮</button><div id="gmenu"><button id="syncNow">🔄 همگام‌سازی الان</button><button id="bk">📥 پشتیبان (کپی)</button><button id="csv">📊 خروجی CSV</button><button id="rs" class="admin-only">📤 بازیابی پشتیبان</button><button id="logout">🚪 خروج</button></div></div></div>
 <div id="installBanner"><span>📲 نصب روی صفحه اصلی گوشی</span><button id="installBtn">نصب</button></div>
@@ -84,7 +113,7 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 <div id="dlg"><div class="dbox"><div style="font-weight:700;font-size:16px">بازیابی پشتیبان</div><textarea id="dtx" placeholder="JSON پشتیبان" style="min-height:110px;width:100%;resize:vertical"></textarea><div class="row"><button class="primary" id="dok" style="flex:1">تأیید</button><button class="g" id="dno" style="flex:1;padding:12px">لغو</button></div></div></div>
 </div>
 <script>
-/* CACHEBUST 2026-11-03-loginfix */
+/* CACHEBUST 2026-11-03-loginfix3 */
 const KEY="pardakht-v1",ROLE_KEY="pardakht-role",PASS_GUEST="M1406",PASS_ADMIN="M136810";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -164,7 +193,7 @@ const today=()=>iso(new Date());
 const pdate=d=>{try{return new Date(d+"T12:00:00").toLocaleDateString("fa-IR-u-ca-persian")}catch(e){return d||""}};
 const isAdmin=()=>role==="admin";
 const pages=["pgHome","pgPay","pgCk","pgPayList","pgCkList"];
-function enterApp(r,persist){role=r;if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}$("login").style.display="none";$("app").style.display="block";$("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";document.body.classList.toggle("hide-guest",r!=="admin");showPage("pgHome");syncDown().then(()=>renderAll())}
+window.enterApp=function enterApp(r,persist){role=r;if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}$("login").style.display="none";$("app").style.display="block";$("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";document.body.classList.toggle("hide-guest",r!=="admin");showPage("pgHome");syncDown().then(()=>renderAll())}
 function showPage(id){pages.forEach(p=>$ (p).style.display=p===id?"block":"none");const titles={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"};$("hdrSub").textContent=titles[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome")checkCkWarn()}
 function renderAll(){renderPay();renderCk();checkCkWarn()}
 function checkCkWarn(){const now=today();const od=(S.cheques||[]).filter(c=>!c.done&&c.date&&c.date<=now);const el=$("ckWarn");if(od.length){el.style.display="block";el.innerHTML=`⚠ <b>${od.length}</b> چک سررسید شده یا امروز — <span style="text-decoration:underline">مشاهده</span>`;el.onclick=()=>showPage("pgCkList")}else el.style.display="none"}
@@ -217,8 +246,8 @@ function renderCk(){
 }
 function editCkEntry(c){editCk=c;$("cformTitle").textContent="ویرایش چک";$("ct").value=c.to||"";$("ca").value=fmtAmt(c.amt);$("cd").value=c.date||today();$("cb").value=c.by||"سلطانی";$("cn").value=c.note||"";$("cadd").textContent="ذخیره تغییرات";$("ccancel").style.display="block";showPage("pgCk")}
 const esc=s=>String(s||"").replace(/&/g,"&").replace(/</g,"<").replace(/"/g,""");
-function doLogin(){const p=$("lpw").value;if(p===PASS_ADMIN)enterApp("admin");else if(p===PASS_GUEST)enterApp("guest");else{$("lerr").textContent="رمز اشتباه"}}$("lgo").onclick=doLogin;$("lgo").addEventListener("click",doLogin);
-$("lpw").onkeydown=e=>{if(e.key==="Enter")doLogin()};
+function doLogin(){const p=($("lpw")||{}).value||"";if(p===PASS_ADMIN)enterApp("admin");else if(p===PASS_GUEST)enterApp("guest");else{const e=$("lerr");if(e)e.textContent="رمز اشتباه"}}window.__doLogin=doLogin;if($("lgo")){$("lgo").onclick=doLogin;$("lgo").addEventListener("click",doLogin);}
+$("lpw")&&($("lpw").onkeydown=e=>{if(e.key==="Enter")doLogin()});
 try{const r=localStorage.getItem(ROLE_KEY);if(r==="admin"||r==="guest")enterApp(r,false)}catch(e){}
 if(!$("app").style.display||$("app").style.display==="none")$("login").style.display="flex";
 $("goPay").onclick=()=>{editPay=null;$("formTitle").textContent="ثبت پرداخت جدید";$("fc").value="";$("fs").value="";$("fa").value="";$("fp").value="سلطانی";$("fd").value=today();$("fn").value="";$("fadd").textContent="ثبت پرداخت";$("fcancel").style.display="none";showPage("pgPay")};
