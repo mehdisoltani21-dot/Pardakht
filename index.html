@@ -4,74 +4,89 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>دفتر پرداخت‌ها</title>
-<meta name="theme-color" content="#0f766e">
+<meta name="theme-color" content="#0a4f4a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="پرداخت‌ها">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--fg:#134e4a;--mut:#5b7a74;--card:#fff;--ac:#0f766e;--ac2:#14b8a6;--acs:#ccfbf1;--red:#e11d48;--warn:#ea580c;--sh:0 4px 20px rgba(15,118,110,.08);--r:18px}
+:root{
+  --bg:#0d1f1c;--bg2:#122824;--fg:#e8f5f2;--mut:#8aabb0;
+  --card:#163530;--line:#1e4a42;--ac:#14b8a6;--ac2:#0d9488;
+  --acs:#1a3d38;--red:#fb7185;--warn:#fb923c;
+  --sh:0 4px 24px rgba(0,0,0,.35);--r:18px;
+  --inp:#0f2925;--hdr1:#0a4f4a;--hdr2:#0f766e;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
-body{background:linear-gradient(180deg,#f0fdfa 0%,#e6fffa 40%,#f0fdfa 100%);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;min-height:100vh;line-height:1.55;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+body{background:linear-gradient(180deg,#0d1f1c 0%,#122824 50%,#0d1f1c 100%);color:var(--fg);font-family:Vazirmatn,Tahoma,sans-serif;min-height:100vh;line-height:1.55;padding-bottom:max(20px,env(safe-area-inset-bottom))}
 .shell{max-width:430px;margin:0 auto;min-height:100vh;position:relative}
-.header{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 4px 24px rgba(15,118,110,.3);overflow:visible}
+.header{background:linear-gradient(135deg,var(--hdr1),var(--hdr2));color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 4px 24px rgba(0,0,0,.4);overflow:visible}
 .header h1{font-size:17px;margin:0;font-weight:700}
 .header .sub{font-size:11px;opacity:.85;margin-top:2px}
-.icon-btn{width:40px;height:40px;border-radius:12px;border:0;cursor:pointer;background:rgba(255,255,255,.18);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.badge{font-size:10px;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:999px;margin-right:6px;font-weight:600}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:0;cursor:pointer;background:rgba(255,255,255,.15);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.badge{font-size:10px;background:rgba(255,255,255,.2);padding:3px 9px;border-radius:999px;margin-right:6px;font-weight:600}
 .menu-wrap{position:relative;flex-shrink:0}
-#gmenu{position:absolute;top:calc(100% + 8px);left:0;background:#fff;border-radius:16px;min-width:220px;width:max-content;box-shadow:0 12px 40px rgba(15,118,110,.18),0 0 0 1px rgba(15,118,110,.06);padding:6px;z-index:100;display:none;white-space:nowrap}
+#gmenu{position:absolute;top:calc(100% + 8px);left:0;background:var(--card);border-radius:16px;min-width:220px;width:max-content;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--line);padding:6px;z-index:100;display:none;white-space:nowrap}
 #gmenu.open{display:block}
 #gmenu button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:transparent;color:var(--fg);padding:12px 14px;border:0;border-radius:12px;cursor:pointer;font:inherit;font-size:14px;font-weight:500;white-space:nowrap}
 #gmenu button:active{background:var(--acs)}
 #gmenu .danger{color:var(--red)}
 .pad{padding:14px 16px}
-.card{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid rgba(153,246,228,.5);overflow:hidden}
+.card{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid var(--line);overflow:hidden}
 .sec{font-size:12px;color:var(--mut);font-weight:600;margin-bottom:12px}
 .back{background:transparent;border:0;color:var(--ac);font:inherit;font-weight:600;cursor:pointer;padding:4px 0 14px;font-size:14px}
 .fm{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fm .w{grid-column:1/-1}
-input,select,textarea{font:inherit;border-radius:14px;padding:13px 14px;border:1.5px solid #d1fae5;background:#f8fffc;color:var(--fg);width:100%;min-width:0;font-size:14px}
-select{padding-left:28px;padding-right:12px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%230f766e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac2);background:#fff;box-shadow:0 0 0 3px rgba(20,184,166,.15)}
-button.primary{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:0;font-weight:700;cursor:pointer;width:100%;padding:14px;border-radius:14px;font-size:15px;box-shadow:0 6px 20px rgba(15,118,110,.25)}
-button.g{background:#fff;color:var(--fg);border:1.5px solid #d1fae5;cursor:pointer;border-radius:12px}
+input,select,textarea{font:inherit;border-radius:14px;padding:13px 14px;border:1.5px solid var(--line);background:var(--inp);color:var(--fg);width:100%;min-width:0;font-size:14px}
+select{padding-left:28px;padding-right:12px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2314b8a6' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);background:#12302b;box-shadow:0 0 0 3px rgba(20,184,166,.2)}
+input::placeholder,textarea::placeholder{color:#5a7a74}
+button.primary{background:linear-gradient(135deg,#0d9488,#14b8a6);color:#042f2e;border:0;font-weight:700;cursor:pointer;width:100%;padding:14px;border-radius:14px;font-size:15px;box-shadow:0 6px 20px rgba(20,184,166,.25)}
+button.g{background:var(--acs);color:var(--fg);border:1.5px solid var(--line);cursor:pointer;border-radius:12px}
 button.sm{padding:7px 12px;font-size:12px;font-weight:600}
 button.del{color:var(--red)!important}
 .menu{display:flex;flex-direction:column;gap:12px;padding:8px 16px 20px}
-.mbtn{display:flex;align-items:center;gap:14px;padding:18px;border:0;border-radius:20px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;color:#fff;text-align:right;width:100%;box-shadow:0 8px 24px rgba(0,0,0,.12);position:relative;overflow:hidden}
-.mbtn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.15),transparent 50%);pointer-events:none}
+.mbtn{display:flex;align-items:center;gap:14px;padding:18px;border:0;border-radius:20px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;color:#fff;text-align:right;width:100%;box-shadow:0 8px 24px rgba(0,0,0,.3);position:relative;overflow:hidden}
+.mbtn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.12),transparent 50%);pointer-events:none}
 .mbtn:active{transform:scale(.98)}
-.mbtn .ico{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.mbtn .ico{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .mbtn.b1{background:linear-gradient(135deg,#0f766e,#14b8a6)}
 .mbtn.b2{background:linear-gradient(135deg,#0e7490,#06b6d4)}
 .mbtn.b3{background:linear-gradient(135deg,#047857,#10b981)}
-.mbtn.b4{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.mbtn.b4{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-.st{background:var(--card);border-radius:16px;padding:14px 8px;text-align:center;box-shadow:var(--sh);border:1px solid rgba(153,246,228,.4)}
+.st{background:var(--card);border-radius:16px;padding:14px 8px;text-align:center;box-shadow:var(--sh);border:1px solid var(--line)}
 .st span{display:block;color:var(--mut);font-size:10px;margin-bottom:4px;font-weight:600}
-.st b{font-size:13px;font-weight:700;word-break:break-all}
-.st.m{background:linear-gradient(135deg,#ccfbf1,#99f6e4);border-color:transparent}.st.m b{color:#0f766e}
-.list{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid rgba(153,246,228,.4)}
-.item{padding:14px;border-bottom:1px solid #f0fdfa}
+.st b{font-size:13px;font-weight:700;word-break:break-all;color:var(--fg)}
+.st.m{background:linear-gradient(135deg,#0f766e,#134e4a);border-color:transparent}.st.m b{color:#5eead4}
+.list{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--line)}
+.item{padding:14px;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:0}
 .item .title{font-weight:600;font-size:14px}
 .item .meta{color:var(--mut);font-size:12px;margin-top:2px}
-.item .amt{font-weight:700;direction:ltr;font-size:15px;color:#0f766e}
+.item .amt{font-weight:700;direction:ltr;font-size:15px;color:#5eead4}
 .item .acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .empty{color:var(--mut);text-align:center;padding:40px 20px;font-size:14px}
 .empty button{margin-top:14px;max-width:200px;margin-inline:auto;display:block}
 .date-sep{color:var(--mut);font-size:12px;font-weight:700;padding:10px 4px 6px}
-.ck{background:var(--card);border:1px solid rgba(153,246,228,.4);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:var(--sh)}
-.ck.od{border-color:#fecdd3;background:#fff1f2}
+.ck{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:var(--sh)}
+.ck.od{border-color:#9f1239;background:#2a1518}
 .cks{color:var(--mut);font-size:12px;margin-top:4px}
 .fl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .fl input,.fl select{min-width:0}
-.warn{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:16px;padding:14px 16px;margin:12px 16px 4px;color:#9a3412;font-size:13px;display:none;cursor:pointer;box-shadow:var(--sh)}
+.warn{background:linear-gradient(135deg,#3b2510,#2a1a0a);border:1px solid #9a5b1a;border-radius:16px;padding:14px 16px;margin:12px 16px 4px;color:#fdba74;font-size:13px;display:none;cursor:pointer;box-shadow:var(--sh)}
 .warn b{color:var(--warn)}
-#login{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:24px;background:linear-gradient(160deg,#0f766e,#134e4a,#0f766e)}
-.dbox{background:#fff;border-radius:24px;padding:28px 22px;width:100%;max-width:340px;box-shadow:0 24px 60px rgba(0,0,0,.2)}
-#dlg{position:fixed;inset:0;background:rgba(15,60,55,.45);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;backdrop-filter:blur(4px)}
-#dtx,#lpw{width:100%;margin:12px 0;font:inherit;color:var(--fg);background:#f0fdfa;border:1.5px solid #99f6e4;border-radius:14px;padding:14px}
+#login{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:24px;background:linear-gradient(160deg,#0a4f4a,#0d1f1c,#0a4f4a)}
+.dbox{background:var(--card);border-radius:24px;padding:28px 22px;width:100%;max-width:340px;box-shadow:0 24px 60px rgba(0,0,0,.5);border:1px solid var(--line)}
+#dlg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;backdrop-filter:blur(4px)}
+#dtx,#lpw{width:100%;margin:12px 0;font:inherit;color:var(--fg);background:var(--inp);border:1.5px solid var(--line);border-radius:14px;padding:14px}
 .hide-guest .admin-only{display:none!important}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#installBanner{display:none;margin:12px 16px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,#0f766e,#134e4a);border:1px solid #14b8a6;color:#fff;font-size:13px;align-items:center;justify-content:space-between;gap:10px}
+#installBanner button{background:#14b8a6;color:#042f2e;border:0;border-radius:12px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -79,6 +94,7 @@ button.del{color:var(--red)!important}
 <div id="login"><div class="dbox"><div style="text-align:center;margin-bottom:12px"><div style="width:64px;height:64px;margin:0 auto 12px;border-radius:20px;background:linear-gradient(135deg,#0f766e,#14b8a6);display:flex;align-items:center;justify-content:center;font-size:28px">💰</div><div style="font-weight:700;font-size:20px;color:var(--ac)">دفتر پرداخت‌ها</div><div style="font-size:13px;color:var(--mut);margin-top:6px">رمز میهمان یا مدیر</div></div><input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password"><div id="lerr" style="color:var(--red);font-size:13px;min-height:18px"></div><button class="primary" id="lgo">ورود</button></div></div>
 <div id="app" style="display:none">
 <div class="header"><div style="text-align:right;min-width:0;flex:1"><h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1><div class="sub" id="hdrSub">منوی اصلی</div></div><div class="menu-wrap"><button class="icon-btn" id="gm">⋮</button><div id="gmenu"><button id="bk">📥 پشتیبان (کپی)</button><button id="csv">📊 خروجی CSV</button><button id="rs" class="admin-only">📤 بازیابی پشتیبان</button><button id="clr" class="danger admin-only">🗑 پاک کردن همه</button><button id="logout">🚪 خروج</button></div></div></div>
+<div id="installBanner"><span>📲 نصب روی صفحه اصلی گوشی</span><button id="installBtn">نصب</button></div>
 <div id="pgHome"><div class="warn" id="ckWarn"></div><div class="menu"><button class="mbtn b1" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button><button class="mbtn b2" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button><button class="mbtn b3" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button><button class="mbtn b4" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button></div></div>
 <div id="pgPay" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="card"><div class="sec" id="formTitle">ثبت پرداخت جدید</div><div class="fm"><input id="fc" placeholder="شاخه"><input id="fs" placeholder="زیرشاخه"><input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)"><select id="fp"><option>سلطانی</option><option>اکبری</option></select><input id="fd" type="date" class="w"><input id="fn" class="w" placeholder="توضیحات"><button class="primary w" id="fadd">ثبت پرداخت</button><button class="g w" id="fcancel" style="display:none;padding:12px">لغو ویرایش</button></div></div></div>
 <div id="pgCk" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="card"><div class="sec" id="cformTitle">ثبت چک جدید</div><div class="fm"><input id="ct" class="w" placeholder="گیرنده چک"><input id="ca" class="w" inputmode="numeric" placeholder="مبلغ چک"><input id="cd" type="date" class="w"><select id="cb" class="w"><option>سلطانی</option><option>اکبری</option></select><input id="cn" class="w" placeholder="توضیحات"><button class="primary w" id="cadd">ثبت چک</button><button class="g w" id="ccancel" style="display:none;padding:12px">لغو ویرایش</button></div></div></div>
@@ -125,6 +141,10 @@ $("csv").onclick=()=>{let lines=["type,date,cat,sub,payer,amount,note,to,due,by,
 $("rs").onclick=()=>{if(!isAdmin())return;$("dlg").style.display="flex";$("dtx").value=""};$("dno").onclick=()=>{$("dlg").style.display="none"};
 $("dok").onclick=()=>{try{const o=JSON.parse($("dtx").value);if(!o||!Array.isArray(o.entries)){alert("فرمت نادرست");return}S=o;S.entries=S.entries||[];S.cheques=S.cheques||[];S.map=S.map||{};save();render();renderC();updateWarn();$("dlg").style.display="none";alert("بازیابی شد")}catch(e){alert("JSON نامعتبر")}};
 $("clr").onclick=()=>{if(!isAdmin())return;if(confirm("همه پاک شود؟")){S={entries:[],map:{},cheques:[]};save();render();renderC();updateWarn()}};
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBanner").style.display="flex"});
+$("installBtn").onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$("installBanner").style.display="none"};
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
 </script>
 </body>
 </html>
