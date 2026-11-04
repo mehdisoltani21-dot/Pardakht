@@ -76,7 +76,9 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 <div class="shell">
 <div id="login"><div class="dbox"><div style="text-align:center;margin-bottom:12px"><div style="width:64px;height:64px;margin:0 auto 12px;border-radius:20px;background:linear-gradient(135deg,#e8a317,#f5c542);display:flex;align-items:center;justify-content:center;font-size:28px;color:#1a1200">💰</div><div style="font-weight:700;font-size:20px;color:var(--ac)">دفتر پرداخت‌ها</div><div style="font-size:13px;color:var(--mut);margin-top:6px">رمز میهمان یا مدیر</div></div><input id="lpw" type="password" placeholder="رمز عبور" autocomplete="current-password"><div id="lerr" style="color:var(--red);font-size:13px;min-height:18px"></div><button class="primary" id="lgo">ورود</button></div></div>
 <div id="app" style="display:none">
-<div class="header"><div style="text-align:right;min-width:0;flex:1"><h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1><div class="sub" id="hdrSub">منوی اصلی</div><div id="syncBadge">● …</div></div><div class="menu-wrap"><button class="icon-btn" id="gm">⋮</button><div id="gmenu"><button id="syncNow">🔄 همگام سازی آنلاین</button><button id="bk">📥 پشتیبان (کپی)</button><button id="csv">📊 خروجی CSV</button><button id="rs" class="admin-only">📤 بازیابی پشتیبان</button><button id="logout">🚪 خروج</button></div></div></div>
+<div class="header"><div style="text-align:right;min-width:0;flex:1"><h1>دفتر پرداخت‌ها <span class="badge" id="roleBadge"></span></h1><div class="sub" id="hdrSub">منوی اصلی</div><div id="syncBadge">● …</div></div><div class="menu-wrap"><button class="icon-btn" id="gm">⋮</button><div id="gmenu"><button id="syncNow">🔄 همگام سازی آنلاین</button>
+<button id="gsSet" class="admin-only">📊 تنظیم گوگل شیت</button>
+<button id="gsPush" class="admin-only">📤 ارسال همه به شیت</button><button id="bk">📥 پشتیبان (کپی)</button><button id="csv">📊 خروجی CSV</button><button id="rs" class="admin-only">📤 بازیابی پشتیبان</button><button id="logout">🚪 خروج</button></div></div></div>
 <div id="installBanner"><span>📲 نصب روی صفحه اصلی گوشی</span><button id="installBtn">نصب</button></div>
 <div id="pgHome"><div class="warn" id="ckWarn"></div><div class="menu"><button class="mbtn" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button><button class="mbtn" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button><button class="mbtn" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button><button class="mbtn" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button></div></div>
 <div id="pgPay" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="card"><div class="sec" id="formTitle">ثبت پرداخت جدید</div><div class="fm"><input id="fc" placeholder="شاخه"><input id="fs" placeholder="زیرشاخه"><input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)"><select id="fp"><option>سلطانی</option><option>اکبری</option></select><input id="fd" type="date" class="w"><input id="fn" class="w" placeholder="توضیحات"><button class="primary w" id="fadd">ثبت پرداخت</button><button class="g w" id="fcancel" style="display:none;padding:12px">لغو ویرایش</button></div></div></div>
@@ -88,10 +90,28 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 <div id="dlg"><div class="dbox"><div style="font-weight:700;font-size:16px">بازیابی پشتیبان</div><textarea id="dtx" placeholder="JSON پشتیبان" style="min-height:110px;width:100%;resize:vertical"></textarea><div class="row"><button class="primary" id="dok" style="flex:1">تأیید</button><button class="g" id="dno" style="flex:1;padding:12px">لغو</button></div></div></div>
 </div>
 <script>
-/* CACHEBUST 2026-11-04-fix-btns-online */
+/* CACHEBUST 2026-11-04-google-sheets */
 const KEY="pardakht-v1",ROLE_KEY="pardakht-role",PASS_GUEST="M1406",PASS_ADMIN="M136810";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
+const GS_KEY="pardakht-gs-url";
+function getGsUrl(){try{return localStorage.getItem(GS_KEY)||""}catch(e){return""}}
+function setGsUrl(u){try{localStorage.setItem(GS_KEY,(u||"").trim())}catch(e){}}
+async function pushToSheet(type,row){
+  const url=getGsUrl();
+  if(!url)return;
+  try{
+    await fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({type,row,token:"pardakht"})});
+  }catch(e){console.warn("sheet",e)}
+}
+async function pushAllToSheet(){
+  const url=getGsUrl();
+  if(!url){alert("ابتدا لینک گوگل شیت را تنظیم کنید");return}
+  try{
+    await fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({type:"full",entries:S.entries||[],cheques:S.cheques||[],token:"pardakht"})});
+    alert("ارسال کامل به گوگل شیت انجام شد");
+  }catch(e){alert("خطا در ارسال به شیت")}
+}
 let S={entries:[],cheques:[]},role=null,editPay=null,editCk=null,sb=null;
 try{sb=supabase.createClient(SB_URL,SB_KEY)}catch(e){}
 const $=id=>document.getElementById(id);
@@ -112,9 +132,9 @@ $("goPayList").onclick=()=>showPage("pgPayList");$("goCkList").onclick=()=>showP
 $("goPay").onclick=()=>{editPay=null;$("formTitle").textContent="ثبت پرداخت جدید";$("fc").value="";$("fs").value="";$("fa").value="";$("fp").value="سلطانی";$("fd").value=today();$("fn").value="";$("fadd").textContent="ثبت پرداخت";$("fcancel").style.display="none";showPage("pgPay")};
 $("goCk").onclick=()=>{editCk=null;$("cformTitle").textContent="ثبت چک جدید";$("ct").value="";$("ca").value="";$("cd").value=today();$("cb").value="سلطانی";$("cn").value="";$("cadd").textContent="ثبت چک";$("ccancel").style.display="none";showPage("pgCk")};
 $("emptyPay").onclick=()=>$("goPay").click();$("emptyCk").onclick=()=>$("goCk").click();
-$("fadd").onclick=()=>{const cat=$("fc").value.trim(),sub=$("fs").value.trim(),amt=Number(($("fa").value||"").replace(/,/g,"")),payer=$("fp").value,date=$("fd").value||today(),note=$("fn").value.trim();if(!cat||!amt){alert("شاخه و مبلغ لازم است");return}if(editPay){Object.assign(editPay,{cat,sub,amt,payer,date,note});editPay=null}else{S.entries.push({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),cat,sub,amt,payer,date,note})}save();showPage("pgPayList")};
+$("fadd").onclick=()=>{const cat=$("fc").value.trim(),sub=$("fs").value.trim(),amt=Number(($("fa").value||"").replace(/,/g,"")),payer=$("fp").value,date=$("fd").value||today(),note=$("fn").value.trim();if(!cat||!amt){alert("شاخه و مبلغ لازم است");return}if(editPay){Object.assign(editPay,{cat,sub,amt,payer,date,note});pushToSheet("pay",editPay);editPay=null}else{const _ne={id:Date.now()+"-"+Math.random().toString(36).slice(2,7),cat,sub,amt,payer,date,note};S.entries.push(_ne);pushToSheet("pay",_ne)}save();showPage("pgPayList")};
 $("fcancel").onclick=()=>{editPay=null;showPage("pgHome")};
-$("cadd").onclick=()=>{const to=$("ct").value.trim(),amt=Number(($("ca").value||"").replace(/,/g,"")),date=$("cd").value||today(),by=$("cb").value,note=$("cn").value.trim();if(!to||!amt){alert("گیرنده و مبلغ لازم است");return}if(editCk){Object.assign(editCk,{to,amt,due:date,date,by,note});editCk=null}else{S.cheques.push({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),to,amt,due:date,date,by,note,done:false})}save();showPage("pgCkList")};
+$("cadd").onclick=()=>{const to=$("ct").value.trim(),amt=Number(($("ca").value||"").replace(/,/g,"")),date=$("cd").value||today(),by=$("cb").value,note=$("cn").value.trim();if(!to||!amt){alert("گیرنده و مبلغ لازم است");return}if(editCk){Object.assign(editCk,{to,amt,due:date,date,by,note});pushToSheet("cheque",editCk);editCk=null}else{const _nc={id:Date.now()+"-"+Math.random().toString(36).slice(2,7),to,amt,due:date,date,by,note,done:false};S.cheques.push(_nc);pushToSheet("cheque",_nc)}save();showPage("pgCkList")};
 $("ccancel").onclick=()=>{editCk=null;showPage("pgHome")};
 $("fr").onchange=$("fpay").onchange=$("fq").oninput=()=>renderPay();
 $("cflt").onchange=$("cq").oninput=()=>renderCk();
@@ -135,6 +155,8 @@ $("logout").onclick=logout;
 $("gm").onclick=e=>{e.stopPropagation();$("gmenu").classList.toggle("open")};
 document.addEventListener("click",()=>$("gmenu").classList.remove("open"));
 $("syncNow").onclick=()=>{syncUp().then(()=>syncDown().then(renderAll))};
+$("gsSet").onclick=()=>{const cur=getGsUrl();const u=prompt("لینک Web App گوگل شیت را وارد کنید:",cur||"");if(u!==null){setGsUrl(u);alert(u.trim()?"ذخیره شد":"پاک شد")}};
+$("gsPush").onclick=()=>pushAllToSheet();
 $("bk").onclick=()=>{const t=JSON.stringify(S,null,2);navigator.clipboard.writeText(t).then(()=>alert("کپی شد")).catch(()=>{prompt("کپی کنید:",t)})};
 $("rs").onclick=()=>{$("dlg").style.display="flex";$("dtx").value=""};
 $("dno").onclick=()=>$("dlg").style.display="none";
