@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-07-days31 */
+/* CACHEBUST 2026-11-07-sync-badge */
 const KEY="pardakht-v1",ROLE_KEY="pardakht-role",PASS_GUEST="M1406",PASS_ADMIN="M136810";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -8,7 +8,21 @@ function setGsUrl(u){try{localStorage.setItem(GS_KEY,(u||"").trim())}catch(e){}}
 async function pushToSheet(type,row){const url=getGsUrl();if(!url)return;try{await fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({type,row,token:"pardakht"})})}catch(e){console.warn("sheet",e)}}
 async function pushAllToSheet(){const url=getGsUrl();if(!url){alert("ابتدا لینک گوگل شیت را تنظیم کنید");return}try{await fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({type:"full",entries:S.entries||[],cheques:S.cheques||[],token:"pardakht"})});alert("ارسال کامل به گوگل شیت انجام شد")}catch(e){alert("خطا در ارسال به شیت")}}
 let S={entries:[],cheques:[]},role=null,editPay=null,editCk=null,sb=null;
-try{sb=supabase.createClient(SB_URL,SB_KEY)}catch(e){}
+function initSb(){
+  try{
+    if(sb)return true;
+    if(typeof supabase!=="undefined"&&supabase.createClient){
+      sb=supabase.createClient(SB_URL,SB_KEY);
+      return !!sb;
+    }
+  }catch(e){console.warn("sb",e)}
+  return false;
+}
+initSb();
+function setSyncBadge(txt,color){
+  const el=$("syncBadge");if(!el)return;
+  el.textContent=txt;if(color)el.style.color=color;
+}
 const $=id=>document.getElementById(id);
 const fa=n=>Number(n||0).toLocaleString("fa-IR");
 const today=()=>new Date().toISOString().slice(0,10);
@@ -18,12 +32,31 @@ const ckDate=c=>c.due||c.date||"";
 const isAdmin=()=>role==="admin";
 const JM=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
 function toJalaali(gy,gm,gd){
-  if(window.jalaali&&jalaali.toJalaali){const r=jalaali.toJalaali(gy,gm,gd);return{jy:r.jy,jm:r.jm,jd:r.jd}}
-  return{jy:1403,jm:1,jd:1};
+  var g_d_m=[0,31,59,90,120,151,181,212,243,273,304,334];
+  var gy2=(gm>2)?(gy+1):gy;
+  var days=355666+(365*gy)+~~(gy2/4)-~~(gy2/100)+~~(gy2/400)+gd+g_d_m[gm-1];
+  var jy=-1595+(33*~~(days/12053));
+  days%=12053;
+  jy+=4*~~(days/1461);
+  days%=1461;
+  if(days>365){jy+=~~((days-1)/365);days=(days-1)%365}
+  var jm,jd;
+  if(days<186){jm=1+~~(days/31);jd=1+(days%31)}
+  else{jm=7+~~((days-186)/30);jd=1+((days-186)%30)}
+  return{jy:jy,jm:jm,jd:jd};
 }
 function toGregorian(jy,jm,jd){
-  if(window.jalaali&&jalaali.toGregorian){const r=jalaali.toGregorian(jy,jm,jd);return{gy:r.gy,gm:r.gm,gd:r.gd}}
-  return{gy:2024,gm:3,gd:21};
+  var low=Date.UTC(jy+620,0,1),high=Date.UTC(jy+623,11,31);
+  while(low<=high){
+    var mid=low+Math.floor((high-low)/2/86400000)*86400000;
+    var d=new Date(mid);
+    var j=toJalaali(d.getUTCFullYear(),d.getUTCMonth()+1,d.getUTCDate());
+    var cmp=(j.jy-jy)*512+(j.jm-jm)*32+(j.jd-jd);
+    if(cmp===0)return{gy:d.getUTCFullYear(),gm:d.getUTCMonth()+1,gd:d.getUTCDate()};
+    if(cmp<0)low=mid+86400000;else high=mid-86400000;
+  }
+  var d2=new Date(low);
+  return{gy:d2.getUTCFullYear(),gm:d2.getUTCMonth()+1,gd:d2.getUTCDate()};
 }
 function isLeapJalaali(jy){
   if(window.jalaali&&jalaali.isLeapJalaaliYear)return jalaali.isLeapJalaaliYear(jy);
@@ -89,8 +122,8 @@ function runAlarms(){const list=(S.cheques||[]).filter(needsAlarm);const box=$("
 function load(){try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}if(!S.entries)S.entries=[];if(!S.cheques)S.cheques=[]}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}syncUp()}
 function touchLocal(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-async function syncUp(){if(!sb)return;try{const payload={id:"main",data:S,updated_at:new Date().toISOString()};await sb.from("pardakht").upsert(payload,{onConflict:"id"});$("syncBadge").textContent="● آنلاین";$("syncBadge").style.color="#4ade80"}catch(e){$("syncBadge").textContent="● آفلاین";$("syncBadge").style.color="#f87171"}}
-async function syncDown(){if(!sb)return;try{const {data,error}=await sb.from("pardakht").select("data").eq("id","main").maybeSingle();if(error)throw error;if(data&&data.data){const remote=data.data;const merge=(a,b)=>{const m=new Map((a||[]).map(x=>[x.id,x]));(b||[]).forEach(x=>m.set(x.id,x));return[...m.values()]};S.entries=merge(S.entries,remote.entries);S.cheques=merge(S.cheques,remote.cheques);touchLocal();$("syncBadge").textContent="● آنلاین";$("syncBadge").style.color="#4ade80"}else $("syncBadge").textContent="● خالی"}catch(e){$("syncBadge").textContent="● آفلاین";$("syncBadge").style.color="#f87171"}}
+async function syncUp(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const payload={id:"main",data:S,updated_at:new Date().toISOString()};const {error}=await sb.from("pardakht").upsert(payload,{onConflict:"id"});if(error)throw error;setSyncBadge("● آنلاین","#4ade80")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
+async function syncDown(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const {data,error}=await sb.from("pardakht").select("data").eq("id","main").maybeSingle();if(error)throw error;if(data&&data.data){const remote=data.data;const merge=(a,b)=>{const m=new Map((a||[]).map(x=>[x.id,x]));(b||[]).forEach(x=>m.set(x.id,x));return[...m.values()]};S.entries=merge(S.entries,remote.entries);S.cheques=merge(S.cheques,remote.cheques);touchLocal();setSyncBadge("● آنلاین","#4ade80")}else setSyncBadge("● خالی","#fbbf24")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
 function showPage(id){document.querySelectorAll("[id^=pg]").forEach(p=>p.style.display="none");$(id).style.display="block";$("hdrSub").textContent={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"}[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome")renderWarn()}
 document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>showPage("pgHome"));
 $("goPayList").onclick=()=>showPage("pgPayList");$("goCkList").onclick=()=>showPage("pgCkList");
@@ -114,12 +147,12 @@ $("lgo").onclick=()=>{const p=$("lpw").value;if(p===PASS_ADMIN)enterApp("admin")
 $("lpw").onkeydown=e=>{if(e.key==="Enter")$("lgo").click()};
 try{const r=localStorage.getItem(ROLE_KEY);if(r==="admin"||r==="guest")enterApp(r,false)}catch(e){}
 if(!$("app").style.display||$("app").style.display==="none")$("login").style.display="flex";
-function enterApp(r,persist){role=r;if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}$("login").style.display="none";$("app").style.display="block";$("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";document.body.classList.toggle("hide-guest",r!=="admin");showPage("pgHome");syncDown().then(()=>renderAll());ensureNotif().then(()=>runAlarms());if(!window._alarmTimer)window._alarmTimer=setInterval(()=>{if(document.visibilityState==="visible")runAlarms()},120000)}
+function enterApp(r,persist){role=r;if(persist!==false)try{localStorage.setItem(ROLE_KEY,r)}catch(e){}$("login").style.display="none";$("app").style.display="block";$("roleBadge").textContent=r==="admin"?"مدیر":"میهمان";document.body.classList.toggle("hide-guest",r!=="admin");showPage("pgHome");setSyncBadge("● در حال اتصال…","#f5c542");syncDown().then(()=>renderAll()).catch(()=>{});setTimeout(()=>{if(!sb)initSb();syncDown().then(renderAll)},1500);ensureNotif().then(()=>runAlarms());if(!window._alarmTimer)window._alarmTimer=setInterval(()=>{if(document.visibilityState==="visible")runAlarms()},120000)}
 function logout(){role=null;try{localStorage.removeItem(ROLE_KEY)}catch(e){}$("app").style.display="none";$("login").style.display="flex";$("lpw").value="";$("lerr").textContent=""}
 $("logout").onclick=logout;
 $("gm").onclick=e=>{e.stopPropagation();$("gmenu").classList.toggle("open")};
 document.addEventListener("click",()=>$("gmenu").classList.remove("open"));
-$("syncNow").onclick=()=>{syncUp().then(()=>syncDown().then(renderAll))};
+$("syncNow").onclick=()=>{setSyncBadge("● در حال اتصال…","#f5c542");syncUp().then(()=>syncDown().then(renderAll))};
 $("notifBtn").onclick=async()=>{const ok=await ensureNotif();alert(ok?"اعلان فعال شد. از ۲ روز قبل سررسید تا تأیید شما یادآوری می‌شود.":"اجازه اعلان داده نشد. از تنظیمات مرورگر فعال کنید.");runAlarms()};
 $("payFile").onchange=e=>onPhFiles(e.target.files,payPhotos,"payPh","payFile");
 $("ckFile").onchange=e=>onPhFiles(e.target.files,ckPhotos,"ckPh","ckFile");
