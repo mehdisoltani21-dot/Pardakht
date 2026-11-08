@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-08-tot-page */
+/* CACHEBUST 2026-11-08-debt */
 const KEY="pardakht-v1";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -28,7 +28,7 @@ async function pushAllToSheet(){
     alert("خطا در ارسال به شیت\n"+String(e&&e.message||e));
   }
 }
-let S={entries:[],cheques:[]},role=null,editPay=null,editCk=null,sb=null;
+let S={entries:[],cheques:[],debts:[]},role=null,editPay=null,editCk=null,editDebt=null,sb=null;
 function initSb(){
   try{
     if(sb)return true;
@@ -134,15 +134,27 @@ function phThumbs(photos){if(!photos||!photos.length)return"";return `<div class
 async function ensureNotif(){if(!("Notification" in window))return false;if(Notification.permission==="granted")return true;if(Notification.permission!=="denied"){const p=await Notification.requestPermission();return p==="granted"}return false}
 function fireNotif(title,body){try{if(Notification.permission==="granted")new Notification(title,{body,tag:"pardakht-ck",dir:"rtl",lang:"fa",requireInteraction:true})}catch(e){}try{if(navigator.vibrate)navigator.vibrate([200,100,200,100,200])}catch(e){}}
 function runAlarms(){const list=(S.cheques||[]).filter(needsAlarm);const box=$("alarmBox"),al=$("alarmList");if(!box)return;if(!list.length){box.style.display="none";al.innerHTML="";return}box.style.display="block";al.innerHTML="";list.forEach(c=>{const days=daysToDue(ckDate(c));const label=days<0?("سررسید گذشته ("+Math.abs(days)+" روز)"):(days===0?"سررسید امروز":days+" روز تا سررسید");const row=document.createElement("div");row.className="ar";row.innerHTML=`<div><b>${esc(c.to||"")}</b><div style="font-size:12px;opacity:.9">${fa(c.amt)} · ${pdate(ckDate(c))} · ${label}</div></div>`;const btn=document.createElement("button");btn.textContent="تأیید";btn.onclick=ev=>{ev.stopPropagation();ackCheque(c.id,ckDate(c))};row.appendChild(btn);al.appendChild(row)});const first=list[0];fireNotif("یادآوری چک",`${list.length} چک نیاز به توجه دارد — ${first.to||""} ${fa(first.amt)}`)}
-function load(){try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}if(!S.entries)S.entries=[];if(!S.cheques)S.cheques=[]}
+function load(){try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}if(!S.entries)S.entries=[];if(!S.cheques)S.cheques=[];if(!S.debts)S.debts=[]}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}syncUp()}
 function touchLocal(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 async function syncUp(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const payload={id:"main",data:S,updated_at:new Date().toISOString()};const {error}=await sb.from("pardakht").upsert(payload,{onConflict:"id"});if(error)throw error;setSyncBadge("● آنلاین","#4ade80")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
-async function syncDown(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const {data,error}=await sb.from("pardakht").select("data").eq("id","main").maybeSingle();if(error)throw error;if(data&&data.data){const remote=data.data;const merge=(a,b)=>{const m=new Map((a||[]).map(x=>[x.id,x]));(b||[]).forEach(x=>m.set(x.id,x));return[...m.values()]};S.entries=merge(S.entries,remote.entries);S.cheques=merge(S.cheques,remote.cheques);touchLocal();setSyncBadge("● آنلاین","#4ade80")}else setSyncBadge("● خالی","#fbbf24")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
-function showPage(id){document.querySelectorAll("[id^=pg]").forEach(p=>p.style.display="none");$(id).style.display="block";$("hdrSub").textContent={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها",pgTot:"گزارش مجموع پرداختی"}[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome")renderWarn();if(id==="pgTot")renderTotals()}
+async function syncDown(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const {data,error}=await sb.from("pardakht").select("data").eq("id","main").maybeSingle();if(error)throw error;if(data&&data.data){const remote=data.data;const merge=(a,b)=>{const m=new Map((a||[]).map(x=>[x.id,x]));(b||[]).forEach(x=>m.set(x.id,x));return[...m.values()]};S.entries=merge(S.entries,remote.entries);S.cheques=merge(S.cheques,remote.cheques);S.debts=merge(S.debts,remote.debts||[]);touchLocal();setSyncBadge("● آنلاین","#4ade80")}else setSyncBadge("● خالی","#fbbf24")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
+function showPage(id){document.querySelectorAll("[id^=pg]").forEach(p=>p.style.display="none");$(id).style.display="block";$("hdrSub").textContent={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها",pgTot:"گزارش مجموع پرداختی",pgDebt:"ثبت بدهی",pgDebtList:"لیست بدهی‌ها"}[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome")renderWarn();if(id==="pgTot")renderTotals();if(id==="pgDebtList")renderDebt()}
 document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>showPage("pgHome"));
 $("goPayList").onclick=()=>showPage("pgPayList");$("goCkList").onclick=()=>showPage("pgCkList");
 $("goTot").onclick=()=>showPage("pgTot");
+$("goDebt").onclick=()=>{editDebt=null;$("dformTitle").textContent="ثبت بدهی";$("dfFrom").value="سلطانی";$("dfTo").value="اکبری";$("dfAmt").value="";setShamsiIso("dfY","dfM","dfD",today());$("dfNote").value="";$("dfAdd").textContent="ثبت بدهی";$("dfCancel").style.display="none";showPage("pgDebt")};
+$("goDebtList").onclick=()=>showPage("pgDebtList");
+if($("emptyDebt"))$("emptyDebt").onclick=()=>$("goDebt").click();
+$("dfAdd").onclick=()=>{
+  const from=$("dfFrom").value,to=$("dfTo").value,amt=Number(($("dfAmt").value||"").replace(/,/g,"")),date=getShamsiIso("dfY","dfM","dfD")||today(),note=$("dfNote").value.trim();
+  if(!from||!to||!amt){alert("بدهکار، طلبکار و مبلغ لازم است");return}
+  if(from===to){alert("بدهکار و طلبکار نباید یکی باشند");return}
+  if(editDebt){Object.assign(editDebt,{from,to,amt,date,note});editDebt=null}
+  else{S.debts.push({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),from,to,amt,date,note,settled:false})}
+  save();showPage("pgDebtList")
+};
+$("dfCancel").onclick=()=>{editDebt=null;showPage("pgHome")};
 $("goPay").onclick=()=>{editPay=null;payPhotos=[];renderPhSlots("payPh",payPhotos,"payFile");$("formTitle").textContent="ثبت پرداخت جدید";$("fc").value="";$("fs").value="";$("fa").value="";$("fp").value="سلطانی";setShamsiIso("fdY","fdM","fdD",today());$("fn").value="";$("fadd").textContent="ثبت پرداخت";$("fcancel").style.display="none";showPage("pgPay")};
 $("goCk").onclick=()=>{editCk=null;ckPhotos=[];renderPhSlots("ckPh",ckPhotos,"ckFile");$("cformTitle").textContent="ثبت چک جدید";$("ct").value="";$("ca").value="";setShamsiIso("cdY","cdM","cdD",today());$("cb").value="سلطانی";$("cn").value="";$("cadd").textContent="ثبت چک";$("ccancel").style.display="none";showPage("pgCk")};
 $("emptyPay").onclick=()=>$("goPay").click();$("emptyCk").onclick=()=>$("goCk").click();
@@ -162,13 +174,49 @@ function renderTotals(){
     const a=Number(c.amt)||0; ck+=a;
     if(c.by==="سلطانی")sol+=a; else if(c.by==="اکبری")akb+=a;
   });
+  let debtOpen=0, solDebt=0, akbDebt=0;
+  (S.debts||[]).filter(d=>!d.settled).forEach(d=>{
+    const a=Number(d.amt)||0; debtOpen+=a;
+    if(d.from==="سلطانی")solDebt+=a; else if(d.from==="اکبری")akbDebt+=a;
+    if(d.to==="سلطانی")solDebt-=a; else if(d.to==="اکبری")akbDebt-=a;
+  });
   if($("tPay"))$("tPay").textContent=fa(pay);
   if($("tCk"))$("tCk").textContent=fa(ck);
   if($("tAll"))$("tAll").textContent=fa(pay+ck);
   if($("tSol"))$("tSol").textContent=fa(sol);
   if($("tAkb"))$("tAkb").textContent=fa(akb);
+  if($("tDebtOpen"))$("tDebtOpen").textContent=fa(debtOpen);
+  if($("tSolNet"))$("tSolNet").textContent=fa(sol-solDebt);
+  if($("tAkbNet"))$("tAkbNet").textContent=fa(akb-akbDebt);
 }
-function renderAll(){renderPay();renderCk();renderWarn();renderTotals()}
+function renderDebt(){
+  const list=$("dlist"),empty=$("dempty");if(!list)return;
+  list.innerHTML="";
+  let debts=[...(S.debts||[])].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  let sOwe=0,aOwe=0,all=0;
+  debts.filter(d=>!d.settled).forEach(d=>{const a=Number(d.amt)||0;all+=a;if(d.from==="سلطانی")sOwe+=a;if(d.from==="اکبری")aOwe+=a});
+  if($("dSol"))$("dSol").textContent=fa(sOwe);
+  if($("dAkb"))$("dAkb").textContent=fa(aOwe);
+  if($("dAll"))$("dAll").textContent=fa(all);
+  if(!debts.length){if(empty)empty.style.display="block";return}
+  if(empty)empty.style.display="none";
+  debts.forEach(d=>{
+    const el=document.createElement("div");
+    el.className="ck"+(d.settled?"":" od");
+    el.innerHTML=`<div style="display:flex;justify-content:space-between"><div><div class="title">${esc(d.from)} → ${esc(d.to)}</div><div class="cks">${pdate(d.date)}${d.note?" · "+esc(d.note):""}${d.settled?" · ✅ تسویه":""}</div></div><div class="amt">${fa(d.amt)}</div></div>`;
+    if(isAdmin()){
+      const acts=document.createElement("div");acts.className="acts";
+      acts.innerHTML=`<button class="g sm" data-edit>ویرایش</button><button class="g sm" data-set>${d.settled?"لغو تسویه":"تسویه"}</button><button class="g sm del" data-del>حذف</button>`;
+      acts.querySelector("[data-edit]").onclick=ev=>{ev.stopPropagation();editDebt=d;$("dformTitle").textContent="ویرایش بدهی";$("dfFrom").value=d.from;$("dfTo").value=d.to;$("dfAmt").value=d.amt||"";setShamsiIso("dfY","dfM","dfD",d.date||today());$("dfNote").value=d.note||"";$("dfAdd").textContent="ذخیره تغییرات";$("dfCancel").style.display="block";showPage("pgDebt")};
+      acts.querySelector("[data-set]").onclick=ev=>{ev.stopPropagation();d.settled=!d.settled;save();renderDebt();renderTotals()};
+      acts.querySelector("[data-del]").onclick=ev=>{ev.stopPropagation();if(confirm("حذف شود؟")){S.debts=S.debts.filter(x=>x.id!==d.id);save();renderDebt();renderTotals()}};
+      el.appendChild(acts);
+      el.onclick=()=>{const was=el.classList.contains("open");list.querySelectorAll(".ck.open").forEach(x=>x.classList.remove("open"));if(!was)el.classList.add("open")};
+    }
+    list.appendChild(el);
+  });
+}
+function renderAll(){renderPay();renderCk();renderWarn();renderTotals();renderDebt()}
 function renderWarn(){const pending=(S.cheques||[]).filter(c=>!c.done);const overdue=pending.filter(c=>isPast(ckDate(c)));const el=$("ckWarn");if(overdue.length){el.style.display="block";el.innerHTML=`⚠ <b>${overdue.length}</b> چک سررسید گذشته`;el.onclick=()=>showPage("pgCkList")}else el.style.display="none";runAlarms()}
 function renderPay(){const list=$("list"),empty=$("empty");list.innerHTML="";let ents=[...(S.entries||[])].sort((a,b)=>(b.date||"").localeCompare(a.date||""));const fr=$("fr").value,fq=($("fq").value||"").trim().toLowerCase(),fpay=$("fpay").value;if(fr==="today")ents=ents.filter(e=>e.date===today());else if(fr==="month"){const m=today().slice(0,7);ents=ents.filter(e=>(e.date||"").startsWith(m))}if(fpay)ents=ents.filter(e=>e.payer===fpay);if(fq)ents=ents.filter(e=>JSON.stringify(e).toLowerCase().includes(fq));let sSol=0,sAkb=0;ents.forEach(e=>{const a=Number(e.amt)||0;if(e.payer==="سلطانی")sSol+=a;else if(e.payer==="اکبری")sAkb+=a});$("sSol").textContent=fa(sSol);$("sAkb").textContent=fa(sAkb);$("sAll").textContent=fa(sSol+sAkb);if(!ents.length){empty.style.display="block";return}empty.style.display="none";let last="";ents.forEach(e=>{if(e.date!==last){const sep=document.createElement("div");sep.className="date-sep";sep.textContent=pdate(e.date);list.appendChild(sep);last=e.date}const d=document.createElement("div");d.className="item";d.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><div class="title">${esc(e.cat||"")} ${e.sub?"· "+esc(e.sub):""}</div><div class="meta">${esc(e.payer||"")} · ${pdate(e.date)}${e.note?" · "+esc(e.note):""}</div></div><div class="amt">${fa(e.amt)}</div></div>${phThumbs(e.photos)}`;d.querySelectorAll(".ph-view img").forEach(im=>{im.onclick=ev=>{ev.stopPropagation();showImg(im.src)}});if(isAdmin()){const acts=document.createElement("div");acts.className="acts";acts.innerHTML=`<button class="g sm" data-edit>ویرایش</button><button class="g sm del" data-del>حذف</button>`;acts.querySelector("[data-edit]").onclick=ev=>{ev.stopPropagation();editPayEntry(e)};acts.querySelector("[data-del]").onclick=ev=>{ev.stopPropagation();if(confirm("آیا این مورد حذف شود؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();renderPay()}};d.appendChild(acts);d.onclick=()=>{const was=d.classList.contains("open");list.querySelectorAll(".item.open").forEach(x=>x.classList.remove("open"));if(!was)d.classList.add("open")}}list.appendChild(d)})}
 function editPayEntry(e){editPay=e;payPhotos=[...(e.photos||[])];renderPhSlots("payPh",payPhotos,"payFile");$("formTitle").textContent="ویرایش پرداخت";$("fc").value=e.cat||"";$("fs").value=e.sub||"";$("fa").value=e.amt||"";$("fp").value=e.payer||"سلطانی";setShamsiIso("fdY","fdM","fdD",e.date||today());$("fn").value=e.note||"";$("fadd").textContent="ذخیره تغییرات";$("fcancel").style.display="block";showPage("pgPay")}
@@ -263,14 +311,14 @@ $("gsPush").onclick=()=>pushAllToSheet();
 $("bk").onclick=()=>{const t=JSON.stringify(S,null,2);navigator.clipboard.writeText(t).then(()=>alert("کپی شد")).catch(()=>{prompt("کپی کنید:",t)})};
 $("rs").onclick=()=>{$("dlg").style.display="flex";$("dtx").value=""};
 $("dno").onclick=()=>$("dlg").style.display="none";
-$("dok").onclick=()=>{try{const d=JSON.parse($("dtx").value);if(d.entries||d.cheques){S=d;save();renderAll();$("dlg").style.display="none";alert("بازیابی شد")}else alert("فرمت نادرست")}catch(e){alert("JSON نامعتبر")}};
+$("dok").onclick=()=>{try{const d=JSON.parse($("dtx").value);if(d.entries||d.cheques){S=d;if(!S.debts)S.debts=[];save();renderAll();$("dlg").style.display="none";alert("بازیابی شد")}else alert("فرمت نادرست")}catch(e){alert("JSON نامعتبر")}};
 let headerTaps=0,headerTimer=null;
 $("hdrSub").parentElement.onclick=()=>{if(!isAdmin())return;headerTaps++;clearTimeout(headerTimer);headerTimer=setTimeout(()=>headerTaps=0,800);if(headerTaps>=7){headerTaps=0;$("secretClear").style.display="flex";$("clrConfirm").value=""}};
 $("clrNo").onclick=()=>$("secretClear").style.display="none";
-$("clrOk").onclick=()=>{if($("clrConfirm").value.trim()==="پاک شود"){S={entries:[],cheques:[]};save();renderAll();$("secretClear").style.display="none";alert("همه داده‌ها پاک شد")}else alert("عبارت تأیید اشتباه است")};
-$("csv").onclick=()=>{const rows=[["نوع","شاخه/گیرنده","زیرشاخه","مبلغ","پرداخت‌کننده/صادرکننده","تاریخ","توضیحات","وضعیت"]];(S.entries||[]).forEach(e=>rows.push(["پرداخت",e.cat||"",e.sub||"",e.amt||"",e.payer||"",e.date||"",e.note||"",""]));(S.cheques||[]).forEach(c=>rows.push(["چک",c.to||"","",c.amt||"",c.by||"",ckDate(c)||"",c.note||"",c.done?"وصول":"در انتظار"]));const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="pardakht.csv";a.click()};
+$("clrOk").onclick=()=>{if($("clrConfirm").value.trim()==="پاک شود"){S={entries:[],cheques:[],debts:[]};save();renderAll();$("secretClear").style.display="none";alert("همه داده‌ها پاک شد")}else alert("عبارت تأیید اشتباه است")};
+$("csv").onclick=()=>{const rows=[["نوع","شاخه/گیرنده","زیرشاخه","مبلغ","پرداخت‌کننده/صادرکننده","تاریخ","توضیحات","وضعیت"]];(S.entries||[]).forEach(e=>rows.push(["پرداخت",e.cat||"",e.sub||"",e.amt||"",e.payer||"",e.date||"",e.note||"",""]));(S.cheques||[]).forEach(c=>rows.push(["چک",c.to||"","",c.amt||"",c.by||"",ckDate(c)||"",c.note||"",c.done?"وصول":"در انتظار"]));(S.debts||[]).forEach(d=>rows.push(["بدهی",d.from+" → "+d.to,"",d.amt||"","",d.date||"",d.note||"",d.settled?"تسویه":"باز"]));const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="pardakht.csv";a.click()};
 function bindAmtInput(el){if(!el)return;el.addEventListener("input",()=>{const pos=el.selectionStart;const raw=el.value.replace(/[^0-9]/g,"");const left=el.value.slice(0,pos).replace(/[^0-9]/g,"").length;const fmt=raw?Number(raw).toLocaleString("en-US"):"";el.value=fmt;let i=0,newPos=0;for(const ch of fmt){if(/[0-9]/.test(ch))i++;newPos++;if(i>=left)break}el.setSelectionRange(newPos,newPos)})}
-bindAmtInput($("fa"));bindAmtInput($("ca"));
+bindAmtInput($("fa"));bindAmtInput($("ca"));bindAmtInput($("dfAmt"));
 load();
 let deferredPrompt=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBanner").style.display="flex"});
