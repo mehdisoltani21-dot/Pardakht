@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-08-admin-guest */
+/* CACHEBUST 2026-11-08-admin-email */
 const KEY="pardakht-v1";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -183,7 +183,7 @@ async function enterAppFromSession(session){
   return true;
 }
 const USER_MAP={
-  "admin":"admin@pardakht.local",
+  "admin":"mehdi.soltani21@gmail.com",
   "guest":"guest@pardakht.local"
 };
 function userToEmail(u){
