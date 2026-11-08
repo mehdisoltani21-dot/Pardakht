@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-08-totals */
+/* CACHEBUST 2026-11-08-tot-page */
 const KEY="pardakht-v1";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -139,9 +139,10 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}syncUp
 function touchLocal(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 async function syncUp(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const payload={id:"main",data:S,updated_at:new Date().toISOString()};const {error}=await sb.from("pardakht").upsert(payload,{onConflict:"id"});if(error)throw error;setSyncBadge("● آنلاین","#4ade80")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
 async function syncDown(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const {data,error}=await sb.from("pardakht").select("data").eq("id","main").maybeSingle();if(error)throw error;if(data&&data.data){const remote=data.data;const merge=(a,b)=>{const m=new Map((a||[]).map(x=>[x.id,x]));(b||[]).forEach(x=>m.set(x.id,x));return[...m.values()]};S.entries=merge(S.entries,remote.entries);S.cheques=merge(S.cheques,remote.cheques);touchLocal();setSyncBadge("● آنلاین","#4ade80")}else setSyncBadge("● خالی","#fbbf24")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
-function showPage(id){document.querySelectorAll("[id^=pg]").forEach(p=>p.style.display="none");$(id).style.display="block";$("hdrSub").textContent={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"}[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome"){renderWarn();renderTotals()}}
+function showPage(id){document.querySelectorAll("[id^=pg]").forEach(p=>p.style.display="none");$(id).style.display="block";$("hdrSub").textContent={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها",pgTot:"گزارش مجموع پرداختی"}[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome")renderWarn();if(id==="pgTot")renderTotals()}
 document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>showPage("pgHome"));
 $("goPayList").onclick=()=>showPage("pgPayList");$("goCkList").onclick=()=>showPage("pgCkList");
+$("goTot").onclick=()=>showPage("pgTot");
 $("goPay").onclick=()=>{editPay=null;payPhotos=[];renderPhSlots("payPh",payPhotos,"payFile");$("formTitle").textContent="ثبت پرداخت جدید";$("fc").value="";$("fs").value="";$("fa").value="";$("fp").value="سلطانی";setShamsiIso("fdY","fdM","fdD",today());$("fn").value="";$("fadd").textContent="ثبت پرداخت";$("fcancel").style.display="none";showPage("pgPay")};
 $("goCk").onclick=()=>{editCk=null;ckPhotos=[];renderPhSlots("ckPh",ckPhotos,"ckFile");$("cformTitle").textContent="ثبت چک جدید";$("ct").value="";$("ca").value="";setShamsiIso("cdY","cdM","cdD",today());$("cb").value="سلطانی";$("cn").value="";$("cadd").textContent="ثبت چک";$("ccancel").style.display="none";showPage("pgCk")};
 $("emptyPay").onclick=()=>$("goPay").click();$("emptyCk").onclick=()=>$("goCk").click();
