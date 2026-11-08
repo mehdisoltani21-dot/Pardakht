@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-08-supabase-auth */
+/* CACHEBUST 2026-11-08-admin-guest */
 const KEY="pardakht-v1";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -182,12 +182,23 @@ async function enterAppFromSession(session){
   if(!window._alarmTimer)window._alarmTimer=setInterval(()=>{if(document.visibilityState==="visible")runAlarms()},120000);
   return true;
 }
+const USER_MAP={
+  "admin":"admin@pardakht.local",
+  "guest":"guest@pardakht.local"
+};
+function userToEmail(u){
+  u=(u||"").trim();
+  if(!u)return "";
+  if(u.includes("@"))return u.toLowerCase();
+  return USER_MAP[u.toLowerCase()] || (u.toLowerCase()+"@pardakht.local");
+}
 $("lgo").onclick=async()=>{
   $("lerr").textContent="";
-  const email=($("lemail")&&$("lemail").value||"").trim();
+  const user=($("luser")&&$("luser").value||"").trim();
   const pass=$("lpw").value||"";
-  if(!email||!pass){$("lerr").textContent="ایمیل و رمز را وارد کنید";return}
+  if(!user||!pass){$("lerr").textContent="نام کاربری و رمز را وارد کنید";return}
   if(!initSb()){$("lerr").textContent="اتصال به سرور برقرار نشد";return}
+  const email=userToEmail(user);
   $("lgo").disabled=true;
   try{
     const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
@@ -195,12 +206,14 @@ $("lgo").onclick=async()=>{
     await enterAppFromSession(data.session);
   }catch(e){
     console.warn(e);
-    $("lerr").textContent=(e&&e.message)||"ورود ناموفق";
+    let msg=(e&&e.message)||"ورود ناموفق";
+    if(/invalid login/i.test(msg))msg="نام کاربری یا رمز اشتباه است";
+    $("lerr").textContent=msg;
   }
   $("lgo").disabled=false;
 };
 $("lpw").onkeydown=e=>{if(e.key==="Enter")$("lgo").click()};
-if($("lemail"))$("lemail").onkeydown=e=>{if(e.key==="Enter")$("lpw").focus()};
+if($("luser"))$("luser").onkeydown=e=>{if(e.key==="Enter")$("lpw").focus()};
 async function tryRestoreSession(){
   if(!initSb()){ $("login").style.display="flex"; return }
   try{
@@ -216,7 +229,7 @@ async function logout(){
   $("app").style.display="none";
   $("login").style.display="flex";
   if($("lpw"))$("lpw").value="";
-  if($("lemail"))$("lemail").value="";
+  if($("luser"))$("luser").value="";
   $("lerr").textContent="";
 }
 $("logout").onclick=logout;
