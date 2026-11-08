@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-08-admin-email */
+/* CACHEBUST 2026-11-08-totals */
 const KEY="pardakht-v1";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -139,7 +139,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}syncUp
 function touchLocal(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 async function syncUp(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const payload={id:"main",data:S,updated_at:new Date().toISOString()};const {error}=await sb.from("pardakht").upsert(payload,{onConflict:"id"});if(error)throw error;setSyncBadge("● آنلاین","#4ade80")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
 async function syncDown(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const {data,error}=await sb.from("pardakht").select("data").eq("id","main").maybeSingle();if(error)throw error;if(data&&data.data){const remote=data.data;const merge=(a,b)=>{const m=new Map((a||[]).map(x=>[x.id,x]));(b||[]).forEach(x=>m.set(x.id,x));return[...m.values()]};S.entries=merge(S.entries,remote.entries);S.cheques=merge(S.cheques,remote.cheques);touchLocal();setSyncBadge("● آنلاین","#4ade80")}else setSyncBadge("● خالی","#fbbf24")}catch(e){console.warn(e);setSyncBadge("● آفلاین","#f87171")}}
-function showPage(id){document.querySelectorAll("[id^=pg]").forEach(p=>p.style.display="none");$(id).style.display="block";$("hdrSub").textContent={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"}[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome")renderWarn()}
+function showPage(id){document.querySelectorAll("[id^=pg]").forEach(p=>p.style.display="none");$(id).style.display="block";$("hdrSub").textContent={pgHome:"منوی اصلی",pgPay:"ثبت پرداخت",pgCk:"ثبت چک",pgPayList:"لیست پرداخت‌ها",pgCkList:"لیست چک‌ها"}[id]||"";if(id==="pgPayList")renderPay();if(id==="pgCkList")renderCk();if(id==="pgHome"){renderWarn();renderTotals()}}
 document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>showPage("pgHome"));
 $("goPayList").onclick=()=>showPage("pgPayList");$("goCkList").onclick=()=>showPage("pgCkList");
 $("goPay").onclick=()=>{editPay=null;payPhotos=[];renderPhSlots("payPh",payPhotos,"payFile");$("formTitle").textContent="ثبت پرداخت جدید";$("fc").value="";$("fs").value="";$("fa").value="";$("fp").value="سلطانی";setShamsiIso("fdY","fdM","fdD",today());$("fn").value="";$("fadd").textContent="ثبت پرداخت";$("fcancel").style.display="none";showPage("pgPay")};
@@ -151,7 +151,23 @@ $("cadd").onclick=()=>{const to=$("ct").value.trim(),amt=Number(($("ca").value||
 $("ccancel").onclick=()=>{editCk=null;showPage("pgHome")};
 $("fr").onchange=$("fpay").onchange=$("fq").oninput=()=>renderPay();
 $("cflt").onchange=$("cq").oninput=()=>renderCk();
-function renderAll(){renderPay();renderCk();renderWarn()}
+function renderTotals(){
+  let pay=0, ck=0, sol=0, akb=0;
+  (S.entries||[]).forEach(e=>{
+    const a=Number(e.amt)||0; pay+=a;
+    if(e.payer==="سلطانی")sol+=a; else if(e.payer==="اکبری")akb+=a;
+  });
+  (S.cheques||[]).forEach(c=>{
+    const a=Number(c.amt)||0; ck+=a;
+    if(c.by==="سلطانی")sol+=a; else if(c.by==="اکبری")akb+=a;
+  });
+  if($("tPay"))$("tPay").textContent=fa(pay);
+  if($("tCk"))$("tCk").textContent=fa(ck);
+  if($("tAll"))$("tAll").textContent=fa(pay+ck);
+  if($("tSol"))$("tSol").textContent=fa(sol);
+  if($("tAkb"))$("tAkb").textContent=fa(akb);
+}
+function renderAll(){renderPay();renderCk();renderWarn();renderTotals()}
 function renderWarn(){const pending=(S.cheques||[]).filter(c=>!c.done);const overdue=pending.filter(c=>isPast(ckDate(c)));const el=$("ckWarn");if(overdue.length){el.style.display="block";el.innerHTML=`⚠ <b>${overdue.length}</b> چک سررسید گذشته`;el.onclick=()=>showPage("pgCkList")}else el.style.display="none";runAlarms()}
 function renderPay(){const list=$("list"),empty=$("empty");list.innerHTML="";let ents=[...(S.entries||[])].sort((a,b)=>(b.date||"").localeCompare(a.date||""));const fr=$("fr").value,fq=($("fq").value||"").trim().toLowerCase(),fpay=$("fpay").value;if(fr==="today")ents=ents.filter(e=>e.date===today());else if(fr==="month"){const m=today().slice(0,7);ents=ents.filter(e=>(e.date||"").startsWith(m))}if(fpay)ents=ents.filter(e=>e.payer===fpay);if(fq)ents=ents.filter(e=>JSON.stringify(e).toLowerCase().includes(fq));let sSol=0,sAkb=0;ents.forEach(e=>{const a=Number(e.amt)||0;if(e.payer==="سلطانی")sSol+=a;else if(e.payer==="اکبری")sAkb+=a});$("sSol").textContent=fa(sSol);$("sAkb").textContent=fa(sAkb);$("sAll").textContent=fa(sSol+sAkb);if(!ents.length){empty.style.display="block";return}empty.style.display="none";let last="";ents.forEach(e=>{if(e.date!==last){const sep=document.createElement("div");sep.className="date-sep";sep.textContent=pdate(e.date);list.appendChild(sep);last=e.date}const d=document.createElement("div");d.className="item";d.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><div class="title">${esc(e.cat||"")} ${e.sub?"· "+esc(e.sub):""}</div><div class="meta">${esc(e.payer||"")} · ${pdate(e.date)}${e.note?" · "+esc(e.note):""}</div></div><div class="amt">${fa(e.amt)}</div></div>${phThumbs(e.photos)}`;d.querySelectorAll(".ph-view img").forEach(im=>{im.onclick=ev=>{ev.stopPropagation();showImg(im.src)}});if(isAdmin()){const acts=document.createElement("div");acts.className="acts";acts.innerHTML=`<button class="g sm" data-edit>ویرایش</button><button class="g sm del" data-del>حذف</button>`;acts.querySelector("[data-edit]").onclick=ev=>{ev.stopPropagation();editPayEntry(e)};acts.querySelector("[data-del]").onclick=ev=>{ev.stopPropagation();if(confirm("آیا این مورد حذف شود؟")){S.entries=S.entries.filter(x=>x.id!==e.id);save();renderPay()}};d.appendChild(acts);d.onclick=()=>{const was=d.classList.contains("open");list.querySelectorAll(".item.open").forEach(x=>x.classList.remove("open"));if(!was)d.classList.add("open")}}list.appendChild(d)})}
 function editPayEntry(e){editPay=e;payPhotos=[...(e.photos||[])];renderPhSlots("payPh",payPhotos,"payFile");$("formTitle").textContent="ویرایش پرداخت";$("fc").value=e.cat||"";$("fs").value=e.sub||"";$("fa").value=e.amt||"";$("fp").value=e.payer||"سلطانی";setShamsiIso("fdY","fdM","fdD",e.date||today());$("fn").value=e.note||"";$("fadd").textContent="ذخیره تغییرات";$("fcancel").style.display="block";showPage("pgPay")}
