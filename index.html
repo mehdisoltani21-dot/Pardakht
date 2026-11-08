@@ -102,22 +102,7 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 <button id="gsPush" class="admin-only">📤 ارسال همه به شیت</button><button id="bk">📥 پشتیبان (کپی)</button><button id="csv">📊 خروجی CSV</button><button id="rs" class="admin-only">📤 بازیابی پشتیبان</button><button id="logout">🚪 خروج</button></div></div></div>
 <div id="installBanner"><span>📲 نصب روی صفحه اصلی گوشی</span><button id="installBtn">نصب</button></div>
 <div id="alarmBox"><h3>🔔 یادآوری سررسید چک</h3><div id="alarmList"></div></div>
-<div id="pgHome"><div class="warn" id="ckWarn"></div>
-<div class="pad" style="padding-bottom:0">
-<div class="card" style="margin-bottom:8px">
-<div class="sec" style="margin-bottom:10px">مجموع کل (پرداخت + چک)</div>
-<div class="stats" style="margin:0">
-<div class="st"><span>پرداخت‌ها</span><b id="tPay">۰</b></div>
-<div class="st"><span>چک‌ها</span><b id="tCk">۰</b></div>
-<div class="st m"><span>جمع کل</span><b id="tAll">۰</b></div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-<div class="st" style="padding:10px 6px"><span>سلطانی</span><b id="tSol" style="font-size:12px">۰</b></div>
-<div class="st" style="padding:10px 6px"><span>اکبری</span><b id="tAkb" style="font-size:12px">۰</b></div>
-</div>
-</div>
-</div>
-<div class="menu"><button class="mbtn" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button><button class="mbtn" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button><button class="mbtn" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button><button class="mbtn" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button></div></div>
+<div id="pgHome"><div class="warn" id="ckWarn"></div><div class="menu"><button class="mbtn" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button><button class="mbtn" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button><button class="mbtn" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button><button class="mbtn" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button><button class="mbtn" id="goTot"><span class="ico">📊</span><span>گزارش مجموع پرداختی</span></button></div></div>
 <div id="pgPay" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="card"><div class="sec" id="formTitle">ثبت پرداخت جدید</div><div class="fm"><input id="fc" placeholder="شاخه"><input id="fs" placeholder="زیرشاخه"><input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)"><select id="fp"><option>سلطانی</option><option>اکبری</option></select><div class="w shamsi-row" id="fdWrap">
 <select id="fdY"></select><select id="fdM"></select><select id="fdD"></select>
 </div><input id="fn" class="w" placeholder="توضیحات"><div class="w"><div class="sec" style="margin:0 0 6px">عکس (حداکثر ۲)</div><div class="ph-row" id="payPh"></div><input type="file" id="payFile" accept="image/*" capture="environment" style="display:none" multiple></div>
@@ -128,6 +113,28 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 <button class="primary w" id="cadd">ثبت چک</button><button class="g w" id="ccancel" style="display:none;padding:12px">لغو ویرایش</button></div></div></div>
 <div id="pgPayList" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="stats"><div class="st"><span>سلطانی</span><b id="sSol">۰</b></div><div class="st"><span>اکبری</span><b id="sAkb">۰</b></div><div class="st m"><span>جمع کل</span><b id="sAll">۰</b></div></div><div class="card" style="padding:12px"><div class="fl" style="margin:0"><select id="fr"><option value="all">همه زمان‌ها</option><option value="today">امروز</option><option value="month">این ماه</option></select><select id="fpay"><option value="">همه</option><option>سلطانی</option><option>اکبری</option></select><input id="fq" class="w" style="grid-column:1/-1" placeholder="جستجو..."></div></div><div class="list" id="list"></div><div id="empty" class="empty">پرداختی ثبت نشده.<br><button class="primary" id="emptyPay">ثبت اولین پرداخت</button></div></div>
 <div id="pgCkList" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="stats"><div class="st"><span>چک سلطانی</span><b id="cSol">۰</b></div><div class="st"><span>چک اکبری</span><b id="cAkb">۰</b></div><div class="st m"><span>جمع در انتظار</span><b id="cAll">۰</b></div></div><div class="fl"><select id="cflt"><option value="pending">در انتظار</option><option value="all">همه</option><option value="done">وصول‌شده</option></select><input id="cq" placeholder="جستجو..."></div><div id="clist"></div><div id="cempty" class="empty" style="display:none">چکی نیست.<br><button class="primary" id="emptyCk">ثبت اولین چک</button></div></div>
+
+<div id="pgTot" class="pad" style="display:none">
+<button class="back" data-back>→ بازگشت</button>
+<div class="card">
+<div class="sec">گزارش مجموع پرداختی</div>
+<div class="stats" style="margin:0">
+<div class="st"><span>پرداخت‌ها</span><b id="tPay">۰</b></div>
+<div class="st"><span>چک‌ها (همه)</span><b id="tCk">۰</b></div>
+<div class="st m"><span>جمع کل</span><b id="tAll">۰</b></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+<div class="st"><span>سلطانی</span><b id="tSol">۰</b></div>
+<div class="st"><span>اکبری</span><b id="tAkb">۰</b></div>
+</div>
+<div class="sec" style="margin-top:16px;margin-bottom:6px">توضیح</div>
+<div style="font-size:12px;color:var(--mut);line-height:1.7">
+جمع پرداخت‌ها + جمع همه چک‌ها (بدون فیلتر وصول/در انتظار).<br>
+سلطانی و اکبری = مجموع پرداخت و چک هر کدام.
+</div>
+</div>
+</div>
+
 </div>
 <div id="secretClear"><div class="dbox" style="border-color:#e8a317"><div style="font-weight:700;font-size:16px;color:#f87171">⚠ پاک کردن همه داده‌ها</div><div style="font-size:13px;color:var(--mut);margin:10px 0">برگشت‌ناپذیر است. برای تأیید بنویسید: <b style="color:#e8a317">پاک شود</b></div><input id="clrConfirm" placeholder="پاک شود"><div class="row"><button class="primary" id="clrOk" style="flex:1;background:linear-gradient(135deg,#991b1b,#dc2626);color:#fff;box-shadow:none">حذف قطعی</button><button class="g" id="clrNo" style="flex:1;padding:12px">لغو</button></div></div></div>
 <div id="imgPrev"><button type="button" id="imgPrevClose">بستن</button><img id="imgPrevImg" alt=""></div>
