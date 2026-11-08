@@ -102,7 +102,7 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 <button id="gsPush" class="admin-only">📤 ارسال همه به شیت</button><button id="bk">📥 پشتیبان (کپی)</button><button id="csv">📊 خروجی CSV</button><button id="rs" class="admin-only">📤 بازیابی پشتیبان</button><button id="logout">🚪 خروج</button></div></div></div>
 <div id="installBanner"><span>📲 نصب روی صفحه اصلی گوشی</span><button id="installBtn">نصب</button></div>
 <div id="alarmBox"><h3>🔔 یادآوری سررسید چک</h3><div id="alarmList"></div></div>
-<div id="pgHome"><div class="warn" id="ckWarn"></div><div class="menu"><button class="mbtn" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button><button class="mbtn" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button><button class="mbtn" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button><button class="mbtn" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button><button class="mbtn" id="goTot"><span class="ico">📊</span><span>گزارش مجموع پرداختی</span></button></div></div>
+<div id="pgHome"><div class="warn" id="ckWarn"></div><div class="menu"><button class="mbtn" id="goPay"><span class="ico">＋</span><span>ثبت پرداخت جدید</span></button><button class="mbtn" id="goCk"><span class="ico">📋</span><span>ثبت چک جدید</span></button><button class="mbtn" id="goPayList"><span class="ico">✓</span><span>لیست پرداخت‌ها</span></button><button class="mbtn" id="goCkList"><span class="ico">📄</span><span>لیست چک‌ها</span></button><button class="mbtn" id="goTot"><span class="ico">📊</span><span>گزارش مجموع پرداختی</span></button><button class="mbtn" id="goDebt"><span class="ico">🤝</span><span>ثبت بدهی</span></button><button class="mbtn" id="goDebtList"><span class="ico">📜</span><span>لیست بدهی‌ها</span></button></div></div>
 <div id="pgPay" class="pad" style="display:none"><button class="back" data-back>→ بازگشت</button><div class="card"><div class="sec" id="formTitle">ثبت پرداخت جدید</div><div class="fm"><input id="fc" placeholder="شاخه"><input id="fs" placeholder="زیرشاخه"><input id="fa" inputmode="numeric" placeholder="مبلغ (تومان)"><select id="fp"><option>سلطانی</option><option>اکبری</option></select><div class="w shamsi-row" id="fdWrap">
 <select id="fdY"></select><select id="fdM"></select><select id="fdD"></select>
 </div><input id="fn" class="w" placeholder="توضیحات"><div class="w"><div class="sec" style="margin:0 0 6px">عکس (حداکثر ۲)</div><div class="ph-row" id="payPh"></div><input type="file" id="payFile" accept="image/*" capture="environment" style="display:none" multiple></div>
@@ -124,15 +124,53 @@ button.sm{padding:7px 12px;font-size:12px;font-weight:600}button.del{color:var(-
 <div class="st m"><span>جمع کل</span><b id="tAll">۰</b></div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-<div class="st"><span>سلطانی</span><b id="tSol">۰</b></div>
-<div class="st"><span>اکبری</span><b id="tAkb">۰</b></div>
+<div class="st"><span>سلطانی (پرداخت+چک)</span><b id="tSol">۰</b></div>
+<div class="st"><span>اکبری (پرداخت+چک)</span><b id="tAkb">۰</b></div>
+</div>
+<div class="sec" style="margin-top:14px;margin-bottom:8px">بدهی‌ها</div>
+<div class="stats" style="margin:0">
+<div class="st"><span>بدهی باز</span><b id="tDebtOpen">۰</b></div>
+<div class="st"><span>سلطانی خالص</span><b id="tSolNet">۰</b></div>
+<div class="st m"><span>اکبری خالص</span><b id="tAkbNet">۰</b></div>
 </div>
 <div class="sec" style="margin-top:16px;margin-bottom:6px">توضیح</div>
 <div style="font-size:12px;color:var(--mut);line-height:1.7">
-جمع پرداخت‌ها + جمع همه چک‌ها (بدون فیلتر وصول/در انتظار).<br>
-سلطانی و اکبری = مجموع پرداخت و چک هر کدام.
+جمع پرداخت‌ها + همه چک‌ها.<br>
+خالص = پرداخت+چک − بدهی‌هایی که بدهکار است + بدهی‌هایی که طلبکار است.
 </div>
 </div>
+</div>
+
+<div id="pgDebt" class="pad" style="display:none">
+<button class="back" data-back>→ بازگشت</button>
+<div class="card">
+<div class="sec" id="dformTitle">ثبت بدهی</div>
+<div class="fm">
+<select id="dfFrom" class="w"><option>سلطانی</option><option>اکبری</option></select>
+<select id="dfTo" class="w"><option>اکبری</option><option>سلطانی</option></select>
+<input id="dfAmt" class="w" inputmode="numeric" placeholder="مبلغ بدهی (تومان)">
+<div class="w shamsi-row" id="dfWrap">
+<select id="dfY"></select><select id="dfM"></select><select id="dfD"></select>
+</div>
+<input id="dfNote" class="w" placeholder="توضیحات (اختیاری)">
+<button class="primary w" id="dfAdd">ثبت بدهی</button>
+<button class="g w" id="dfCancel" style="display:none;padding:12px">لغو ویرایش</button>
+</div>
+<div style="font-size:12px;color:var(--mut);margin-top:10px;line-height:1.6">
+اولی = <b>بدهکار</b> · دومی = <b>طلبکار</b><br>
+مثلاً سلطانی به اکبری بدهکار است.
+</div>
+</div>
+</div>
+<div id="pgDebtList" class="pad" style="display:none">
+<button class="back" data-back>→ بازگشت</button>
+<div class="stats">
+<div class="st"><span>سلطانی بدهکار</span><b id="dSol">۰</b></div>
+<div class="st"><span>اکبری بدهکار</span><b id="dAkb">۰</b></div>
+<div class="st m"><span>جمع بدهی‌ها</span><b id="dAll">۰</b></div>
+</div>
+<div id="dlist"></div>
+<div id="dempty" class="empty" style="display:none">بدهی ثبت نشده.<br><button class="primary" id="emptyDebt">ثبت اولین بدهی</button></div>
 </div>
 
 </div>
