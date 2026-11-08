@@ -1,4 +1,4 @@
-const CACHE = "pardakht-v11";
+const CACHE = "pardakht-v12";
 const ASSETS = ["./index.html","./manifest.json","./icon-192.png","./icon-512.png"];
 
 self.addEventListener("install", e => {
@@ -17,6 +17,8 @@ self.addEventListener("activate", e => {
 
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
+  const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
   e.respondWith(
     fetch(e.request).then(res => {
       const copy = res.clone();
