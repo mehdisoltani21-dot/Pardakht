@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-08-ck-debt */
+/* CACHEBUST 2026-11-09-install */
 const KEY="pardakht-v1";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -101,4 +101,8 @@ bindAmtInput($("fa"));bindAmtInput($("ca"));bindAmtInput($("dfAmt"));
 }catch(e){console.error("bindAll",e);if($("lerr"))$("lerr").textContent="خطا در بارگذاری منو: "+(e.message||e)}}
 bindAll();
 load();
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;const b=$("installBanner");if(b)b.style.display="flex"});
+window.addEventListener("appinstalled",()=>{deferredPrompt=null;const b=$("installBanner");if(b)b.style.display="none"});
+(function wireInstall(){const btn=$("installBtn");if(!btn)return;btn.onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();try{await deferredPrompt.userChoice}catch(e){}deferredPrompt=null;const b=$("installBanner");if(b)b.style.display="none";return}const ua=navigator.userAgent||"";let msg="برای نصب:\n";if(/iPhone|iPad|iPod/i.test(ua)){msg+="در Safari دکمه Share را بزن → Add to Home Screen"}else if(/Xiaomi|Miui|Redmi/i.test(ua)){msg+="منوی ⋮ کروم → «نصب برنامه» یا «Add to Home screen»\nاگر نبود: ⋮ → افزودن به صفحه اصلی"}else{msg+="منوی ⋮ مرورگر → Install app / افزودن به صفحه اصلی"}alert(msg)}})();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});
