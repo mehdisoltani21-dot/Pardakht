@@ -1,4 +1,4 @@
-/* CACHEBUST 2026-11-10-cam */
+/* CACHEBUST 2026-11-16-photo */
 const KEY="pardakht-v1";
 const SB_URL="https://cgsqkezksxjtzncrgizt.supabase.co";
 const SB_KEY="sb_publishable_E1xEZ0dtOiZnnDO_zxRbsw_jxin_In-";
@@ -32,17 +32,61 @@ function saveAck(a){try{localStorage.setItem(ACK_KEY,JSON.stringify(a))}catch(e)
 function daysToDue(d){if(!d)return 999;const t=new Date(today()+"T12:00:00"),x=new Date(d+"T12:00:00");return Math.round((x-t)/86400000)}
 function needsAlarm(c){if(c.done)return false;const d=ckDate(c);if(!d)return false;if(daysToDue(d)>2)return false;const ack=loadAck();return ack[c.id]!==d}
 function ackCheque(id,due){const a=loadAck();a[id]=due;saveAck(a);runAlarms()}
-let payPhotos=[],ckPhotos=[];const MAX_PH=2,PH_W=800,PH_Q=0.6;
-function compressImage(file){return new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>PH_W){h=Math.round(h*PH_W/w);w=PH_W}const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);resolve(c.toDataURL("image/jpeg",PH_Q))};img.onerror=reject;img.src=rd.result};rd.onerror=reject;rd.readAsDataURL(file)})}
+let payPhotos=[],ckPhotos=[];const MAX_PH=2,PH_W=640,PH_Q=0.5;
+function compressImage(file){return new Promise((resolve,reject)=>{
+const rd=new FileReader();
+rd.onload=()=>{
+  const img=new Image();
+  img.onload=()=>{
+    let w=img.width,h=img.height;
+    if(w>PH_W){h=Math.round(h*PH_W/w);w=PH_W}
+    if(h>PH_W*1.5){w=Math.round(w*(PH_W*1.5)/h);h=Math.round(PH_W*1.5)}
+    const c=document.createElement("canvas");
+    c.width=Math.max(1,w);c.height=Math.max(1,h);
+    const ctx=c.getContext("2d");
+    ctx.fillStyle="#111";ctx.fillRect(0,0,c.width,c.height);
+    ctx.drawImage(img,0,0,c.width,c.height);
+    resolve(c.toDataURL("image/jpeg",PH_Q));
+  };
+  img.onerror=()=>reject(new Error("img"));
+  img.src=rd.result;
+};
+rd.onerror=()=>reject(new Error("read"));
+rd.readAsDataURL(file);
+})}
 function renderPhSlots(containerId,arr,camId,galId){const el=$(containerId);if(!el)return;el.innerHTML="";arr.forEach((src,i)=>{const s=document.createElement("div");s.className="ph-slot";s.innerHTML=`<img src="${src}" alt=""><button type="button" class="rm" title="حذف">×</button>`;s.querySelector(".rm").onclick=ev=>{ev.stopPropagation();arr.splice(i,1);renderPhSlots(containerId,arr,camId,galId)};s.querySelector("img").onclick=()=>showImg(src);el.appendChild(s)});if(arr.length<MAX_PH){const add=document.createElement("div");add.className="ph-slot";add.style.flexDirection="column";add.style.gap="4px";add.innerHTML=`<div class="ph-add" style="padding:6px 4px;font-size:11px;line-height:1.3">📷 دوربین</div><div class="ph-add" style="padding:6px 4px;font-size:11px;line-height:1.3">🖼 گالری</div>`;const btns=add.querySelectorAll(".ph-add");btns[0].onclick=ev=>{ev.stopPropagation();const f=$(camId);if(f)f.click()};btns[1].onclick=ev=>{ev.stopPropagation();const f=$(galId);if(f)f.click()};el.appendChild(add)}}
-async function onPhFiles(files,arr,containerId,camId,galId){const list=[...files].slice(0,MAX_PH-arr.length);for(const f of list){if(!f.type||!f.type.startsWith("image/"))continue;try{arr.push(await compressImage(f))}catch(e){}}renderPhSlots(containerId,arr,camId,galId)}
+async function onPhFiles(files,arr,containerId,camId,galId){
+const list=[...files].slice(0,MAX_PH-arr.length);
+let ok=0,fail=0;
+for(const f of list){
+  const t=(f.type||"").toLowerCase();
+  const name=(f.name||"").toLowerCase();
+  const looksImg=!t||t.startsWith("image/")||/\.(jpe?g|png|gif|webp|heic|heif|bmp)$/i.test(name);
+  if(!looksImg){fail++;continue}
+  try{arr.push(await compressImage(f));ok++}catch(e){console.warn("photo",e);fail++}
+}
+renderPhSlots(containerId,arr,camId,galId);
+if(!ok&&list.length)alert("عکس اضافه نشد. دوباره امتحان کنید یا از گالری انتخاب کنید");
+}
 function showImg(src){$("imgPrevImg").src=src;$("imgPrev").style.display="flex"}
-function phThumbs(photos){if(!photos||!photos.length)return"";return `<div class="ph-view">${photos.map(p=>`<img src="${p}">`).join("")}</div>`}
+function phThumbs(photos){if(!photos||!photos.length)return"";return `<div class="ph-view">${photos.map(p=>`<img src="${p}" alt="عکس" loading="lazy">`).join("")}</div>`}
 async function ensureNotif(){if(!("Notification" in window))return false;if(Notification.permission==="granted")return true;if(Notification.permission!=="denied"){const p=await Notification.requestPermission();return p==="granted"}return false}
 function fireNotif(title,body){try{if(Notification.permission==="granted")new Notification(title,{body,tag:"pardakht-ck",dir:"rtl",lang:"fa",requireInteraction:true})}catch(e){}try{if(navigator.vibrate)navigator.vibrate([200,100,200])}catch(e){}}
 function runAlarms(){const list=(S.cheques||[]).filter(needsAlarm);const box=$("alarmBox"),al=$("alarmList");if(!box)return;if(!list.length){box.style.display="none";al.innerHTML="";return}box.style.display="block";al.innerHTML="";list.forEach(c=>{const days=daysToDue(ckDate(c));const label=days<0?("سررسید گذشته"):(days===0?"سررسید امروز":days+" روز تا سررسید");const row=document.createElement("div");row.className="ar";row.innerHTML=`<div><b>${esc(c.to||"")}</b><div style="font-size:12px;opacity:.9">${fa(c.amt)} · ${pdate(ckDate(c))} · ${label}</div></div>`;const btn=document.createElement("button");btn.textContent="تأیید";btn.onclick=ev=>{ev.stopPropagation();ackCheque(c.id,ckDate(c))};row.appendChild(btn);al.appendChild(row)});if(list[0])fireNotif("یادآوری چک",list.length+" چک")}
 function load(){try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}if(!S.entries)S.entries=[];if(!S.cheques)S.cheques=[];if(!S.debts)S.debts=[]}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}syncUp()}
+function save(){
+try{localStorage.setItem(KEY,JSON.stringify(S))}
+catch(e){
+  console.warn("localStorage",e);
+  try{
+    const slim=JSON.parse(JSON.stringify(S));
+    (slim.entries||[]).forEach(x=>{if(x.photos&&x.photos.length>1)x.photos=x.photos.slice(0,1)});
+    (slim.cheques||[]).forEach(x=>{if(x.photos&&x.photos.length>1)x.photos=x.photos.slice(0,1)});
+    localStorage.setItem(KEY,JSON.stringify(slim));
+  }catch(e2){console.warn("save fail",e2);alert("حافظه پر است؛ عکس‌ها ممکن است ذخیره نشوند")}
+}
+syncUp()
+}
 function touchLocal(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 async function syncUp(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const payload={id:"main",data:S,updated_at:new Date().toISOString()};const {error}=await sb.from("pardakht").upsert(payload,{onConflict:"id"});if(error)throw error;setSyncBadge("● آنلاین","#4ade80")}catch(e){setSyncBadge("● آفلاین","#f87171")}}
 async function syncDown(){if(!initSb()){setSyncBadge("● آفلاین","#f87171");return}try{const {data,error}=await sb.from("pardakht").select("data").eq("id","main").maybeSingle();if(error)throw error;if(data&&data.data){const remote=data.data;const merge=(a,b)=>{const m=new Map((a||[]).map(x=>[x.id,x]));(b||[]).forEach(x=>m.set(x.id,x));return[...m.values()]};S.entries=merge(S.entries,remote.entries);S.cheques=merge(S.cheques,remote.cheques);S.debts=merge(S.debts,remote.debts||[]);touchLocal();setSyncBadge("● آنلاین","#4ade80")}else setSyncBadge("● خالی","#fbbf24")}catch(e){setSyncBadge("● آفلاین","#f87171")}}
